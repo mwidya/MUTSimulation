@@ -2,17 +2,16 @@
 
 #include "ofMain.h"
 #include "ofxSyphon.h"
+#include "mutPlane.h"
 
 class ofApp : public ofBaseApp{
 
 public:
-    void configureSyphon();
-    void configurePrimitives();
-    void configueFramebuffers();
-    
     void setup();
     void update();
     void draw();
+    
+    bool isF4;
     
     // ----- Syphon -----
     
@@ -21,16 +20,14 @@ public:
     void serverRetired(ofxSyphonServerDirectoryEventArgs &arg);
     
     ofxSyphonServerDirectory syphonServerDirectory;
-    ofxSyphonClient syphonClient;
-    
-    // ------ Framebuffer -----
-    
-    ofFbo fbo;
     
     // ----- Primitives -----
     
     ofEasyCam easyCam;
-    ofPlanePrimitive f4;
-    ofPlanePrimitive f5;
+    
+    mutPlane f4;
+    mutPlane f5;
+    
+    vector<mutPlane*> planes;
 		
 };

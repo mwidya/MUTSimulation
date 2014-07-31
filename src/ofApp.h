@@ -10,6 +10,7 @@ public:
     void setup();
     void update();
     void draw();
+    void keyPressed(int key);
     
     bool isF4;
     
@@ -25,8 +26,16 @@ public:
     
     ofEasyCam easyCam;
     
+    mutPlane f0;
+    mutPlane f1;
+    mutPlane f2;
+    mutPlane f3;
     mutPlane f4;
     mutPlane f5;
+    mutPlane f6;
+    mutPlane f7;
+    mutPlane f8;
+    mutPlane f9;
     
     vector<mutPlane*> planes;
 		

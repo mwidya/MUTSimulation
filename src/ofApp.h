@@ -12,8 +12,6 @@ public:
     void draw();
     void keyPressed(int key);
     
-    bool isF4;
-    
     // ----- Syphon -----
     
     void serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg);

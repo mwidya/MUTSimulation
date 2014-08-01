@@ -1,9 +1,7 @@
 #include "ofApp.h"
 
 float factor = 0.1f;
-
 // 1.0 = 1 meter
-
 float levelDistance = 3000*factor;
 float f0f1Distance = 2150*factor;
 float f3f4Distance = 8600*factor;
@@ -72,7 +70,6 @@ void ofApp::setup(){
     f6.set(f6Long, f6Short);
     f6.setPosition(-(f4f5Distance*.5 + f5f6Distance), levelDistance + f5Short*.5, 0);
     f6.rotate(90, 0, 1, 0);
-    f6.rotate(180, 1, 0, 0);
     
     f7.set(f7Long, f7Short);
     f7.setPosition(-(f4f5Distance*.5 + f5f6Distance + f7Short*.5), levelDistance, 0);
@@ -86,9 +83,6 @@ void ofApp::setup(){
     f9.set(f8Long, f8Short);
     f9.setPosition(-(f4f5Distance*.5 + f5f6Distance + f7Short + f8f9Distance), 0, 0);
     f9.rotate(90, 0, 1, 0);
-    
-    
-    
     
     planes.push_back(&f0);
     planes.push_back(&f1);
@@ -130,7 +124,7 @@ void ofApp::draw(){
         mutPlane *plane = planes[i];
         if (plane->isAnnounced) {
             plane->fbo.getTextureReference().bind();
-            plane->mapTexCoordsFromTexture(f4.fbo.getTextureReference());
+            plane->mapTexCoordsFromTexture(plane->fbo.getTextureReference());
             plane->draw();
             plane->fbo.getTextureReference().unbind();
         }else{
@@ -158,12 +152,36 @@ void ofApp::keyPressed(int key){
 void ofApp::serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg){
     for (auto &dir : arg.servers) {
         ofLogNotice("ofxSyphonServerDirectory Server Announced")<<" Server Name: "<<dir.serverName <<" | App Name: "<<dir.appName;
-        if(dir.serverName == "Chessboard"){
+        if(dir.serverName == "F0"){
             planes[0]->isAnnounced = true;
             planes[0]->syphonClient.set(dir);
-        }else if(dir.serverName == "F5"){
+        }else if(dir.serverName == "F1"){
             planes[1]->isAnnounced = true;
             planes[1]->syphonClient.set(dir);
+        }else if(dir.serverName == "F2"){
+            planes[2]->isAnnounced = true;
+            planes[2]->syphonClient.set(dir);
+        }else if(dir.serverName == "F3"){
+            planes[3]->isAnnounced = true;
+            planes[3]->syphonClient.set(dir);
+        }else if(dir.serverName == "F4"){
+            planes[4]->isAnnounced = true;
+            planes[4]->syphonClient.set(dir);
+        }else if(dir.serverName == "F5"){
+            planes[5]->isAnnounced = true;
+            planes[5]->syphonClient.set(dir);
+        }else if(dir.serverName == "F6"){
+            planes[6]->isAnnounced = true;
+            planes[6]->syphonClient.set(dir);
+        }else if(dir.serverName == "F7"){
+            planes[7]->isAnnounced = true;
+            planes[7]->syphonClient.set(dir);
+        }else if(dir.serverName == "Chessboard"){
+            planes[8]->isAnnounced = true;
+            planes[8]->syphonClient.set(dir);
+        }else if(dir.serverName == "F9"){
+            planes[9]->isAnnounced = true;
+            planes[9]->syphonClient.set(dir);
         }
     }
 }
@@ -177,10 +195,26 @@ void ofApp::serverUpdated(ofxSyphonServerDirectoryEventArgs &arg){
 void ofApp::serverRetired(ofxSyphonServerDirectoryEventArgs &arg){
     for (auto &dir : arg.servers) {
         ofLogNotice("ofxSyphonServerDirectory Server Retired")<<" Server Name: "<<dir.serverName <<" | App Name: "<<dir.appName;
-        if(dir.serverName == "Chessboard"){
+        if(dir.serverName == "F0"){
             planes[0]->isAnnounced = false;
-        }else if(dir.serverName == "F5"){
+        }else if(dir.serverName == "F1"){
             planes[1]->isAnnounced = false;
+        }else if(dir.serverName == "F2"){
+            planes[2]->isAnnounced = false;
+        }else if(dir.serverName == "F3"){
+            planes[3]->isAnnounced = false;
+        }else if(dir.serverName == "F4"){
+            planes[4]->isAnnounced = false;
+        }else if(dir.serverName == "F5"){
+            planes[5]->isAnnounced = false;
+        }else if(dir.serverName == "F6"){
+            planes[6]->isAnnounced = false;
+        }else if(dir.serverName == "F7"){
+            planes[7]->isAnnounced = false;
+        }else if(dir.serverName == "Chessboard"){
+            planes[8]->isAnnounced = false;
+        }else if(dir.serverName == "F9"){
+            planes[9]->isAnnounced = false;
         }
     }
 }

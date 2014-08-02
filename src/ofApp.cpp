@@ -176,7 +176,7 @@ void ofApp::serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg){
         }else if(dir.serverName == "F7"){
             planes[7]->isAnnounced = true;
             planes[7]->syphonClient.set(dir);
-        }else if(dir.serverName == "Chessboard"){
+        }else if(dir.serverName == "F8"){
             planes[8]->isAnnounced = true;
             planes[8]->syphonClient.set(dir);
         }else if(dir.serverName == "F9"){
@@ -211,7 +211,7 @@ void ofApp::serverRetired(ofxSyphonServerDirectoryEventArgs &arg){
             planes[6]->isAnnounced = false;
         }else if(dir.serverName == "F7"){
             planes[7]->isAnnounced = false;
-        }else if(dir.serverName == "Chessboard"){
+        }else if(dir.serverName == "F8"){
             planes[8]->isAnnounced = false;
         }else if(dir.serverName == "F9"){
             planes[9]->isAnnounced = false;

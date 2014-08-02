@@ -1,9 +1,11 @@
 #include "ofMain.h"
 #include "ofApp.h"
 
+#define FACTOR 0.5
+
 //========================================================================
 int main( ){
-	ofSetupOpenGL(1680,1050,OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(1680*FACTOR,1050*FACTOR,OF_WINDOW);			// <-------- setup the GL context
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN

@@ -1,7 +1,7 @@
 #include "ofMain.h"
 #include "ofApp.h"
 
-#define FACTOR 0.5
+#define FACTOR 0.8f
 
 //========================================================================
 int main( ){

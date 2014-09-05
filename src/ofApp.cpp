@@ -29,6 +29,9 @@ float f8Short = 1700*factor;
 float f9Long = 4300*factor;
 float f9Short = 1700*factor;
 
+float f4_5Short = 3000*factor;
+float f4_5Long = 4300*factor;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     
@@ -49,9 +52,10 @@ void ofApp::setup(){
     f1.setPosition(f4f5Distance*.5 + f3f4Distance + f2Long, levelDistance + f1Short*.5, 0);
     f1.rotate(90, 0, 1, 0);
     
-    f2.set(f2Long, f2Short);
+    f2.set(f2Short, f2Long);
     f2.setPosition(f4f5Distance*.5 + f3f4Distance + f2Long *.5, levelDistance, 0);
     f2.rotate(90, 1, 0, 0);
+    f2.rotate(90, 0, 1, 0);
     
     f3.set(f3Long, f3Short);
     f3.setPosition(f4f5Distance*.5 + f3f4Distance, levelDistance + f3Short*.5, 0);
@@ -82,6 +86,10 @@ void ofApp::setup(){
     f9.setPosition(-(f4f5Distance*.5 + f5f6Distance + f7Short + f8f9Distance), 0, 0);
     f9.rotate(90, 0, 1, 0);
     
+    f4_5.set(f4_5Long, f4_5Short);
+    f4_5.setPosition(0, -f4Short*.5, 0);
+    f4_5.rotate(90, 1, 0, 0);
+    
     planes.push_back(&f0);
     planes.push_back(&f1);
     planes.push_back(&f2);
@@ -92,6 +100,7 @@ void ofApp::setup(){
     planes.push_back(&f7);
     planes.push_back(&f8);
     planes.push_back(&f9);
+//    planes.push_back(&f4_5);
     
     for (int i = 0; i < planes.size(); i++) {
         mutPlane *plane = planes[i];
@@ -117,6 +126,7 @@ bool drawNormals;
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+//    ofClear(30, 30, 30);
     ofClear(0, 0, 0);
     easyCam.begin();
     for (int i = 0; i < planes.size(); i++) {

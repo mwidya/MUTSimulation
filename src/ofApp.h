@@ -11,6 +11,7 @@ public:
     void update();
     void draw();
     void keyPressed(int key);
+    void mouseDragged(int x, int y, int button);
     
     // ----- Syphon -----
     
@@ -37,5 +38,7 @@ public:
     mutPlane f4_5;
     
     vector<mutPlane*> planes;
-		
+    
+    ofMaterial material;
+    ofLight light;
 };

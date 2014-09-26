@@ -10,10 +10,10 @@ float f5f6Distance = 11100*factor;
 float f8f9Distance = 6000*factor;
 float f0Long = 4300*factor;
 float f0Short = 1700*factor;
-float f1Long = 3000*factor;
+float f1Long = 4300*factor;
 float f1Short = 1700*factor;
 float f2Long = 3950*factor;
-float f2Short = 3000*factor;
+float f2Short = 4300*factor;
 float f3Long = 3000*factor;
 float f3Short = 1700*factor;
 float f4Long = 3000*factor;
@@ -60,7 +60,7 @@ void ofApp::setup(){
     f2.rotate(180, 0,0,1);
     
     f3.set(f3Long, f3Short);
-    f3.setPosition(f4f5Distance*.5 + f3f4Distance, levelDistance + f3Short*.5, 0);
+    f3.setPosition(f4f5Distance*.5 + f3f4Distance, levelDistance + f3Short*.5, -(f2Short-f3Long)*.5f);
     f3.rotate(90, 0, 1, 0);
     f3.rotate(180,1,0,0);
     
@@ -83,6 +83,7 @@ void ofApp::setup(){
     f7.setPosition(-(f4f5Distance*.5 + f5f6Distance + f7Short*.5), levelDistance, 0);
     f7.rotate(90, 1, 0, 0);
     f7.rotate(90, 0, 1, 0);
+    f7.rotate(180, 0, 0, 1);
     
     f8.set(f8Long, f8Short);
     f8.setPosition(-(f4f5Distance*.5 + f5f6Distance + f7Short), levelDistance + f5Short*.5, 0);

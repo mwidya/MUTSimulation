@@ -32,8 +32,15 @@ float f9Short = 1700*factor;
 float f4_5Short = 3000*factor;
 float f4_5Long = 4300*factor;
 
+#define HOST "10.0.0.5"
+#define PORT 12333
+
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
+    
+	sender.setup(HOST, PORT);
+    
     ofEnableDepthTest();
     
     syphonServerDirectory.setup();
@@ -144,15 +151,20 @@ void ofApp::update(){
         ofSetGlobalAmbientColor(ofFloatColor(0));
     }
     
-    for (int i = 0; i < planes.size(); i++) {
-        mutPlane *plane = planes[i];
-        plane->fbo.begin();
-        ofClear(255);
-        plane->syphonClient.draw(0, 0);
-        plane->fbo.end();
-    }
+//    for (int i = 0; i < planes.size(); i++) {
+//        mutPlane *plane = planes[i];
+//        plane->fbo.begin();
+//        ofClear(255);
+//        plane->syphonClient.draw(0, 0);
+//        plane->fbo.end();
+//    }
     
     light.setPosition(sin(ofGetElapsedTimef())*25000*factor, light.getPosition().y, light.getPosition().z);
+    
+    ofxOscMessage m;
+    m.setAddress("/mouse/position");
+    m.addFloatArg(light.getPosition().x);
+    sender.sendMessage(m);
 }
 
 bool drawNormals;
@@ -170,10 +182,10 @@ void ofApp::draw(){
     for (int i = 0; i < planes.size(); i++) {
         mutPlane *plane = planes[i];
         if (plane->isAnnounced) {
-            plane->fbo.getTextureReference().bind();
-            plane->mapTexCoordsFromTexture(plane->fbo.getTextureReference());
+//            plane->fbo.getTextureReference().bind();
+//            plane->mapTexCoordsFromTexture(plane->fbo.getTextureReference());
             plane->draw();
-            plane->fbo.getTextureReference().unbind();
+//            plane->fbo.getTextureReference().unbind();
         }else{
             plane->draw();
         }
@@ -196,6 +208,15 @@ void ofApp::keyPressed(int key){
     if (key == 'n') {
         drawNormals = !drawNormals;
     }
+	if(key == 'a' || key == 'A'){
+		ofxOscMessage m;
+		m.setAddress("/test");
+		m.addIntArg(1);
+		m.addFloatArg(3.5f);
+		m.addStringArg("hello");
+		m.addFloatArg(ofGetElapsedTimef());
+		sender.sendMessage(m);
+	}
 }
 
 void ofApp::mouseDragged(int x, int y, int button){

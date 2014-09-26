@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxSyphon.h"
 #include "mutPlane.h"
+#include "ofxOsc.h"
 
 class ofApp : public ofBaseApp{
 
@@ -41,4 +42,7 @@ public:
     
     ofMaterial material;
     ofLight light;
+    
+    
+    ofxOscSender sender;
 };

@@ -148,7 +148,7 @@ bool drawNormals;
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofClear(0, 0, 0);
+    ofClear(50);
     easyCam.begin();
     
 //    light.enable();

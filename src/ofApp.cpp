@@ -162,7 +162,7 @@ void ofApp::update(){
     light.setPosition(sin(ofGetElapsedTimef())*25000*factor, light.getPosition().y, light.getPosition().z);
     
     ofxOscMessage m;
-    m.setAddress("/mouse/position");
+    m.setAddress("/diffuseLight/positionX");
     m.addFloatArg(light.getPosition().x);
     sender.sendMessage(m);
 }

@@ -4,6 +4,9 @@
 #include "ofxSyphon.h"
 #include "mutPlane.h"
 #include "ofxOsc.h"
+#include "ofxNetwork.h"
+#include "ofxJSONElement.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -13,6 +16,10 @@ public:
     void draw();
     void keyPressed(int key);
     void mouseDragged(int x, int y, int button);
+    
+    
+    ofVec2f normalizedPointToScreenPoint(ofVec2f);
+    void parseJSONString(string str);
     
     // ----- Syphon -----
     
@@ -54,4 +61,15 @@ public:
     ofxOscSender *sender7;
     ofxOscSender *sender8;
     ofxOscSender *sender9;
+    
+    
+    
+    ofxTCPClient tcpClient;
+    int deltaTime = 0;
+    int connectTime = 0;
+    
+    ofxJSONElement jsonElement;
+    ofVec2f screenPoint;
+    string event;
+    int aMarkerId;
 };

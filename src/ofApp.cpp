@@ -1,5 +1,9 @@
 #include "ofApp.h"
 
+
+#define IP "127.0.0.1"
+#define PORT 12333
+
 float factor = 0.2f;
 // 1.0 = 1 meter
 float levelDistance = 3000*factor;
@@ -48,28 +52,34 @@ void ofApp::setup(){
     sender7 = new ofxOscSender();
     sender8 = new ofxOscSender();
     sender9 = new ofxOscSender();
+
+    bool local = false;
     
-//    sender0->setup("10.0.0.12", 6000);
-//    sender1->setup("10.0.0.10", 6000);
-//    sender2->setup("10.0.0.14", 6000);
-//    sender3->setup("10.0.0.12", 6001);
-//    sender4->setup("10.0.0.11", 6000);
-//    sender5->setup("10.0.0.13", 6000);
-//    sender6->setup("10.0.0.12", 6002);
-//    sender7->setup("10.0.0.14", 6001);
-//    sender8->setup("10.0.0.15", 6000);
-//    sender9->setup("10.0.0.14", 6002);
-    
-    sender0->setup("10.0.0.6", 6000);
-    sender1->setup("10.0.0.6", 6000);
-    sender2->setup("10.0.0.6", 6000);
-    sender3->setup("10.0.0.6", 6001);
-    sender4->setup("10.0.0.6", 6000);
-    sender5->setup("10.0.0.6", 6000);
-    sender6->setup("10.0.0.6", 6002);
-    sender7->setup("10.0.0.6", 6001);
-    sender8->setup("10.0.0.6", 6000);
-    sender9->setup("10.0.0.6", 6002);
+    if (local) {
+        
+        sender0->setup("10.0.0.6", 6000);
+        sender1->setup("10.0.0.6", 6000);
+        sender2->setup("10.0.0.6", 6000);
+        sender3->setup("10.0.0.6", 6001);
+        sender4->setup("10.0.0.6", 6000);
+        sender5->setup("10.0.0.6", 6000);
+        sender6->setup("10.0.0.6", 6002);
+        sender7->setup("10.0.0.6", 6001);
+        sender8->setup("10.0.0.6", 6000);
+        sender9->setup("10.0.0.6", 6002);
+    }
+    else{
+        sender0->setup("10.0.0.12", 6000);
+        sender1->setup("10.0.0.10", 6000);
+        sender2->setup("10.0.0.14", 6000);
+        sender3->setup("10.0.0.12", 6001);
+        sender4->setup("10.0.0.11", 6000);
+        sender5->setup("10.0.0.13", 6000);
+        sender6->setup("10.0.0.12", 6002);
+        sender7->setup("10.0.0.14", 6001);
+        sender8->setup("10.0.0.15", 6000);
+        sender9->setup("10.0.0.14", 6002);
+    }
     
     senders.push_back(sender0);
     senders.push_back(sender1);
@@ -198,6 +208,36 @@ void ofApp::setup(){
             senders[j]->sendMessage(m2);
         }
     }
+    
+    
+    tcpClient.setup(IP, PORT);
+    tcpClient.setMessageDelimiter("\n");
+}
+
+ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint){
+    ofVec2f point;
+    
+    point.x = normalizedPoint.x * ofGetWidth();
+    point.y = normalizedPoint.y * ofGetHeight();
+    
+    return point;
+}
+
+void ofApp::parseJSONString(string str){
+    
+    jsonElement = ofxJSONElement(str);
+
+     event = jsonElement["event"].asString();
+     aMarkerId = jsonElement["id"].asInt();
+     float x = jsonElement["x"].asFloat();
+     float y = jsonElement["y"].asFloat();
+    
+     screenPoint = normalizedPointToScreenPoint(ofVec2f(x, y));
+    
+    cout << "event = " << event << endl;
+    cout << "aMarkerId = " << aMarkerId << endl;
+    cout << "screenPoint = " << screenPoint << endl;
+    
 }
 
 //--------------------------------------------------------------
@@ -211,30 +251,30 @@ void ofApp::update(){
 //        plane->fbo.end();
 //    }
     
+    
+    if (tcpClient.isConnected())
+    {
+        string str = tcpClient.receive();
+        
+        if( str.length() > 0 )
+        {
+            cout << "str = " << str << endl;
+            parseJSONString(str);
+        }
+    }
+    else
+    {
+        deltaTime = ofGetElapsedTimeMillis() - connectTime;
+		if( deltaTime > 5000 ){
+			
+            tcpClient.setup(IP, PORT);
+            tcpClient.setMessageDelimiter("\n");
+            
+			connectTime = ofGetElapsedTimeMillis();
+		}
+	}
+    
     light.setPosition(sin(ofGetElapsedTimef())*20000*factor, light.getPosition().y, light.getPosition().z);
-    
-//    float planes2X = planes[2]->getPosition().x;
-    
-    
-//    for (int s = 0; s < senders.size(); s++) {
-//        for (int i = 0; i < planes.size(); i++) {
-//            ofxOscMessage m2;
-//            string oscAddress = "f"+ofToString(i)+"/position";
-//            m2.setAddress(oscAddress);
-//            m2.addFloatArg(planes[i]->getPosition().x);
-//            m2.addFloatArg(planes[i]->getPosition().y);
-//            m2.addFloatArg(planes[i]->getPosition().z);
-//            senders[s]->sendMessage(m2);
-//        }
-//        
-//        ofxOscMessage m1;
-//        m1.setAddress("/diffuseLight/position");
-//        m1.addFloatArg(light.getPosition().x);
-//        m1.addFloatArg(light.getPosition().y);
-//        m1.addFloatArg(light.getPosition().z);
-//        
-//        senders[s]->sendMessage(m1);
-//    }
     
     
     for (int j = 0; j < senders.size(); j++) {

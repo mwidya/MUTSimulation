@@ -32,14 +32,27 @@ float f9Short = 1700*factor;
 float f4_5Short = 3000*factor;
 float f4_5Long = 4300*factor;
 
-#define HOST "10.0.0.5"
-#define PORT 12333
+#define OSC_PORT 6000
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    // const int oscPorts[10] = {6000,6000,6000,6001,6000,6000,6002,6001,6000,6002};
     
-	sender.setup(HOST, PORT);
+	ofxOscSender sender0;
+    sender0.setup("10.0.0.10", OSC_PORT);
+    senders.push_back(&sender0);
+    
+    testSender.setup("10.0.0.12", 6000);
+    testSender2.setup("10.0.0.12", 6001);
+    testSender3.setup("10.0.0.12", 6002);
+    
+//    senders.push_back(&testSender);
+//    senders.push_back(&testSender2);
+    
+//    ofxOscSender sender1;
+//    sender1.setup("10.0.0.11", 12334);
+//    senders.push_back(&sender1);
     
     ofEnableDepthTest();
     
@@ -161,6 +174,26 @@ void ofApp::update(){
 //    float planes2X = planes[2]->getPosition().x;
     
     
+//    for (int s = 0; s < senders.size(); s++) {
+//        for (int i = 0; i < planes.size(); i++) {
+//            ofxOscMessage m2;
+//            string oscAddress = "f"+ofToString(i)+"/position";
+//            m2.setAddress(oscAddress);
+//            m2.addFloatArg(planes[i]->getPosition().x);
+//            m2.addFloatArg(planes[i]->getPosition().y);
+//            m2.addFloatArg(planes[i]->getPosition().z);
+//            senders[s]->sendMessage(m2);
+//        }
+//        
+//        ofxOscMessage m1;
+//        m1.setAddress("/diffuseLight/position");
+//        m1.addFloatArg(light.getPosition().x);
+//        m1.addFloatArg(light.getPosition().y);
+//        m1.addFloatArg(light.getPosition().z);
+//        
+//        senders[s]->sendMessage(m1);
+//    }
+    
     for (int i = 0; i < planes.size(); i++) {
         ofxOscMessage m2;
         string oscAddress = "f"+ofToString(i)+"/position";
@@ -168,7 +201,9 @@ void ofApp::update(){
         m2.addFloatArg(planes[i]->getPosition().x);
         m2.addFloatArg(planes[i]->getPosition().y);
         m2.addFloatArg(planes[i]->getPosition().z);
-        sender.sendMessage(m2);
+        testSender.sendMessage(m2);
+        testSender2.sendMessage(m2);
+        testSender3.sendMessage(m2);
     }
     
     ofxOscMessage m1;
@@ -177,7 +212,9 @@ void ofApp::update(){
     m1.addFloatArg(light.getPosition().y);
     m1.addFloatArg(light.getPosition().z);
     
-    sender.sendMessage(m1);
+    testSender.sendMessage(m1);
+    testSender2.sendMessage(m1);
+    testSender3.sendMessage(m1);
 }
 
 bool drawNormals;
@@ -221,15 +258,6 @@ void ofApp::keyPressed(int key){
     if (key == 'n') {
         drawNormals = !drawNormals;
     }
-	if(key == 'a' || key == 'A'){
-		ofxOscMessage m;
-		m.setAddress("/test");
-		m.addIntArg(1);
-		m.addFloatArg(3.5f);
-		m.addStringArg("hello");
-		m.addFloatArg(ofGetElapsedTimef());
-		sender.sendMessage(m);
-	}
 }
 
 void ofApp::mouseDragged(int x, int y, int button){

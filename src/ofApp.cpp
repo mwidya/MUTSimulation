@@ -32,27 +32,55 @@ float f9Short = 1700*factor;
 float f4_5Short = 3000*factor;
 float f4_5Long = 4300*factor;
 
-#define OSC_PORT 6000
-
 //--------------------------------------------------------------
 void ofApp::setup(){
     
     // const int oscPorts[10] = {6000,6000,6000,6001,6000,6000,6002,6001,6000,6002};
     
-	ofxOscSender sender0;
-    sender0.setup("10.0.0.10", OSC_PORT);
-    senders.push_back(&sender0);
     
-    testSender.setup("10.0.0.12", 6000);
-    testSender2.setup("10.0.0.12", 6001);
-    testSender3.setup("10.0.0.12", 6002);
+    sender0 = new ofxOscSender();
+    sender1 = new ofxOscSender();
+    sender2 = new ofxOscSender();
+    sender3 = new ofxOscSender();
+    sender4 = new ofxOscSender();
+    sender5 = new ofxOscSender();
+    sender6 = new ofxOscSender();
+    sender7 = new ofxOscSender();
+    sender8 = new ofxOscSender();
+    sender9 = new ofxOscSender();
     
-//    senders.push_back(&testSender);
-//    senders.push_back(&testSender2);
+//    sender0->setup("10.0.0.12", 6000);
+//    sender1->setup("10.0.0.10", 6000);
+//    sender2->setup("10.0.0.14", 6000);
+//    sender3->setup("10.0.0.12", 6001);
+//    sender4->setup("10.0.0.11", 6000);
+//    sender5->setup("10.0.0.13", 6000);
+//    sender6->setup("10.0.0.12", 6002);
+//    sender7->setup("10.0.0.14", 6001);
+//    sender8->setup("10.0.0.15", 6000);
+//    sender9->setup("10.0.0.14", 6002);
     
-//    ofxOscSender sender1;
-//    sender1.setup("10.0.0.11", 12334);
-//    senders.push_back(&sender1);
+    sender0->setup("10.0.0.6", 6000);
+    sender1->setup("10.0.0.6", 6000);
+    sender2->setup("10.0.0.6", 6000);
+    sender3->setup("10.0.0.6", 6001);
+    sender4->setup("10.0.0.6", 6000);
+    sender5->setup("10.0.0.6", 6000);
+    sender6->setup("10.0.0.6", 6002);
+    sender7->setup("10.0.0.6", 6001);
+    sender8->setup("10.0.0.6", 6000);
+    sender9->setup("10.0.0.6", 6002);
+    
+    senders.push_back(sender0);
+    senders.push_back(sender1);
+    senders.push_back(sender2);
+    senders.push_back(sender3);
+    senders.push_back(sender4);
+    senders.push_back(sender5);
+    senders.push_back(sender6);
+    senders.push_back(sender7);
+    senders.push_back(sender8);
+    senders.push_back(sender9);
     
     ofEnableDepthTest();
     
@@ -156,6 +184,20 @@ void ofApp::setup(){
     
     material.setShininess(120);
     material.setSpecularColor(ofFloatColor(1));
+    
+    
+    for (int j = 0; j < senders.size(); j++) {
+        for (int i = 0; i < planes.size(); i++) {
+            ofxOscMessage m2;
+            string oscAddress = "f"+ofToString(i)+"/position";
+            m2.setAddress(oscAddress);
+            m2.addFloatArg(planes[i]->getPosition().x);
+            m2.addFloatArg(planes[i]->getPosition().y);
+            m2.addFloatArg(planes[i]->getPosition().z);
+            
+            senders[j]->sendMessage(m2);
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -194,27 +236,16 @@ void ofApp::update(){
 //        senders[s]->sendMessage(m1);
 //    }
     
-    for (int i = 0; i < planes.size(); i++) {
-        ofxOscMessage m2;
-        string oscAddress = "f"+ofToString(i)+"/position";
-        m2.setAddress(oscAddress);
-        m2.addFloatArg(planes[i]->getPosition().x);
-        m2.addFloatArg(planes[i]->getPosition().y);
-        m2.addFloatArg(planes[i]->getPosition().z);
-        testSender.sendMessage(m2);
-        testSender2.sendMessage(m2);
-        testSender3.sendMessage(m2);
+    
+    for (int j = 0; j < senders.size(); j++) {
+        ofxOscMessage m1;
+        m1.setAddress("/diffuseLight/position");
+        m1.addFloatArg(light.getPosition().x);
+        m1.addFloatArg(light.getPosition().y);
+        m1.addFloatArg(light.getPosition().z);
+        
+        senders[j]->sendMessage(m1);
     }
-    
-    ofxOscMessage m1;
-    m1.setAddress("/diffuseLight/position");
-    m1.addFloatArg(light.getPosition().x);
-    m1.addFloatArg(light.getPosition().y);
-    m1.addFloatArg(light.getPosition().z);
-    
-    testSender.sendMessage(m1);
-    testSender2.sendMessage(m1);
-    testSender3.sendMessage(m1);
 }
 
 bool drawNormals;

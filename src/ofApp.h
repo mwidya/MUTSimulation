@@ -43,8 +43,15 @@ public:
     ofMaterial material;
     ofLight light;
     
-    ofxOscSender testSender;
-    ofxOscSender testSender2;
-    ofxOscSender testSender3;
     vector<ofxOscSender*> senders;
+    ofxOscSender *sender0;
+    ofxOscSender *sender1;
+    ofxOscSender *sender2;
+    ofxOscSender *sender3;
+    ofxOscSender *sender4;
+    ofxOscSender *sender5;
+    ofxOscSender *sender6;
+    ofxOscSender *sender7;
+    ofxOscSender *sender8;
+    ofxOscSender *sender9;
 };

@@ -120,10 +120,12 @@ void ofApp::setup(){
     
     for (int i = 0; i < planes.size(); i++) {
         mutPlane *plane = planes[i];
-        plane->fbo.begin();
-        ofClear(255);
-        plane->syphonClient.draw(0, 0);
-        plane->fbo.end();
+//        plane->fbo.begin();
+//        ofClear(255);
+//        plane->syphonClient.draw(0, 0);
+        //        plane->fbo.end();
+        
+        cout << "no "+ofToString(i)+": plane->getPosition() = " << plane->getPosition() << endl;
     }
     
     for (int i = 0; i < planes.size(); i++) {
@@ -132,6 +134,8 @@ void ofApp::setup(){
     }
     
     
+    ofSetGlobalAmbientColor(ofFloatColor(0.5));
+    
     ofSetSmoothLighting(true);
     
     light.setPosition(0, -1000, 0);
@@ -139,17 +143,10 @@ void ofApp::setup(){
     
     material.setShininess(120);
     material.setSpecularColor(ofFloatColor(1));
-    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-    if (ofGetKeyPressed('l')) {
-        ofSetGlobalAmbientColor(ofFloatColor(1));
-    }else{
-        ofSetGlobalAmbientColor(ofFloatColor(0));
-    }
     
 //    for (int i = 0; i < planes.size(); i++) {
 //        mutPlane *plane = planes[i];
@@ -159,12 +156,28 @@ void ofApp::update(){
 //        plane->fbo.end();
 //    }
     
-    light.setPosition(sin(ofGetElapsedTimef())*25000*factor, light.getPosition().y, light.getPosition().z);
+    light.setPosition(sin(ofGetElapsedTimef())*20000*factor, light.getPosition().y, light.getPosition().z);
     
-    ofxOscMessage m;
-    m.setAddress("/diffuseLight/positionX");
-    m.addFloatArg(light.getPosition().x);
-    sender.sendMessage(m);
+//    float planes2X = planes[2]->getPosition().x;
+    
+    
+    for (int i = 0; i < planes.size(); i++) {
+        ofxOscMessage m2;
+        string oscAddress = "f"+ofToString(i)+"/position";
+        m2.setAddress(oscAddress);
+        m2.addFloatArg(planes[i]->getPosition().x);
+        m2.addFloatArg(planes[i]->getPosition().y);
+        m2.addFloatArg(planes[i]->getPosition().z);
+        sender.sendMessage(m2);
+    }
+    
+    ofxOscMessage m1;
+    m1.setAddress("/diffuseLight/position");
+    m1.addFloatArg(light.getPosition().x);
+    m1.addFloatArg(light.getPosition().y);
+    m1.addFloatArg(light.getPosition().z);
+    
+    sender.sendMessage(m1);
 }
 
 bool drawNormals;

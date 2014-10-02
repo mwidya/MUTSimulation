@@ -50,9 +50,6 @@ public:
     
     ofMaterial material;
     ofLight light;
-    float lightStartX;
-    float lightDeltaX;
-    float lightTime;
     
     vector<ofxOscSender*> senders;
     ofxOscSender *sender0;
@@ -80,4 +77,6 @@ public:
     bool markerOn = false;
     
     ofSoundPlayer soundPlayer;
+    
+    int orientation;
 };

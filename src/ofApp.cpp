@@ -38,6 +38,12 @@ float f4_5Short = 3000*factor;
 float f4_5Long = 4300*factor;
 
 int markerIds[10] = {691, 268, 581, 761, 528, 286, 484, 99, 222, 903};
+enum{
+    FLOOR,
+    EAST,
+    WEST,
+    
+};
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -189,10 +195,8 @@ void ofApp::setup(){
     ofSetGlobalAmbientColor(ofFloatColor(0.5f));
     
     ofSetSmoothLighting(true);
-    
-    light.setPosition(0, 770, 0);
     light.setDiffuseColor(ofFloatColor(19.f/255.f,94.f/255.f,77.f/255.f));
-    lightStartX = 0;
+    light.setPosition(0, 0, 0);
     
     material.setShininess(120);
     material.setSpecularColor(ofFloatColor(1));
@@ -223,10 +227,14 @@ void ofApp::sendPlanePositions(){
 ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint){
     ofVec2f point;
     
-    point.x = normalizedPoint.x * ofGetWidth();
-    point.y = normalizedPoint.y * ofGetHeight();
+    if (markerId==99) {
+        point.x = normalizedPoint.x * planes[7]->getWidth() - planes[7]->getWidth()*.5f;
+        point.y = normalizedPoint.y * planes[7]->getHeight() - planes[7]->getHeight()*.5f;
+    }
     
     return point;
+    
+    
 }
 
 void ofApp::parseJSONString(string str){
@@ -239,14 +247,15 @@ void ofApp::parseJSONString(string str){
     float y = jsonElement["y"].asFloat();
 
     screenPoint = normalizedPointToScreenPoint(ofVec2f(x, y));
-    
-    cout << "event = " << event << endl;
-    cout << "markerId = " << markerId << endl;
-    cout << "screenPoint = " << screenPoint << endl;
+    cout << "markerId: "+ ofToString(markerId) + ", screenPoint = " << screenPoint << endl;
     
 }
 
 //--------------------------------------------------------------
+
+
+ofPlanePrimitive *p = NULL;
+
 void ofApp::update(){
     
 //    for (int i = 0; i < planes.size(); i++) {
@@ -267,6 +276,9 @@ void ofApp::update(){
         
         if( str.length() > 0 )
         {
+            
+            
+            
             parseJSONString(str);
             
             if ((event == "press")) {
@@ -290,12 +302,17 @@ void ofApp::update(){
                         "";
                         break;
                     case 484:
+                        p = planes[6];
+                        light.setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
+                        orientation = FLOOR;
                         "";
                         break;
-                    case 99:
-                        lightTime = planes[7]->getPosition().x;
-                        soundPlayer.loadSound("fis4.aif");
-                        soundPlayer.play();
+                    case 99:{
+                        p = planes[7];
+                        light.setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
+                        orientation = FLOOR;
+                    }
+                        
                         break;
                     case 222:
                         "";
@@ -307,6 +324,17 @@ void ofApp::update(){
                     default:
                         break;
                 }
+                
+                
+                cout << "light.getPosition() = " << light.getPosition() << endl;
+                /*if (ofRandom(1)<0.5f) {
+                 soundPlayer.loadSound("StereoVocal.aif");
+                 }
+                 else{
+                 soundPlayer.loadSound("audio_5.aif");
+                 }
+                 soundPlayer.play();*/
+                
             }
             
             markerId = -1;
@@ -324,12 +352,16 @@ void ofApp::update(){
 		}
 	}
     
-    if (ofGetKeyPressed('x')) {
+    if (p != NULL) {
+        switch (orientation) {
+            case FLOOR:
+                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
+                break;
+                
+            default:
+                break;
+        }
     }
-    
-    lightTime = lightTime+20;
-//    light.setPosition(((int)((lightStartX+lightTime))%(int)5000)-5000, light.getPosition().y, light.getPosition().z);
-    light.setPosition(planes[2]->getPosition().x, planes[2]->getPosition().y-500, planes[2]->getPosition().z-cos(ofGetElapsedTimef())*1500);
     
     for (int j = 0; j < senders.size(); j++) {
         ofxOscMessage m1;

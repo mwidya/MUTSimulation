@@ -285,20 +285,40 @@ void ofApp::update(){
             if ((event == "press")) {
                 switch (markerId) {
                     case 691:
-                        "";
+                    {
+                        p = planes[0];
+                        light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = WEST;
                         break;
+                    }
                     case 268:
-                        "";
+                    {
+                        p = planes[1];
+                        light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = EAST;
                         break;
+                    }
                     case 581:
-                        "";
+                    {
+                        p = planes[2];
+                        light.setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
+                        orientation = FLOOR;
                         break;
+                    }
                     case 761:
-                        "";
+                    {
+                        p = planes[3];
+                        light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = WEST;
                         break;
+                    }
                     case 528:
-                        "";
+                    {
+                        p = planes[4];
+                        light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = EAST;
                         break;
+                    }
                     case 286:
                     {
                         p = planes[5];

@@ -16,6 +16,7 @@ public:
     void draw();
     void keyPressed(int key);
     void mouseDragged(int x, int y, int button);
+    void setPositionForId(int markerId);
     
     void sendPlanePositions();
     
@@ -49,7 +50,11 @@ public:
     vector<mutPlane*> planes;
     
     ofMaterial material;
-    ofLight light;
+//    ofLight light;
+    
+    ofLight *light;
+    //vector<ofLight*> lights;
+    deque<ofLight*> lights;
     
     vector<ofxOscSender*> senders;
     ofxOscSender *sender0;

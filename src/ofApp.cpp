@@ -37,6 +37,8 @@ float f9Short = 1700*factor;
 float f4_5Short = 3000*factor;
 float f4_5Long = 4300*factor;
 
+int markerIds[10] = {691, 268, 581, 761, 528, 286, 484, 99, 222, 903};
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     
@@ -265,13 +267,46 @@ void ofApp::update(){
         
         if( str.length() > 0 )
         {
-            cout << "str = " << str << endl;
             parseJSONString(str);
             
-            if ((markerId == 99) && (event == "press")) {
-                lightTime = planes[7]->getPosition().x;
-                soundPlayer.loadSound("fis4.aif");
-                soundPlayer.play();
+            if ((event == "press")) {
+                switch (markerId) {
+                    case 691:
+                        "";
+                        break;
+                    case 268:
+                        "";
+                        break;
+                    case 581:
+                        "";
+                        break;
+                    case 761:
+                        "";
+                        break;
+                    case 528:
+                        "";
+                        break;
+                    case 286:
+                        "";
+                        break;
+                    case 484:
+                        "";
+                        break;
+                    case 99:
+                        lightTime = planes[7]->getPosition().x;
+                        soundPlayer.loadSound("fis4.aif");
+                        soundPlayer.play();
+                        break;
+                    case 222:
+                        "";
+                        break;
+                    case 903:
+                        "";
+                        break;
+                        
+                    default:
+                        break;
+                }
             }
             
             markerId = -1;
@@ -367,7 +402,7 @@ void ofApp::keyPressed(int key){
         markerOn = !markerOn;
         m.addIntArg(markerOn);
         for(int i = 0; i<senders.size(); i++){
-            senders[4]->sendMessage(m);
+            senders[i]->sendMessage(m);
         }
     }
 }

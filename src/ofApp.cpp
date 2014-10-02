@@ -224,13 +224,11 @@ void ofApp::sendPlanePositions(){
     }
 }
 
-ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint){
+ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint, ofPlanePrimitive *aPlane){
     ofVec2f point;
     
-    if (markerId==99) {
-        point.x = normalizedPoint.x * planes[7]->getWidth() - planes[7]->getWidth()*.5f;
-        point.y = normalizedPoint.y * planes[7]->getHeight() - planes[7]->getHeight()*.5f;
-    }
+    point.x = normalizedPoint.x * aPlane->getWidth() - aPlane->getWidth()*.5f;
+    point.y = normalizedPoint.y * aPlane->getHeight() - aPlane->getHeight()*.5f;
     
     return point;
     
@@ -243,11 +241,8 @@ void ofApp::parseJSONString(string str){
 
     event = jsonElement["event"].asString();
     markerId = jsonElement["id"].asInt();
-    float x = jsonElement["x"].asFloat();
-    float y = jsonElement["y"].asFloat();
-
-    screenPoint = normalizedPointToScreenPoint(ofVec2f(x, y));
-    cout << "markerId: "+ ofToString(markerId) + ", screenPoint = " << screenPoint << endl;
+    touchedX = jsonElement["x"].asFloat();
+    touchedY = jsonElement["y"].asFloat();
     
 }
 
@@ -277,9 +272,15 @@ void ofApp::update(){
         if( str.length() > 0 )
         {
             
-            
-            
             parseJSONString(str);
+            
+            for (int i = 0; i<planes.size(); i++) {
+                ofPlanePrimitive *plane = planes[i];
+                screenPoint = normalizedPointToScreenPoint(ofVec2f(touchedX, touchedY), plane);
+                
+                cout << "markerId: "+ ofToString(markerId) + ", screenPoint = " << screenPoint << endl;
+            }
+            
             
             if ((event == "press")) {
                 switch (markerId) {
@@ -302,21 +303,27 @@ void ofApp::update(){
                         "";
                         break;
                     case 484:
+                    {
                         p = planes[6];
-                        light.setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
-                        orientation = FLOOR;
-                        "";
+                        light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = EAST;
                         break;
-                    case 99:{
+                    }
+                    case 99:
+                    {
                         p = planes[7];
                         light.setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
                         orientation = FLOOR;
+                        break;
                     }
                         
-                        break;
                     case 222:
-                        "";
+                    {
+                        p = planes[8];
+                        light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = WEST;
                         break;
+                    }
                     case 903:
                         "";
                         break;
@@ -355,7 +362,7 @@ void ofApp::update(){
     if (p != NULL) {
         switch (orientation) {
             case FLOOR:
-                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
+//                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
                 break;
                 
             default:

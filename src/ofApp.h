@@ -19,7 +19,7 @@ public:
     
     void sendPlanePositions();
     
-    ofVec2f normalizedPointToScreenPoint(ofVec2f);
+    ofVec2f normalizedPointToScreenPoint(ofVec2f, ofPlanePrimitive *aPlane);
     void parseJSONString(string str);
     
     // ----- Syphon -----
@@ -63,7 +63,8 @@ public:
     ofxOscSender *sender8;
     ofxOscSender *sender9;
     
-    
+    float touchedX = 0.0f;
+    float touchedY = 0.0f;
     
     ofxTCPClient tcpClient;
     int deltaTime = 0;

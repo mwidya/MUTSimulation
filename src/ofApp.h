@@ -49,7 +49,6 @@ public:
     vector<mutPlane*> planes;
     
     ofMaterial material;
-    ofLight light;
     deque<ofLight*> lights;
     ofLight *lightPtr;
     

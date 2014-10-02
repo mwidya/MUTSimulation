@@ -195,8 +195,6 @@ void ofApp::setup(){
     ofSetGlobalAmbientColor(ofFloatColor(0.5f));
     
     ofSetSmoothLighting(true);
-    light.setDiffuseColor(ofFloatColor(19.f/255.f,94.f/255.f,77.f/255.f));
-    light.setPosition(0, 0, 0);
     
     material.setShininess(120);
     material.setSpecularColor(ofFloatColor(1));
@@ -303,7 +301,7 @@ void ofApp::update(){
                         case 581:
                         {
                             p = planes[2];
-                            lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
+                            lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-30, -(p->getPosition().z - screenPoint.x));
                             orientation = FLOOR;
                             break;
                         }
@@ -387,7 +385,7 @@ void ofApp::update(){
                         case 581:
                         {
                             p = planes[2];
-                            lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
+                            lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-30, -(p->getPosition().z - screenPoint.x));
                             orientation = FLOOR;
                             break;
                         }
@@ -476,7 +474,7 @@ void ofApp::update(){
     
     if (p != NULL) {
         for (int i = 0; i<lights.size(); i++) {
-            lights[i]->setPosition(lights[i]->getPosition().x-cos(ofGetElapsedTimef())*150, lights[i]->getPosition().y-sin(ofGetElapsedTimef())*150, lights[i]->getPosition().z);
+            lights[i]->setPosition(lights[i]->getPosition().x, lights[i]->getPosition().y, lights[i]->getPosition().z);
         }
     }
     

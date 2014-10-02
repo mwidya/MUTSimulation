@@ -67,27 +67,27 @@ void ofApp::setup(){
     if (local) {
         
         sender0->setup(SERVER_IP, 6000);
-        sender1->setup(SERVER_IP, 6000);
-        sender2->setup(SERVER_IP, 6000);
-        sender3->setup(SERVER_IP, 6001);
-        sender4->setup(SERVER_IP, 6000);
-        sender5->setup(SERVER_IP, 6000);
-        sender6->setup(SERVER_IP, 6002);
-        sender7->setup(SERVER_IP, 6001);
-        sender8->setup(SERVER_IP, 6000);
-        sender9->setup(SERVER_IP, 6002);
+        sender1->setup(SERVER_IP, 6001);
+        sender2->setup(SERVER_IP, 6002);
+        sender3->setup(SERVER_IP, 6003);
+        sender4->setup(SERVER_IP, 6004);
+        sender5->setup(SERVER_IP, 6005);
+        sender6->setup(SERVER_IP, 6006);
+        sender7->setup(SERVER_IP, 6007);
+        sender8->setup(SERVER_IP, 6008);
+        sender9->setup(SERVER_IP, 6009);
     }
     else{
         sender0->setup("10.0.0.12", 6000);
-        sender1->setup("10.0.0.10", 6000);
-        sender2->setup("10.0.0.14", 6000);
-        sender3->setup("10.0.0.12", 6001);
-        sender4->setup("10.0.0.11", 6000);
-        sender5->setup("10.0.0.13", 6000);
-        sender6->setup("10.0.0.12", 6002);
-        sender7->setup("10.0.0.14", 6001);
-        sender8->setup("10.0.0.15", 6000);
-        sender9->setup("10.0.0.14", 6002);
+        sender1->setup("10.0.0.10", 6001);
+        sender2->setup("10.0.0.14", 6002);
+        sender3->setup("10.0.0.12", 6003);
+        sender4->setup("10.0.0.11", 6004);
+        sender5->setup("10.0.0.13", 6005);
+        sender6->setup("10.0.0.12", 6006);
+        sender7->setup("10.0.0.14", 6007);
+        sender8->setup("10.0.0.15", 6008);
+        sender9->setup("10.0.0.14", 6009);
     }
     
     senders.push_back(sender0);

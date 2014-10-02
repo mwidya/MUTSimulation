@@ -300,8 +300,12 @@ void ofApp::update(){
                         "";
                         break;
                     case 286:
-                        "";
+                    {
+                        p = planes[5];
+                        light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = WEST;
                         break;
+                    }
                     case 484:
                     {
                         p = planes[6];
@@ -325,9 +329,12 @@ void ofApp::update(){
                         break;
                     }
                     case 903:
-                        "";
+                    {
+                        p = planes[9];
+                        light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                        orientation = EAST;
                         break;
-                        
+                    }
                     default:
                         break;
                 }
@@ -362,7 +369,13 @@ void ofApp::update(){
     if (p != NULL) {
         switch (orientation) {
             case FLOOR:
-//                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
+                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
+                break;
+            case EAST:
+                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
+                break;
+            case WEST:
+                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
                 break;
                 
             default:

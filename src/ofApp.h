@@ -12,6 +12,7 @@ class ofApp : public ofBaseApp{
 
 public:
     void setup();
+    void newLight();
     void update();
     void draw();
     void keyPressed(int key);

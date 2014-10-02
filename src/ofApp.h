@@ -77,7 +77,7 @@ public:
     string event;
     int markerId;
     
-    
+    bool markerOn = false;
     
     ofSoundPlayer soundPlayer;
 };

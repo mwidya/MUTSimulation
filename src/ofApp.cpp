@@ -93,8 +93,6 @@ void ofApp::setup(){
     senders.push_back(sender8);
     senders.push_back(sender9);
     
-    ofEnableDepthTest();
-    
     syphonServerDirectory.setup();
     ofAddListener(syphonServerDirectory.events.serverAnnounced, this, &ofApp::serverAnnounced);
     ofAddListener(syphonServerDirectory.events.serverUpdated, this, &ofApp::serverUpdated);
@@ -316,6 +314,10 @@ bool drawNormals;
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofClear(0, 0, 0);
+    
+    
+    ofEnableDepthTest();
+    
     easyCam.begin();
     
     light.enable();
@@ -344,6 +346,8 @@ void ofApp::draw(){
     material.end();
     
     easyCam.end();
+    
+    ofDisableDepthTest();
 }
 
 //--------------------------------------------------------------
@@ -355,6 +359,16 @@ void ofApp::keyPressed(int key){
     
     if (key == 't') {
         sendPlanePositions();
+    }
+    
+    if (key == 'm') {
+        ofxOscMessage m;
+        m.setAddress("/marker/on");
+        markerOn = !markerOn;
+        m.addIntArg(markerOn);
+        for(int i = 0; i<senders.size(); i++){
+            senders[4]->sendMessage(m);
+        }
     }
 }
 

@@ -50,6 +50,8 @@ public:
     
     ofMaterial material;
     ofLight light;
+    deque<ofLight*> lights;
+    ofLight *lightPtr;
     
     vector<ofxOscSender*> senders;
     ofxOscSender *sender0;

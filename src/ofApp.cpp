@@ -2,6 +2,7 @@
 
 
 #define IP "127.0.0.1"
+#define SERVER_IP "127.0.0.1"
 #define PORT 12333
 
 float factor = 0.2f;
@@ -53,20 +54,20 @@ void ofApp::setup(){
     sender8 = new ofxOscSender();
     sender9 = new ofxOscSender();
 
-    bool local = false;
+    bool local = true;
     
     if (local) {
         
-        sender0->setup("10.0.0.6", 6000);
-        sender1->setup("10.0.0.6", 6000);
-        sender2->setup("10.0.0.6", 6000);
-        sender3->setup("10.0.0.6", 6001);
-        sender4->setup("10.0.0.6", 6000);
-        sender5->setup("10.0.0.6", 6000);
-        sender6->setup("10.0.0.6", 6002);
-        sender7->setup("10.0.0.6", 6001);
-        sender8->setup("10.0.0.6", 6000);
-        sender9->setup("10.0.0.6", 6002);
+        sender0->setup(SERVER_IP, 6000);
+        sender1->setup(SERVER_IP, 6000);
+        sender2->setup(SERVER_IP, 6000);
+        sender3->setup(SERVER_IP, 6001);
+        sender4->setup(SERVER_IP, 6000);
+        sender5->setup(SERVER_IP, 6000);
+        sender6->setup(SERVER_IP, 6002);
+        sender7->setup(SERVER_IP, 6001);
+        sender8->setup(SERVER_IP, 6000);
+        sender9->setup(SERVER_IP, 6002);
     }
     else{
         sender0->setup("10.0.0.12", 6000);
@@ -185,16 +186,25 @@ void ofApp::setup(){
     }
     
     
-    ofSetGlobalAmbientColor(ofFloatColor(0.5));
+    ofSetGlobalAmbientColor(ofFloatColor(0.5f));
     
     ofSetSmoothLighting(true);
     
-    light.setPosition(0, -1000, 0);
+    light.setPosition(0, 770, 0);
     light.setDiffuseColor(ofFloatColor(19.f/255.f,94.f/255.f,77.f/255.f));
+    lightStartX = 0;
     
     material.setShininess(120);
     material.setSpecularColor(ofFloatColor(1));
     
+    
+    sendPlanePositions();
+    
+    tcpClient.setup(IP, PORT);
+    tcpClient.setMessageDelimiter("\n");
+}
+
+void ofApp::sendPlanePositions(){
     
     for (int j = 0; j < senders.size(); j++) {
         for (int i = 0; i < planes.size(); i++) {
@@ -208,10 +218,6 @@ void ofApp::setup(){
             senders[j]->sendMessage(m2);
         }
     }
-    
-    
-    tcpClient.setup(IP, PORT);
-    tcpClient.setMessageDelimiter("\n");
 }
 
 ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint){
@@ -227,15 +233,15 @@ void ofApp::parseJSONString(string str){
     
     jsonElement = ofxJSONElement(str);
 
-     event = jsonElement["event"].asString();
-     aMarkerId = jsonElement["id"].asInt();
-     float x = jsonElement["x"].asFloat();
-     float y = jsonElement["y"].asFloat();
-    
-     screenPoint = normalizedPointToScreenPoint(ofVec2f(x, y));
+    event = jsonElement["event"].asString();
+    markerId = jsonElement["id"].asInt();
+    float x = jsonElement["x"].asFloat();
+    float y = jsonElement["y"].asFloat();
+
+    screenPoint = normalizedPointToScreenPoint(ofVec2f(x, y));
     
     cout << "event = " << event << endl;
-    cout << "aMarkerId = " << aMarkerId << endl;
+    cout << "markerId = " << markerId << endl;
     cout << "screenPoint = " << screenPoint << endl;
     
 }
@@ -252,6 +258,9 @@ void ofApp::update(){
 //    }
     
     
+    
+    
+    
     if (tcpClient.isConnected())
     {
         string str = tcpClient.receive();
@@ -260,6 +269,14 @@ void ofApp::update(){
         {
             cout << "str = " << str << endl;
             parseJSONString(str);
+            
+            if ((markerId == 99) && (event == "press")) {
+                lightTime = planes[7]->getPosition().x;
+                soundPlayer.loadSound("fis4.aif");
+                soundPlayer.play();
+            }
+            
+            markerId = -1;
         }
     }
     else
@@ -274,8 +291,12 @@ void ofApp::update(){
 		}
 	}
     
-    light.setPosition(sin(ofGetElapsedTimef())*20000*factor, light.getPosition().y, light.getPosition().z);
+    if (ofGetKeyPressed('x')) {
+    }
     
+    lightTime = lightTime+20;
+//    light.setPosition(((int)((lightStartX+lightTime))%(int)5000)-5000, light.getPosition().y, light.getPosition().z);
+    light.setPosition(planes[2]->getPosition().x, planes[2]->getPosition().y-500, planes[2]->getPosition().z-cos(ofGetElapsedTimef())*1500);
     
     for (int j = 0; j < senders.size(); j++) {
         ofxOscMessage m1;
@@ -286,6 +307,8 @@ void ofApp::update(){
         
         senders[j]->sendMessage(m1);
     }
+    
+    sendPlanePositions();
 }
 
 bool drawNormals;
@@ -328,6 +351,10 @@ void ofApp::keyPressed(int key){
     
     if (key == 'n') {
         drawNormals = !drawNormals;
+    }
+    
+    if (key == 't') {
+        sendPlanePositions();
     }
 }
 
@@ -406,3 +433,19 @@ void ofApp::serverRetired(ofxSyphonServerDirectoryEventArgs &arg){
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -17,6 +17,7 @@ public:
     void keyPressed(int key);
     void mouseDragged(int x, int y, int button);
     
+    void sendPlanePositions();
     
     ofVec2f normalizedPointToScreenPoint(ofVec2f);
     void parseJSONString(string str);
@@ -49,6 +50,9 @@ public:
     
     ofMaterial material;
     ofLight light;
+    float lightStartX;
+    float lightDeltaX;
+    float lightTime;
     
     vector<ofxOscSender*> senders;
     ofxOscSender *sender0;
@@ -71,5 +75,9 @@ public:
     ofxJSONElement jsonElement;
     ofVec2f screenPoint;
     string event;
-    int aMarkerId;
+    int markerId;
+    
+    
+    
+    ofSoundPlayer soundPlayer;
 };

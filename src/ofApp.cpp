@@ -254,83 +254,84 @@ ofPlanePrimitive *p = NULL;
 
 void ofApp::newLight(){
     
+    float planeDistance = 30.0f;
+    
     lightPtr = new ofLight();
+    lightPtr->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
+    lightPtr->setSpotlight();
+    lightPtr->setSpotlightCutOff(90.0f);
+    lightPtr->setSpotConcentration(128.0f);
     switch (markerId) {
-            /*case 691:
-             {
-             p = planes[0];
-             light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
-             orientation = WEST;
-             break;
-             }
-             case 268:
-             {
+        case 691:
+        {
+            p = planes[0];
+            lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+            orientation = WEST;
+            break;
+        }
+        case 268:
+        {
              p = planes[1];
-             light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+             lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
              orientation = EAST;
              break;
-             }*/
+        }
         case 581:
         {
             p = planes[2];
-            lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-30, -(p->getPosition().z - screenPoint.x));
-            lightPtr->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-            lightPtr->setSpotlight();
-            lightPtr->setSpotlightCutOff(90.0f);
-            lightPtr->setSpotConcentration(128.0f);
+            lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y - planeDistance, -(p->getPosition().z - screenPoint.x));
             orientation = FLOOR;
             break;
         }
-            /*case 761:
-             {
-             p = planes[3];
-             light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
-             orientation = WEST;
-             break;
-             }
-             case 528:
-             {
-             p = planes[4];
-             light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
-             orientation = EAST;
-             break;
-             }
-             case 286:
-             {
-             p = planes[5];
-             light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
-             orientation = WEST;
-             break;
-             }
-             case 484:
-             {
-             p = planes[6];
-             light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
-             orientation = EAST;
-             break;
-             }
-             case 99:
-             {
-             p = planes[7];
-             light.setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-1000, -(p->getPosition().z - screenPoint.x));
-             orientation = FLOOR;
-             break;
-             }
-             
-             case 222:
-             {
-             p = planes[8];
-             light.setPosition(p->getPosition().x - 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
-             orientation = WEST;
-             break;
-             }
-             case 903:
-             {
-             p = planes[9];
-             light.setPosition(p->getPosition().x + 1000 , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
-             orientation = EAST;
-             break;
-             }*/
+        case 761:
+        {
+            p = planes[3];
+            lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+            orientation = WEST;
+            break;
+        }
+        case 528:
+        {
+            p = planes[4];
+            lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+            orientation = EAST;
+            break;
+        }
+        case 286:
+        {
+            p = planes[5];
+            lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+            orientation = WEST;
+            break;
+        }
+        case 484:
+        {
+            p = planes[6];
+            lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+            orientation = EAST;
+            break;
+        }
+        case 99:
+        {
+            p = planes[7];
+            lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-planeDistance, -(p->getPosition().z - screenPoint.x));
+            orientation = FLOOR;
+            break;
+        }
+        case 222:
+        {
+            p = planes[8];
+            lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+            orientation = WEST;
+            break;
+        }
+        case 903:
+        {
+            p = planes[9];
+            lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+            orientation = EAST;
+            break;
+        }
         default:
             break;
     }
@@ -348,7 +349,7 @@ void ofApp::newLight(){
         m.addFloatArg(lightPtr->getDiffuseColor().b);
         m.addFloatArg(lightPtr->getSpotlightCutOff());
         m.addFloatArg(lightPtr->getSpotConcentration());
-        senders[2]->sendMessage(m);
+        senders[j]->sendMessage(m);
     }
 }
 
@@ -423,7 +424,7 @@ void ofApp::update(){
     
     if (p != NULL) {
         for (int i = 0; i<lights.size(); i++) {
-            lights[i]->setPosition(lights[i]->getPosition().x, p->getPosition().y+sin(ofGetElapsedTimef())*50, lights[i]->getPosition().z);
+            lights[i]->setPosition(lights[i]->getPosition().x, lights[i]->getPosition().y, lights[i]->getPosition().z);
         }
     }
     

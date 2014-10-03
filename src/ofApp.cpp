@@ -46,6 +46,46 @@ enum{
     
 };
 
+
+void ofApp::sendPlanePositions(){
+    
+    for (int j = 0; j < senders.size(); j++) {
+        for (int i = 0; i < planes.size(); i++) {
+            ofxOscMessage m2;
+            string oscAddress = "f"+ofToString(i)+"/position";
+            m2.setAddress(oscAddress);
+            m2.addFloatArg(planes[i]->getPosition().x);
+            m2.addFloatArg(planes[i]->getPosition().y);
+            m2.addFloatArg(planes[i]->getPosition().z);
+            
+            senders[j]->sendMessage(m2);
+        }
+    }
+}
+
+ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint, ofPlanePrimitive *aPlane){
+    ofVec2f point;
+    
+    point.x = normalizedPoint.x * aPlane->getWidth() - aPlane->getWidth()*.5f;
+    point.y = normalizedPoint.y * aPlane->getHeight() - aPlane->getHeight()*.5f;
+    
+    return point;
+    
+    
+}
+
+void ofApp::parseJSONString(string str){
+    
+    jsonElement = ofxJSONElement(str);
+    
+    event = jsonElement["event"].asString();
+    markerId = jsonElement["id"].asInt();
+    touchedX = jsonElement["x"].asFloat();
+    touchedY = jsonElement["y"].asFloat();
+    
+}
+
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     
@@ -207,44 +247,6 @@ void ofApp::setup(){
     tcpClient.setMessageDelimiter("\n");
 }
 
-void ofApp::sendPlanePositions(){
-    
-    for (int j = 0; j < senders.size(); j++) {
-        for (int i = 0; i < planes.size(); i++) {
-            ofxOscMessage m2;
-            string oscAddress = "f"+ofToString(i)+"/position";
-            m2.setAddress(oscAddress);
-            m2.addFloatArg(planes[i]->getPosition().x);
-            m2.addFloatArg(planes[i]->getPosition().y);
-            m2.addFloatArg(planes[i]->getPosition().z);
-            
-            senders[j]->sendMessage(m2);
-        }
-    }
-}
-
-ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint, ofPlanePrimitive *aPlane){
-    ofVec2f point;
-    
-    point.x = normalizedPoint.x * aPlane->getWidth() - aPlane->getWidth()*.5f;
-    point.y = normalizedPoint.y * aPlane->getHeight() - aPlane->getHeight()*.5f;
-    
-    return point;
-    
-    
-}
-
-void ofApp::parseJSONString(string str){
-    
-    jsonElement = ofxJSONElement(str);
-
-    event = jsonElement["event"].asString();
-    markerId = jsonElement["id"].asInt();
-    touchedX = jsonElement["x"].asFloat();
-    touchedY = jsonElement["y"].asFloat();
-    
-}
-
 //--------------------------------------------------------------
 
 
@@ -335,20 +337,18 @@ void ofApp::newLight(){
     
     lights.push_back(lightPtr);
     
-    for (int j = 0; j < senders.size(); j++) {
+    for (int j = 0; j < 1; j++) {
         ofxOscMessage m;
         m.setAddress("/light/new");
-        for (int i = 0; i < lights.size(); i++) {
-            m.addFloatArg(lights[i]->getPosition().x);
-            m.addFloatArg(lights[i]->getPosition().y);
-            m.addFloatArg(lights[i]->getPosition().z);
-            m.addFloatArg(lights[i]->getDiffuseColor().r);
-            m.addFloatArg(lights[i]->getDiffuseColor().g);
-            m.addFloatArg(lights[i]->getDiffuseColor().b);
-            m.addFloatArg(lights[i]->getSpotlightCutOff());
-            m.addFloatArg(lights[i]->getSpotConcentration());
-        }
-        senders[j]->sendMessage(m);
+        m.addFloatArg(lightPtr->getPosition().x);
+        m.addFloatArg(lightPtr->getPosition().y);
+        m.addFloatArg(lightPtr->getPosition().z);
+        m.addFloatArg(lightPtr->getDiffuseColor().r);
+        m.addFloatArg(lightPtr->getDiffuseColor().g);
+        m.addFloatArg(lightPtr->getDiffuseColor().b);
+        m.addFloatArg(lightPtr->getSpotlightCutOff());
+        m.addFloatArg(lightPtr->getSpotConcentration());
+        senders[2]->sendMessage(m);
     }
 }
 

@@ -215,10 +215,15 @@ void ofApp::setup(){
     planes.push_back(&f9);
     planes.push_back(&f4_5);
     
-    for (int i = 0; i < planes.size(); i++) {
-        mutPlane *plane = planes[i];
-        plane->rotate(180, 0, 0, 1);
+    // Syphon output renders upside down.
+    
+    if (!isSyphonOutput) {
+        for (int i = 0; i < planes.size(); i++) {
+            mutPlane *plane = planes[i];
+            plane->rotate(180, 0, 0, 1);
+        }
     }
+    
     
     
     ofSetGlobalAmbientColor(ofFloatColor(0.5f));

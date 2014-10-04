@@ -516,9 +516,11 @@ void ofApp::draw(){
         }
     }
     
-    for (int i = 0; i<lights.size(); i++) {
-        if (lights[i]->active) {
-            lights[i]->draw();
+    if (drawLights) {
+        for (int i = 0; i<lights.size(); i++) {
+            if (lights[i]->active) {
+                lights[i]->draw();
+            }
         }
     }
     
@@ -533,6 +535,10 @@ void ofApp::keyPressed(int key){
     
     if (key == 'n') {
         drawNormals = !drawNormals;
+    }
+    
+    if (key == 'l'){
+        drawLights = !drawLights;
     }
     
     if (key == 't') {

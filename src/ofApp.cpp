@@ -422,7 +422,26 @@ void ofApp::update(){
     if (p != NULL) {
         for (int i = 0; i<lights.size(); i++) {
             if (lights[i]->active == true) {
-                lights[i]->setPosition(lights[i]->getPosition().x + sin(ofGetElapsedTimef())*10, lights[i]->getPosition().y + cos(ofGetElapsedTimef())*10, lights[i]->getPosition().z + sin(ofGetElapsedTimef()*0.5f)*10);
+                switch (orientation) {
+                    case FLOOR:
+                        lights[i]->setPosition(p->getPosition().x + cos(ofGetElapsedTimef())*500,
+                                               p->getPosition().y - 400,
+                                               p->getPosition().z + sin(ofGetElapsedTimef())*500);
+                        break;
+                    case EAST:
+                        lights[i]->setPosition(p->getPosition().x + 400,
+                                               p->getPosition().y + cos(ofGetElapsedTimef())*500,
+                                               p->getPosition().z + sin(ofGetElapsedTimef())*500);
+                        break;
+                    case WEST:
+                        lights[i]->setPosition(p->getPosition().x - 10000 - sin(ofGetElapsedTimef()*0.1f)*20000,
+                                               p->getPosition().y + cos(ofGetElapsedTimef()*0.1f)*3000,
+                                               p->getPosition().z);
+                        break;
+                        
+                    default:
+                        break;
+                }
             }
         }
     }

@@ -85,8 +85,6 @@ void ofApp::parseJSONString(string str){
     
 }
 
-
-//--------------------------------------------------------------
 void ofApp::setup(){
     
     // const int oscPorts[10] = {6000,6000,6000,6001,6000,6000,6002,6001,6000,6002};
@@ -462,9 +460,6 @@ void ofApp::update(){
     }
 }
 
-bool drawNormals;
-
-//--------------------------------------------------------------
 void ofApp::draw(){
     ofClear(0, 0, 0);
     
@@ -521,7 +516,6 @@ void ofApp::draw(){
     ofDisableDepthTest();
 }
 
-//--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     
     if (key == 'n') {

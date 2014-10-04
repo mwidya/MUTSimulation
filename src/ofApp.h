@@ -79,11 +79,12 @@ public:
     string event;
     int markerId;
     
-    bool markerOn = false;
     
     ofSoundPlayer soundPlayer;
     
     int orientation;
     
     bool isSyphonOutput = true;
+    bool markerOn = true;
+    bool drawNormals = false;
 };

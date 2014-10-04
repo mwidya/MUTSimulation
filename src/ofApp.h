@@ -19,6 +19,8 @@ public:
     
     void sendPlanePositions();
     
+    void playSound();
+    
     ofVec2f normalizedPointToScreenPoint(ofVec2f, ofPlanePrimitive *aPlane);
     void parseJSONString(string str);
     

@@ -262,6 +262,16 @@ void ofApp::setup(){
     }
 }
 
+void ofApp::playSound(){
+    if (ofRandom(1)<0.5f) {
+        soundPlayer.loadSound("StereoVocal.aif");
+    }
+    else{
+        soundPlayer.loadSound("audio_5.aif");
+    }
+    soundPlayer.play();
+}
+
 void ofApp::update(){
     
     if (tcpClient.isConnected())
@@ -271,13 +281,15 @@ void ofApp::update(){
         if( str.length() > 0 )
         {
             
+            printf("str = %s\n", str.c_str());
+            
             parseJSONString(str);
             
             for (int i = 0; i<planes.size(); i++) {
                 ofPlanePrimitive *plane = planes[i];
                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchedX, touchedY), plane);
                 
-//                cout << "markerId: "+ ofToString(markerId) + ", screenPoint = " << screenPoint << endl;
+                /*cout << "markerId: "+ ofToString(markerId) + ", screenPoint = " << screenPoint << endl;*/
             }
             
             
@@ -306,14 +318,14 @@ void ofApp::update(){
                             case 268:
                             {
                                 p = planes[1];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
                                 orientation = EAST;
                                 break;
                             }
                             case 581:
                             {
                                 p = planes[2];
-                                lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y - planeDistance, -(p->getPosition().z - screenPoint.x));
+                                lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y - planeDistance, p->getPosition().z - screenPoint.x);
                                 orientation = FLOOR;
                                 break;
                             }
@@ -327,7 +339,7 @@ void ofApp::update(){
                             case 528:
                             {
                                 p = planes[4];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
                                 orientation = EAST;
                                 break;
                             }
@@ -341,14 +353,14 @@ void ofApp::update(){
                             case 484:
                             {
                                 p = planes[6];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
                                 orientation = EAST;
                                 break;
                             }
                             case 99:
                             {
                                 p = planes[7];
-                                lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-planeDistance, -(p->getPosition().z - screenPoint.x));
+                                lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-planeDistance, p->getPosition().z - screenPoint.x);
                                 orientation = FLOOR;
                                 break;
                             }
@@ -362,7 +374,7 @@ void ofApp::update(){
                             case 903:
                             {
                                 p = planes[9];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
                                 orientation = EAST;
                                 break;
                             }
@@ -374,14 +386,9 @@ void ofApp::update(){
                 
                 lights.push_back(lightPtr);
                 
-                /*cout << "light.getPosition() = " << light.getPosition() << endl;
-                if (ofRandom(1)<0.5f) {
-                 soundPlayer.loadSound("StereoVocal.aif");
-                 }
-                 else{
-                 soundPlayer.loadSound("audio_5.aif");
-                 }
-                 soundPlayer.play();*/
+                /*cout << "light.getPosition() = " << light.getPosition() << endl;*/
+               
+                playSound();
                 
             }
             
@@ -402,26 +409,27 @@ void ofApp::update(){
     
     if (p != NULL) {
         for (int i = 0; i<lights.size(); i++) {
-            if (lights[i]->active == true) {
+            mutLight *l = lights[i];
+            if (l->active == true) {
                 switch (orientation) {
                     case FLOOR:
-                        lights[i]->setPosition(p->getPosition().x + cos(ofGetElapsedTimef())*500,
-                                               p->getPosition().y - 400,
-                                               p->getPosition().z + sin(ofGetElapsedTimef())*500);
+                        l->setPosition(l->getPosition().x + sin(ofGetElapsedTimef())*20,
+                                       p->getPosition().y - 100,
+                                       l->getPosition().z + cos(ofGetElapsedTimef())*20);
                         
                         /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
                         break;
                     case EAST:
-                        lights[i]->setPosition(p->getPosition().x + 400,
-                                               p->getPosition().y + cos(ofGetElapsedTimef())*500,
-                                               p->getPosition().z + sin(ofGetElapsedTimef())*500);
+                        l->setPosition(p->getPosition().x + 100,
+                                       l->getPosition().y + sin(ofGetElapsedTimef())*20,
+                                       l->getPosition().z + cos(ofGetElapsedTimef())*20);
                         
                         /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
                         break;
                     case WEST:
-                        lights[i]->setPosition(p->getPosition().x - 10000 - sin(ofGetElapsedTimef()*0.1f)*20000,
-                                               p->getPosition().y + cos(ofGetElapsedTimef()*0.1f)*3000,
-                                               p->getPosition().z);
+                        l->setPosition(p->getPosition().x - 100,
+                                       l->getPosition().y + sin(ofGetElapsedTimef())*20,
+                                       l->getPosition().z + cos(ofGetElapsedTimef())*20);
                         
                         /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
                         break;

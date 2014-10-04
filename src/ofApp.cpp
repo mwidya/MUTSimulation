@@ -219,16 +219,6 @@ void ofApp::setup(){
     
     for (int i = 0; i < planes.size(); i++) {
         mutPlane *plane = planes[i];
-//        plane->fbo.begin();
-//        ofClear(255);
-//        plane->syphonClient.draw(0, 0);
-        //        plane->fbo.end();
-        
-        cout << "no "+ofToString(i)+": plane->getPosition() = " << plane->getPosition() << endl;
-    }
-    
-    for (int i = 0; i < planes.size(); i++) {
-        mutPlane *plane = planes[i];
         plane->rotate(180, 0, 0, 1);
     }
     
@@ -259,26 +249,14 @@ void ofApp::setup(){
         light->disable();
         lights.push_back(light);
     }
-}
-
-void ofApp::newLight(){
     
-    
-    
-//    for (int j = 0; j < senders.size(); j++) {
-//        ofxOscMessage m;
-//        m.setAddress("/light/new");
-//        m.addFloatArg(lightPtr->getPosition().x);
-//        m.addFloatArg(lightPtr->getPosition().y);
-//        m.addFloatArg(lightPtr->getPosition().z);
-//        m.addFloatArg(lightPtr->getDiffuseColor().r);
-//        m.addFloatArg(lightPtr->getDiffuseColor().g);
-//        m.addFloatArg(lightPtr->getDiffuseColor().b);
-//        m.addFloatArg(lightPtr->getSpotlightCutOff());
-//        m.addFloatArg(lightPtr->getSpotConcentration());
-//        m.addInt64Arg(lightPtr->mutLightID);
-//        senders[j]->sendMessage(m);
-//    }
+    if (isSyphonOutput) {
+        for (int i = 0; i < planes.size(); i++) {
+            mutPlane *plane = planes[i];
+            plane->fbo.allocate(plane->getWidth(), plane->getHeight());
+            plane->syphonClient.setup();
+        }
+    }
 }
 
 void ofApp::update(){
@@ -427,16 +405,22 @@ void ofApp::update(){
                         lights[i]->setPosition(p->getPosition().x + cos(ofGetElapsedTimef())*500,
                                                p->getPosition().y - 400,
                                                p->getPosition().z + sin(ofGetElapsedTimef())*500);
+                        
+                        /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
                         break;
                     case EAST:
                         lights[i]->setPosition(p->getPosition().x + 400,
                                                p->getPosition().y + cos(ofGetElapsedTimef())*500,
                                                p->getPosition().z + sin(ofGetElapsedTimef())*500);
+                        
+                        /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
                         break;
                     case WEST:
                         lights[i]->setPosition(p->getPosition().x - 10000 - sin(ofGetElapsedTimef()*0.1f)*20000,
                                                p->getPosition().y + cos(ofGetElapsedTimef()*0.1f)*3000,
                                                p->getPosition().z);
+                        
+                        /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
                         break;
                         
                     default:
@@ -445,23 +429,6 @@ void ofApp::update(){
             }
         }
     }
-    
-    /*if (p != NULL) {
-        switch (orientation) {
-            case FLOOR:
-                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
-                break;
-            case EAST:
-                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
-                break;
-            case WEST:
-                light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);
-                break;
-                
-            default:
-                break;
-        }
-    }*/
     
     for (int j = 0; j < senders.size(); j++) {
         for (int i = 0; i<lights.size(); i++) {
@@ -483,6 +450,16 @@ void ofApp::update(){
     }
     
     sendPlanePositions();
+    
+    if (isSyphonOutput) {
+        for (int i = 0; i < planes.size(); i++) {
+            mutPlane *plane = planes[i];
+            plane->fbo.begin();
+            ofClear(255);
+            plane->syphonClient.draw(0, 0);
+            plane->fbo.end();
+        }
+    }
 }
 
 bool drawNormals;
@@ -496,22 +473,44 @@ void ofApp::draw(){
     
     easyCam.begin();
     
-    for (int i = 0; i<lights.size(); i++) {
-        if (lights[i]->active) {
-            lights[i]->draw();
+    if (isSyphonOutput) {
+        for (int i = 0; i < planes.size(); i++) {
+            mutPlane *plane = planes[i];
+            if (plane->isAnnounced) {
+                plane->fbo.getTextureReference().bind();
+                plane->mapTexCoordsFromTexture(plane->fbo.getTextureReference());
+                plane->draw();
+                plane->fbo.getTextureReference().unbind();
+            }else{
+                plane->draw();
+            }
+            
+            if (drawNormals) {
+                ofSetColor(0);
+                plane->drawNormals(50);
+                ofSetColor(255);
+            }
+        }
+    }
+    else{
+        
+        material.begin();
+        
+        for (int i = 0; i < planes.size(); i++) {
+            mutPlane *plane = planes[i];
+            plane->draw();
+            
+            if (drawNormals) {
+                ofSetColor(0);
+                plane->drawNormals(50);
+                ofSetColor(255);
+            }
         }
     }
     
-    material.begin();
-    
-    for (int i = 0; i < planes.size(); i++) {
-        mutPlane *plane = planes[i];
-        plane->draw();
-        
-        if (drawNormals) {
-            ofSetColor(0);
-            plane->drawNormals(50);
-            ofSetColor(255);
+    for (int i = 0; i<lights.size(); i++) {
+        if (lights[i]->active) {
+            lights[i]->draw();
         }
     }
     
@@ -541,6 +540,10 @@ void ofApp::keyPressed(int key){
         for(int i = 0; i<senders.size(); i++){
             senders[i]->sendMessage(m);
         }
+    }
+    
+    if (key == 's') {
+        isSyphonOutput = !isSyphonOutput;
     }
 }
 

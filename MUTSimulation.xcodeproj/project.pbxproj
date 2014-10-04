@@ -55,6 +55,7 @@
 		EE872E0B1988B45B00EC9230 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE872E011988B45B00EC9230 /* ofxSyphonServer.mm */; };
 		EE872E0C1988B45B00EC9230 /* ofxSyphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE872E031988B45B00EC9230 /* ofxSyphonServerDirectory.mm */; };
 		EE872E131988B47700EC9230 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EE872DF61988B45B00EC9230 /* Syphon.framework */; };
+		EEF41A7D19DF4A920064508B /* mutLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF41A7B19DF4A920064508B /* mutLight.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -188,6 +189,8 @@
 		EE872E011988B45B00EC9230 /* ofxSyphonServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServer.mm; sourceTree = "<group>"; };
 		EE872E021988B45B00EC9230 /* ofxSyphonServerDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServerDirectory.h; sourceTree = "<group>"; };
 		EE872E031988B45B00EC9230 /* ofxSyphonServerDirectory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServerDirectory.mm; sourceTree = "<group>"; };
+		EEF41A7B19DF4A920064508B /* mutLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mutLight.cpp; sourceTree = "<group>"; };
+		EEF41A7C19DF4A920064508B /* mutLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mutLight.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +297,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
+				EEF41A7B19DF4A920064508B /* mutLight.cpp */,
+				EEF41A7C19DF4A920064508B /* mutLight.h */,
 				EE788A58198A6774004EA64C /* mutPlane.cpp */,
 				EE788A59198A6774004EA64C /* mutPlane.h */,
 			);
@@ -687,6 +692,7 @@
 				EE01FE8E19D6076200E2BA4D /* ofxOscReceiver.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				EE01FE8C19D6076200E2BA4D /* ofxOscMessage.cpp in Sources */,
+				EEF41A7D19DF4A920064508B /* mutLight.cpp in Sources */,
 				EE4B43CF19D709B70091FE38 /* json_writer.cpp in Sources */,
 				EE01FE8919D6076200E2BA4D /* OscReceivedElements.cpp in Sources */,
 				EE4B435119D709AD0091FE38 /* ofxUDPManager.cpp in Sources */,

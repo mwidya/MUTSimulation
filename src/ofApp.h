@@ -6,7 +6,7 @@
 #include "ofxOsc.h"
 #include "ofxNetwork.h"
 #include "ofxJSONElement.h"
-
+#include "mutLight.h"
 
 class ofApp : public ofBaseApp{
 
@@ -47,11 +47,14 @@ public:
     mutPlane f9;
     mutPlane f4_5;
     
+    ofPlanePrimitive *p = NULL;
+    
     vector<mutPlane*> planes;
     
     ofMaterial material;
-    deque<ofLight*> lights;
-    ofLight *lightPtr;
+    deque<mutLight*> lights;
+    mutLight *lightPtr;
+    long mutLightID;
     
     vector<ofxOscSender*> senders;
     ofxOscSender *sender0;

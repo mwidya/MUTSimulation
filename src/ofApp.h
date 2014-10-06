@@ -16,13 +16,12 @@ public:
     void draw();
     void keyPressed(int key);
     void mouseDragged(int x, int y, int button);
-    
+
     void sendPlanePositions();
     
     void playSound();
     
     ofVec2f normalizedPointToScreenPoint(ofVec2f, ofPlanePrimitive *aPlane);
-    void parseJSONString(string str);
     
     // ----- Syphon -----
     
@@ -57,6 +56,20 @@ public:
     long mutLightID;
     
     
+    
+    int lightEvent;
+    
+    
+    ofVec3f startPos;
+    ofVec3f targetPos;
+    ofVec3f lerpPos;
+    float amnt;
+    
+    
+    
+    
+    
+    
     ofVec3f lightOrientationFloor;
     ofVec3f lightOrientationEast;
     ofVec3f lightOrientationWest;
@@ -73,17 +86,9 @@ public:
     ofxOscSender *sender8;
     ofxOscSender *sender9;
     
-    float touchedX = 0.0f;
-    float touchedY = 0.0f;
-    
     ofxTCPClient tcpClient;
     int deltaTime = 0;
     int connectTime = 0;
-    
-    ofxJSONElement jsonElement;
-    ofVec2f screenPoint;
-    string event;
-    int markerId;
     
     
     ofSoundPlayer soundPlayer;

@@ -305,8 +305,8 @@ void ofApp::update(){
                         lightPtr->active = true;
                         lightPtr->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
                         lightPtr->setSpotlight();
-                        lightPtr->setSpotlightCutOff(90.0f);
-                        lightPtr->setSpotConcentration(128.0f);
+                        lightPtr->setSpotlightCutOff(50.0f);
+                        lightPtr->setSpotConcentration(45.0f);
                         switch (markerId) {
                             case 691:
                             {
@@ -427,11 +427,13 @@ void ofApp::update(){
                         /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
                         break;
                     case WEST:
-                        l->setPosition(p->getPosition().x - 100,
-                                       l->getPosition().y + sin(ofGetElapsedTimef())*20,
-                                       l->getPosition().z + cos(ofGetElapsedTimef())*20);
+                        l->setPosition(p->getPosition().x - 500,
+                                       l->getPosition().y,
+                                       l->getPosition().z);
                         
                         /*light.setPosition(light.getPosition().x-cos(ofGetElapsedTimef())*150, light.getPosition().y-sin(ofGetElapsedTimef())*150, light.getPosition().z);*/
+                        
+                        l->setOrientation(ofVec3f(sin(ofGetElapsedTimef())*0.5f * RAD_TO_DEG, cos(ofGetElapsedTimef())*0.5f * RAD_TO_DEG, 0));
                         break;
                         
                     default:
@@ -443,18 +445,22 @@ void ofApp::update(){
     
     for (int j = 0; j < senders.size(); j++) {
         for (int i = 0; i<lights.size(); i++) {
+            mutLight *l = lights[i];
             ofxOscMessage m;
             m.setAddress("/light/position");
-            m.addFloatArg(lights[i]->getPosition().x);
-            m.addFloatArg(lights[i]->getPosition().y);
-            m.addFloatArg(lights[i]->getPosition().z);
-            m.addFloatArg(lights[i]->getDiffuseColor().r);
-            m.addFloatArg(lights[i]->getDiffuseColor().g);
-            m.addFloatArg(lights[i]->getDiffuseColor().b);
-            m.addFloatArg(lights[i]->getSpotlightCutOff());
-            m.addFloatArg(lights[i]->getSpotConcentration());
-            m.addInt64Arg(lights[i]->mutLightID);
-            m.addIntArg((int)lights[i]->active);
+            m.addFloatArg(l->getPosition().x);
+            m.addFloatArg(l->getPosition().y);
+            m.addFloatArg(l->getPosition().z);
+            m.addFloatArg(l->getDiffuseColor().r);
+            m.addFloatArg(l->getDiffuseColor().g);
+            m.addFloatArg(l->getDiffuseColor().b);
+            m.addFloatArg(l->getSpotlightCutOff());
+            m.addFloatArg(l->getSpotConcentration());
+            m.addInt64Arg(l->mutLightID);
+            m.addIntArg((int)l->active);
+            m.addFloatArg(l->getOrientationEuler().x);
+            m.addFloatArg(l->getOrientationEuler().y);
+            m.addFloatArg(l->getOrientationEuler().z);
             
             senders[j]->sendMessage(m);
         }

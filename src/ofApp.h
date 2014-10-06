@@ -89,5 +89,5 @@ public:
     bool isSyphonOutput = true;
     bool markerOn = true;
     bool drawNormals = false;
-    bool drawLights = false;
+    bool drawLights = true;
 };

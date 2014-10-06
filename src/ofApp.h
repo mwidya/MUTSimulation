@@ -57,6 +57,11 @@ public:
     mutLight *lightPtr;
     long mutLightID;
     
+    
+    ofVec3f lightOrientationFloor;
+    ofVec3f lightOrientationEast;
+    ofVec3f lightOrientationWest;
+    
     vector<ofxOscSender*> senders;
     ofxOscSender *sender0;
     ofxOscSender *sender1;

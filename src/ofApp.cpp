@@ -85,6 +85,16 @@ void ofApp::parseJSONString(string str){
     
 }
 
+void ofApp::playSound(){
+    if (ofRandom(1)<0.5f) {
+        soundPlayer.loadSound("StereoVocal.aif");
+    }
+    else{
+        soundPlayer.loadSound("audio_5.aif");
+    }
+    soundPlayer.play();
+}
+
 void ofApp::setup(){
     
     // const int oscPorts[10] = {6000,6000,6000,6001,6000,6000,6002,6001,6000,6002};
@@ -262,16 +272,6 @@ void ofApp::setup(){
     }
 }
 
-void ofApp::playSound(){
-    if (ofRandom(1)<0.5f) {
-        soundPlayer.loadSound("StereoVocal.aif");
-    }
-    else{
-        soundPlayer.loadSound("audio_5.aif");
-    }
-    soundPlayer.play();
-}
-
 void ofApp::update(){
     
     if (tcpClient.isConnected())
@@ -292,103 +292,102 @@ void ofApp::update(){
                 /*cout << "markerId: "+ ofToString(markerId) + ", screenPoint = " << screenPoint << endl;*/
             }
             
-            
             if ((event == "press")) {
                 float planeDistance = 30.0f;
                 
                 mutLightID  = (mutLightID+1)%8;
                 
                 for (int i = 0; i<lights.size(); i++) {
-                    lightPtr = lights[i];
-                    if (lightPtr->mutLightID == mutLightID) {
-                        lightPtr->enable();
-                        lightPtr->active = true;
-                        lightPtr->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-                        lightPtr->setSpotlight();
-                        lightPtr->setSpotlightCutOff(50.0f);
-                        lightPtr->setSpotConcentration(45.0f);
+                    mutLight *l = lights[i];
+                    if (l->mutLightID == mutLightID) {
+                        l->enable();
+                        l->active = true;
+                        l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
+                        l->setSpotlight();
+                        l->setSpotlightCutOff(50.0f);
+                        l->setSpotConcentration(45.0f);
                         switch (markerId) {
                             case 691:
                             {
                                 p = planes[0];
-                                lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                l->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
                                 lightOrientationWest = ofVec3f(0,-90,0);
-                                lightPtr->setOrientation(lightOrientationWest);
+                                l->setOrientation(lightOrientationWest);
                                 orientation = WEST;
                                 break;
                             }
                             case 268:
                             {
                                 p = planes[1];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                lightPtr->setOrientation(ofVec3f(0,90,0));
+                                l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
+                                l->setOrientation(ofVec3f(0,90,0));
                                 orientation = EAST;
                                 break;
                             }
                             case 581:
                             {
                                 p = planes[2];
-                                lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y - planeDistance, p->getPosition().z - screenPoint.x);
+                                l->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y - planeDistance, p->getPosition().z - screenPoint.x);
                                 orientation = FLOOR;
-                                lightPtr->setOrientation(ofVec3f(-90,0,0));
+                                l->setOrientation(ofVec3f(-90,0,0));
                                 break;
                             }
                             case 761:
                             {
                                 p = planes[3];
-                                lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                l->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
                                 lightOrientationWest = ofVec3f(0,-90,0);
-                                lightPtr->setOrientation(lightOrientationWest);
+                                l->setOrientation(lightOrientationWest);
                                 orientation = WEST;
                                 break;
                             }
                             case 528:
                             {
                                 p = planes[4];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                lightPtr->setOrientation(ofVec3f(0,90,0));
+                                l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
+                                l->setOrientation(ofVec3f(0,90,0));
                                 orientation = EAST;
                                 break;
                             }
                             case 286:
                             {
                                 p = planes[5];
-                                lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                l->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
                                 lightOrientationWest = ofVec3f(0,-90,0);
-                                lightPtr->setOrientation(lightOrientationWest);
+                                l->setOrientation(lightOrientationWest);
                                 orientation = WEST;
                                 break;
                             }
                             case 484:
                             {
                                 p = planes[6];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                lightPtr->setOrientation(ofVec3f(0,90,0));
+                                l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
+                                l->setOrientation(ofVec3f(0,90,0));
                                 orientation = EAST;
                                 break;
                             }
                             case 99:
                             {
                                 p = planes[7];
-                                lightPtr->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-planeDistance, p->getPosition().z - screenPoint.x);
+                                l->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-planeDistance, p->getPosition().z - screenPoint.x);
                                 orientation = FLOOR;
-                                lightPtr->setOrientation(ofVec3f(-90,0,0));
+                                l->setOrientation(ofVec3f(-90,0,0));
                                 break;
                             }
                             case 222:
                             {
                                 p = planes[8];
-                                lightPtr->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
+                                l->setPosition(p->getPosition().x - planeDistance , p->getPosition().y - screenPoint.y, -(p->getPosition().z - screenPoint.x));
                                 lightOrientationWest = ofVec3f(0,-90,0);
-                                lightPtr->setOrientation(lightOrientationWest);
+                                l->setOrientation(lightOrientationWest);
                                 orientation = WEST;
                                 break;
                             }
                             case 903:
                             {
                                 p = planes[9];
-                                lightPtr->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                lightPtr->setOrientation(ofVec3f(0,90,0));
+                                l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
+                                l->setOrientation(ofVec3f(0,90,0));
                                 orientation = EAST;
                                 break;
                             }
@@ -398,9 +397,11 @@ void ofApp::update(){
                     }
                 }
                 
-                lights.push_back(lightPtr);
                 
-                /*cout << "light.getPosition() = " << light.getPosition() << endl;*/
+                for (int i = 0; i<lights.size(); i++) {
+                    mutLight *l = lights[i];
+                    cout << "l->mutLightID = " << l->mutLightID << endl;
+                }
                
                 playSound();
                 
@@ -451,9 +452,6 @@ void ofApp::update(){
                     default:
                         break;
                 }
-                cout << "lightOrientationWest.x+ofGetElapsedTimef()*2 = " << l->getOrientationEuler().x << endl;
-                cout << "lightOrientationWest.y+ofGetElapsedTimef()*2 = " << l->getOrientationEuler().y << endl;
-                cout << "lightOrientationWest.z+ofGetElapsedTimef()*2 = " << l->getOrientationEuler().z << endl;
             }
         }
     }

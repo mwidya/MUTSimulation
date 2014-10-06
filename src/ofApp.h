@@ -54,7 +54,6 @@ public:
     
     ofMaterial material;
     deque<mutLight*> lights;
-    mutLight *lightPtr;
     long mutLightID;
     
     

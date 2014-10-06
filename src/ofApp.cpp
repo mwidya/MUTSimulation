@@ -293,7 +293,7 @@ void ofApp::update(){
             }
             
             if ((event == "press")) {
-                float planeDistance = 30.0f;
+                float planeDistance = 300.0f;
                 
                 mutLightID  = (mutLightID+1)%8;
                 
@@ -427,24 +427,26 @@ void ofApp::update(){
             mutLight *l = lights[i];
             if (l->active == true) {
                 switch (orientation) {
+                        
+                    // WARNING If coordinate is set to fixed value (eg. p->getPosition), every light jumps to this position.
+                        
                     case FLOOR:
-                        l->setPosition(l->getPosition().x ,
-                                       p->getPosition().y - 500,
-                                       l->getPosition().z );
+                        l->setPosition(l->getPosition().x,
+                                       l->getPosition().y,
+                                       l->getPosition().z);
                         
                         break;
                     case EAST:
-                        l->setPosition(p->getPosition().x + 500,
+                        l->setPosition(l->getPosition().x,
                                        l->getPosition().y,
                                        l->getPosition().z);
                         
                         l->setOrientation(ofVec3f(lightOrientationEast.x, l->getOrientationEuler().y+1.0f, lightOrientationEast.z));
                         break;
                     case WEST:
-                        l->setPosition(p->getPosition().x - 500,
+                        l->setPosition(l->getPosition().x,
                                        l->getPosition().y,
                                        l->getPosition().z);
-                        
                         
                         l->setOrientation(ofVec3f(lightOrientationWest.x, l->getOrientationEuler().y+1.0f, lightOrientationWest.z));
                         break;

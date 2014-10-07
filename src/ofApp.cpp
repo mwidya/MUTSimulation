@@ -346,7 +346,7 @@ void ofApp::update(){
                         l->setSpotlight();
                         l->setSpotlightCutOff(50.0f);
                         l->setSpotConcentration(45.0f);
-                        float planeDistance = 0.0f;
+                        float planeDistance = 450.0f;
                         ofVec2f screenPoint;
                         
                         switch (markerId) {
@@ -366,7 +366,8 @@ void ofApp::update(){
                                 p = planes[1];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                l->setOrientation(ofVec3f(0,90,0));
+                                lightOrientationEast.set(ofVec3f(0,90,0));
+                                l->setOrientation(lightOrientationEast);
                                 orientation = EAST;
                                 break;
                             }
@@ -375,8 +376,9 @@ void ofApp::update(){
                                 p = planes[2];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y - planeDistance, p->getPosition().z - screenPoint.x);
+                                lightOrientationFloor = ofVec3f(-90,0,0);
+                                l->setOrientation(lightOrientationFloor);
                                 orientation = FLOOR;
-                                l->setOrientation(ofVec3f(-90,0,0));
                                 break;
                             }
                             case 761:
@@ -394,7 +396,8 @@ void ofApp::update(){
                                 p = planes[4];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                l->setOrientation(ofVec3f(0,90,0));
+                                lightOrientationEast.set(ofVec3f(0,90,0));
+                                l->setOrientation(lightOrientationEast);
                                 orientation = EAST;
                                 break;
                             }
@@ -413,7 +416,8 @@ void ofApp::update(){
                                 p = planes[6];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                l->setOrientation(ofVec3f(0,90,0));
+                                lightOrientationEast.set(ofVec3f(0,90,0));
+                                l->setOrientation(lightOrientationEast);
                                 orientation = EAST;
                                 break;
                             }
@@ -422,8 +426,9 @@ void ofApp::update(){
                                 p = planes[7];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-planeDistance, p->getPosition().z - screenPoint.x);
+                                lightOrientationFloor = ofVec3f(-90,0,0);
+                                l->setOrientation(lightOrientationFloor);
                                 orientation = FLOOR;
-                                l->setOrientation(ofVec3f(-90,0,0));
                                 break;
                             }
                             case 222:
@@ -441,7 +446,8 @@ void ofApp::update(){
                                 p = planes[9];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x + planeDistance , p->getPosition().y - screenPoint.y, p->getPosition().z - screenPoint.x);
-                                l->setOrientation(ofVec3f(0,90,0));
+                                lightOrientationEast.set(ofVec3f(0,90,0));
+                                l->setOrientation(lightOrientationEast);
                                 orientation = EAST;
                                 break;
                             }
@@ -452,12 +458,28 @@ void ofApp::update(){
                         if (lightEvent == LIGHT_EVENT_CREATE) {
                             startPos.set(l->getPosition());
                             targetPos.set(startPos);
+                            
+                            startOrientation.set(l->getOrientationEuler());
+                            targetOrientation.set(startOrientation);
+                            
                             amnt = 0;
                         }
                         else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
                             targetPos.set(l->getPosition());
+                            
+                            if (orientation == FLOOR) {
+                                targetOrientation.set(lightOrientationFloor);
+                            }
+                            else if (orientation == EAST){
+                                targetOrientation.set(lightOrientationEast);
+                            }
+                            else if (orientation == WEST){
+                                targetOrientation.set(lightOrientationWest);
+                            }
+                            
+                            cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
+                            
                             speed = ofRandom(0.001f, 0.01f);
-                            cout << "speed = " << speed << endl;
                             amnt = 0;
                         }
                     }
@@ -477,56 +499,41 @@ void ofApp::update(){
 		}
 	}
     
+    
+    // WARNING If coordinate is set to fixed value (eg. p->getPosition), every light jumps to this position.
+    
     if (p != NULL) {
         for (int i = 0; i<lights.size(); i++) {
             mutLight *l = lights[i];
             if (l->active == true) {
+
                 if (lightEvent == LIGHT_EVENT_CREATE) {
-                    switch (orientation) {
-                            
-                            // WARNING If coordinate is set to fixed value (eg. p->getPosition), every light jumps to this position.
-                            
-                        case FLOOR:
-                            
-                            l->setPosition(l->getPosition().x,
-                                           l->getPosition().y,
-                                           l->getPosition().z);
-                            
-                            break;
-                        case EAST:
-                            
-                            l->setPosition(l->getPosition().x,
-                                           l->getPosition().y,
-                                           l->getPosition().z);
-                            
-                            l->setOrientation(ofVec3f(lightOrientationEast.x, l->getOrientationEuler().y+1.0f, lightOrientationEast.z));
-                            break;
-                        case WEST:
-                            l->setPosition(l->getPosition().x,
-                                           l->getPosition().y,
-                                           l->getPosition().z);
-                            
-                            l->setOrientation(ofVec3f(lightOrientationWest.x, l->getOrientationEuler().y+1.0f, lightOrientationWest.z));
-                            break;
-                            
-                        default:
-                            break;
-                    }
+                    l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
+                    l->setOrientation(ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
                 }
+                
                 else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
                     if (amnt <= 1.0f) {
                         amnt = amnt + speed;
                     }
                     else{
                         startPos = targetPos;
+                        startOrientation = targetOrientation;
                     }
+                    
                     
                     float x = ofLerp(startPos.x, targetPos.x, amnt);
                     float y = ofLerp(startPos.y, targetPos.y, amnt);
                     float z = ofLerp(startPos.z, targetPos.z, amnt);
                     lerpPos = ofVec3f(x, y, z);
                     l->setPosition(lerpPos);
-                    l->setOrientation(ofVec3f(lightOrientationWest.x, lightOrientationWest.y, lightOrientationWest.z));
+                    
+                    
+                    float orientationX = ofLerp(startOrientation.x, targetOrientation.x, amnt);
+                    float orientationY = ofLerp(startOrientation.y, targetOrientation.y, amnt);
+                    float orientationZ = ofLerp(startOrientation.z, targetOrientation.z, amnt);
+                    lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
+                    l->setOrientation(lerpOrientation);
                 }
             }
         }
@@ -547,13 +554,6 @@ void ofApp::update(){
             float interpolationVal = -(currentPosLightX - maxPosX) / abs(minPosX - maxPosX) + 1;
             float currentPosX = maxDistance * interpolationVal + offset;
             float normalizedValX = currentPosX / maxDistance;
-            
-            cout << "--------" << endl;
-            cout << "maxDistance = " << ofToString(maxDistance) << endl;
-            cout << "l->getPosition().x = " << l->getPosition().x << endl; // 3070 - -4340
-            cout << "interpolationVal = " << interpolationVal << endl;
-            cout << "currentPosX = " << currentPosX << endl;
-            cout << "normalizedValX = " << ofToString(normalizedValX) << endl;
             
             msgAudio.addFloatArg(normalizedValX);
             senderToAudio->sendMessage(msgAudio);
@@ -579,11 +579,6 @@ void ofApp::update(){
         }
     }
     
-    
-    
-    
-    sendPlanePositions();
-    
     if (isSyphonOutput) {
         for (int i = 0; i < planes.size(); i++) {
             mutPlane *plane = planes[i];
@@ -593,6 +588,8 @@ void ofApp::update(){
             plane->fbo.end();
         }
     }
+    
+    sendPlanePositions();
 }
 
 void ofApp::draw(){

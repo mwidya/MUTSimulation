@@ -66,6 +66,11 @@ public:
     ofVec3f startPos;
     ofVec3f targetPos;
     ofVec3f lerpPos;
+    
+    ofVec3f startOrientation;
+    ofVec3f targetOrientation;
+    ofVec3f lerpOrientation;
+    
     float amnt;
     float speed;
     

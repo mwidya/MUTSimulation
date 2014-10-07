@@ -82,8 +82,8 @@ ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint, ofPlanePrim
 
 void ofApp::playSound(){
     
-    note = 67;//ofMap(key, 48, 122, 0, 127);
-    velocity = 64;
+    note = ofRandom(40, 80);//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
     midiOut.sendNoteOn(channel, note,  velocity);
     
     /*if (ofRandom(1)<0.5f) {
@@ -228,6 +228,9 @@ void ofApp::setup(){
     planes.push_back(&f9);
     planes.push_back(&f4_5);
     
+    roomLength = ofDist(f0.getPosition().x, f0.getPosition().y, f9.getPosition().x, f9.getPosition().y);
+    cout << "roomLength = " << ofToString(roomLength) << endl;
+    
     // Syphon output renders upside down.
     
     if (!isSyphonOutput) {
@@ -343,7 +346,7 @@ void ofApp::update(){
                         l->setSpotlight();
                         l->setSpotlightCutOff(50.0f);
                         l->setSpotConcentration(45.0f);
-                        float planeDistance = 300.0f;
+                        float planeDistance = 0.0f;
                         ofVec2f screenPoint;
                         
                         switch (markerId) {
@@ -535,7 +538,24 @@ void ofApp::update(){
         if (l->mutLightID == 0) {
             ofxOscMessage msgAudio;
             msgAudio.setAddress("/light0/position");
-            msgAudio.addFloatArg(sin(ofGetElapsedTimef())*0.5+0.5);
+            
+            float minPosX = planes[0]->getPosition().x; // 3370
+            float maxPosX = planes[9]->getPosition().x; // - 4640
+            float maxDistance = minPosX - maxPosX;
+            float offset = 0;
+            float currentPosLightX = l->getPosition().x;
+            float interpolationVal = -(currentPosLightX - maxPosX) / abs(minPosX - maxPosX) + 1;
+            float currentPosX = maxDistance * interpolationVal + offset;
+            float normalizedValX = currentPosX / maxDistance;
+            
+            cout << "--------" << endl;
+            cout << "maxDistance = " << ofToString(maxDistance) << endl;
+            cout << "l->getPosition().x = " << l->getPosition().x << endl; // 3070 - -4340
+            cout << "interpolationVal = " << interpolationVal << endl;
+            cout << "currentPosX = " << currentPosX << endl;
+            cout << "normalizedValX = " << ofToString(normalizedValX) << endl;
+            
+            msgAudio.addFloatArg(normalizedValX);
             senderToAudio->sendMessage(msgAudio);
         }
         
@@ -739,9 +759,11 @@ void ofApp::serverRetired(ofxSyphonServerDirectoryEventArgs &arg){
 }
 
 void ofApp::exit(){
-    note = 67;//ofMap(key, 48, 122, 0, 127);
-    velocity = 0;
-    midiOut.sendNoteOn(channel, note,  velocity);
+    for (int i = 48; i<=122; i++) {
+        note = i;//ofMap(key, 48, 122, 0, 127);
+        velocity = 0;
+        midiOut.sendNoteOn(channel, note,  velocity);
+    }
 }
 
 

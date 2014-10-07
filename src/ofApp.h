@@ -84,7 +84,7 @@ public:
 	int pan, bend, touch, polytouch;
     
     
-    
+    float roomLength;
     
     
     

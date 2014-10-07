@@ -64,6 +64,7 @@ public:
     ofVec3f targetPos;
     ofVec3f lerpPos;
     float amnt;
+    float speed;
     
     
     

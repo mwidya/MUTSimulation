@@ -267,6 +267,7 @@ void ofApp::setup(){
     }
     
     lightEvent = LIGHT_EVENT_CREATE;
+    
 }
 
 void ofApp::update(){
@@ -420,6 +421,8 @@ void ofApp::update(){
                         }
                         else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
                             targetPos.set(l->getPosition());
+                            speed = ofRandom(0.001f, 0.01f);
+                            cout << "speed = " << speed << endl;
                             amnt = 0;
                         }
                     }
@@ -477,7 +480,7 @@ void ofApp::update(){
                 }
                 else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
                     if (amnt <= 1.0f) {
-                        amnt = amnt + 0.01f;
+                        amnt = amnt + speed;
                     }
                     else{
                         startPos = targetPos;
@@ -488,7 +491,7 @@ void ofApp::update(){
                     float z = ofLerp(startPos.z, targetPos.z, amnt);
                     lerpPos = ofVec3f(x, y, z);
                     l->setPosition(lerpPos);
-                    l->setOrientation(ofVec3f(lightOrientationWest.x, l->getOrientationEuler().y+1.0f, lightOrientationWest.z));
+                    l->setOrientation(ofVec3f(lightOrientationWest.x, lightOrientationWest.y, lightOrientationWest.z));
                 }
             }
         }

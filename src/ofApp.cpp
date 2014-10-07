@@ -522,7 +522,7 @@ void ofApp::update(){
                     
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
                     
-                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z+1));
+                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
                     
                     cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
                 }

@@ -342,7 +342,6 @@ void ofApp::update(){
                     if (l->mutLightID == mutLightID) {
                         l->enable();
                         l->active = true;
-                        l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
                         l->setSpotlight();
                         l->setSpotlightCutOff(50.0f);
                         l->setSpotConcentration(45.0f);
@@ -456,6 +455,9 @@ void ofApp::update(){
                         }
                         
                         if (lightEvent == LIGHT_EVENT_CREATE) {
+                            
+                            l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
+                            
                             startPos.set(l->getPosition());
                             targetPos.set(startPos);
                             
@@ -508,11 +510,13 @@ void ofApp::update(){
             if (l->active == true) {
 
                 if (lightEvent == LIGHT_EVENT_CREATE) {
+                    
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
                     l->setOrientation(ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
                 }
                 
                 else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
+                    
                     if (amnt <= 1.0f) {
                         amnt = amnt + speed;
                     }

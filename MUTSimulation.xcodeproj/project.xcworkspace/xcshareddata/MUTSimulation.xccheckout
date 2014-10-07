@@ -10,6 +10,8 @@
 	<string>MUTSimulation</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>1C5E3E82-6B12-4350-9213-5DCD00A5E940</key>
+		<string>https://github.com/danomatika/ofxMidi.git</string>
 		<key>AFC1C19D-76E5-433B-A364-2EC48570ABCA</key>
 		<string>https://github.com/jefftimesten/ofxJSON.git</string>
 		<key>C8AEE93E-0DD6-4BE1-B45D-A02FC91146BD</key>
@@ -21,6 +23,8 @@
 	<string>MUTSimulation.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>1C5E3E82-6B12-4350-9213-5DCD00A5E940</key>
+		<string>../../../../../addons/ofxMidi</string>
 		<key>AFC1C19D-76E5-433B-A364-2EC48570ABCA</key>
 		<string>../../../../../addons/ofxJSON</string>
 		<key>C8AEE93E-0DD6-4BE1-B45D-A02FC91146BD</key>
@@ -51,6 +55,14 @@
 			<string>AFC1C19D-76E5-433B-A364-2EC48570ABCA</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxJSON</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1C5E3E82-6B12-4350-9213-5DCD00A5E940</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxMidi</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

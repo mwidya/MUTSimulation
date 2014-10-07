@@ -81,13 +81,18 @@ ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint, ofPlanePrim
 
 
 void ofApp::playSound(){
-    if (ofRandom(1)<0.5f) {
+    
+    note = 67;//ofMap(key, 48, 122, 0, 127);
+    velocity = 64;
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+    /*if (ofRandom(1)<0.5f) {
         soundPlayer.loadSound("StereoVocal.aif");
     }
     else{
         soundPlayer.loadSound("audio_5.aif");
     }
-    soundPlayer.play();
+    soundPlayer.play();*/
 }
 
 void ofApp::setup(){
@@ -267,6 +272,30 @@ void ofApp::setup(){
     }
     
     lightEvent = LIGHT_EVENT_CREATE;
+    
+    
+    
+    
+    
+    
+    // print the available output ports to the console
+	midiOut.listPorts(); // via instance
+	//ofxMidiOut::listPorts(); // via static too
+	
+	// connect
+	midiOut.openPort("IAC-Treiber IAC-Bus 1"); // by number
+	//midiOut.openPort("IAC Driver Pure Data In"); // by name
+	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
+	
+	channel = 1;
+	currentPgm = 0;
+	note = 0;
+	velocity = 0;
+	pan = 0;
+	bend = 0;
+	touch = 0;
+	polytouch = 0;
+    
     
 }
 
@@ -696,7 +725,11 @@ void ofApp::serverRetired(ofxSyphonServerDirectoryEventArgs &arg){
     }
 }
 
-
+void ofApp::exit(){
+    note = 67;//ofMap(key, 48, 122, 0, 127);
+    velocity = 0;
+    midiOut.sendNoteOn(channel, note,  velocity);
+}
 
 
 

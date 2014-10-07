@@ -56,6 +56,15 @@
 		EE872E0C1988B45B00EC9230 /* ofxSyphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE872E031988B45B00EC9230 /* ofxSyphonServerDirectory.mm */; };
 		EE872E131988B47700EC9230 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EE872DF61988B45B00EC9230 /* Syphon.framework */; };
 		EEF41A7D19DF4A920064508B /* mutLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEF41A7B19DF4A920064508B /* mutLight.cpp */; };
+		EEFA33BD19E3E58C00F81E73 /* RtMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA338A19E3E58C00F81E73 /* RtMidi.cpp */; };
+		EEFA33BE19E3E58C00F81E73 /* ofxRtMidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA339719E3E58C00F81E73 /* ofxRtMidiIn.cpp */; };
+		EEFA33BF19E3E58C00F81E73 /* ofxRtMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA339919E3E58C00F81E73 /* ofxRtMidiOut.cpp */; };
+		EEFA33C519E3E58C00F81E73 /* ofxBaseMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA33A619E3E58C00F81E73 /* ofxBaseMidi.cpp */; };
+		EEFA33C619E3E58C00F81E73 /* ofxMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA33A819E3E58C00F81E73 /* ofxMidi.cpp */; };
+		EEFA33C719E3E58C00F81E73 /* ofxMidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA33AB19E3E58C00F81E73 /* ofxMidiIn.cpp */; };
+		EEFA33C819E3E58C00F81E73 /* ofxMidiMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA33AD19E3E58C00F81E73 /* ofxMidiMessage.cpp */; };
+		EEFA33C919E3E58C00F81E73 /* ofxMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFA33AF19E3E58C00F81E73 /* ofxMidiOut.cpp */; };
+		EEFA33D419E3E67300F81E73 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEFA33D319E3E67300F81E73 /* CoreMIDI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,6 +200,27 @@
 		EE872E031988B45B00EC9230 /* ofxSyphonServerDirectory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServerDirectory.mm; sourceTree = "<group>"; };
 		EEF41A7B19DF4A920064508B /* mutLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mutLight.cpp; sourceTree = "<group>"; };
 		EEF41A7C19DF4A920064508B /* mutLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mutLight.h; sourceTree = "<group>"; };
+		EEFA338819E3E58C00F81E73 /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
+		EEFA338919E3E58C00F81E73 /* RtError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtError.h; sourceTree = "<group>"; };
+		EEFA338A19E3E58C00F81E73 /* RtMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RtMidi.cpp; sourceTree = "<group>"; };
+		EEFA338B19E3E58C00F81E73 /* RtMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtMidi.h; sourceTree = "<group>"; };
+		EEFA339719E3E58C00F81E73 /* ofxRtMidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRtMidiIn.cpp; sourceTree = "<group>"; };
+		EEFA339819E3E58C00F81E73 /* ofxRtMidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRtMidiIn.h; sourceTree = "<group>"; };
+		EEFA339919E3E58C00F81E73 /* ofxRtMidiOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRtMidiOut.cpp; sourceTree = "<group>"; };
+		EEFA339A19E3E58C00F81E73 /* ofxRtMidiOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRtMidiOut.h; sourceTree = "<group>"; };
+		EEFA33A619E3E58C00F81E73 /* ofxBaseMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBaseMidi.cpp; sourceTree = "<group>"; };
+		EEFA33A719E3E58C00F81E73 /* ofxBaseMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBaseMidi.h; sourceTree = "<group>"; };
+		EEFA33A819E3E58C00F81E73 /* ofxMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMidi.cpp; sourceTree = "<group>"; };
+		EEFA33A919E3E58C00F81E73 /* ofxMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidi.h; sourceTree = "<group>"; };
+		EEFA33AA19E3E58C00F81E73 /* ofxMidiConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiConstants.h; sourceTree = "<group>"; };
+		EEFA33AB19E3E58C00F81E73 /* ofxMidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMidiIn.cpp; sourceTree = "<group>"; };
+		EEFA33AC19E3E58C00F81E73 /* ofxMidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiIn.h; sourceTree = "<group>"; };
+		EEFA33AD19E3E58C00F81E73 /* ofxMidiMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMidiMessage.cpp; sourceTree = "<group>"; };
+		EEFA33AE19E3E58C00F81E73 /* ofxMidiMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiMessage.h; sourceTree = "<group>"; };
+		EEFA33AF19E3E58C00F81E73 /* ofxMidiOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMidiOut.cpp; sourceTree = "<group>"; };
+		EEFA33B019E3E58C00F81E73 /* ofxMidiOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiOut.h; sourceTree = "<group>"; };
+		EEFA33B119E3E58C00F81E73 /* ofxMidiTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiTypes.h; sourceTree = "<group>"; };
+		EEFA33D319E3E67300F81E73 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +228,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEFA33D419E3E67300F81E73 /* CoreMIDI.framework in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				EE872E081988B45B00EC9230 /* Syphon.framework in Frameworks */,
@@ -224,6 +255,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				EEFA333819E3E58C00F81E73 /* ofxMidi */,
 				EE4B435219D709B60091FE38 /* ofxJSON */,
 				EE4B434019D709AD0091FE38 /* ofxNetwork */,
 				EE01FE5719D6076200E2BA4D /* ofxOsc */,
@@ -281,6 +313,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				EEFA33D319E3E67300F81E73 /* CoreMIDI.framework */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -596,6 +629,66 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		EEFA333819E3E58C00F81E73 /* ofxMidi */ = {
+			isa = PBXGroup;
+			children = (
+				EEFA337C19E3E58C00F81E73 /* libs */,
+				EEFA339519E3E58C00F81E73 /* src */,
+			);
+			name = ofxMidi;
+			path = ../../../addons/ofxMidi;
+			sourceTree = "<group>";
+		};
+		EEFA337C19E3E58C00F81E73 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				EEFA338719E3E58C00F81E73 /* rtmidi */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		EEFA338719E3E58C00F81E73 /* rtmidi */ = {
+			isa = PBXGroup;
+			children = (
+				EEFA338819E3E58C00F81E73 /* readme */,
+				EEFA338919E3E58C00F81E73 /* RtError.h */,
+				EEFA338A19E3E58C00F81E73 /* RtMidi.cpp */,
+				EEFA338B19E3E58C00F81E73 /* RtMidi.h */,
+			);
+			path = rtmidi;
+			sourceTree = "<group>";
+		};
+		EEFA339519E3E58C00F81E73 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EEFA339619E3E58C00F81E73 /* desktop */,
+				EEFA33A619E3E58C00F81E73 /* ofxBaseMidi.cpp */,
+				EEFA33A719E3E58C00F81E73 /* ofxBaseMidi.h */,
+				EEFA33A819E3E58C00F81E73 /* ofxMidi.cpp */,
+				EEFA33A919E3E58C00F81E73 /* ofxMidi.h */,
+				EEFA33AA19E3E58C00F81E73 /* ofxMidiConstants.h */,
+				EEFA33AB19E3E58C00F81E73 /* ofxMidiIn.cpp */,
+				EEFA33AC19E3E58C00F81E73 /* ofxMidiIn.h */,
+				EEFA33AD19E3E58C00F81E73 /* ofxMidiMessage.cpp */,
+				EEFA33AE19E3E58C00F81E73 /* ofxMidiMessage.h */,
+				EEFA33AF19E3E58C00F81E73 /* ofxMidiOut.cpp */,
+				EEFA33B019E3E58C00F81E73 /* ofxMidiOut.h */,
+				EEFA33B119E3E58C00F81E73 /* ofxMidiTypes.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		EEFA339619E3E58C00F81E73 /* desktop */ = {
+			isa = PBXGroup;
+			children = (
+				EEFA339719E3E58C00F81E73 /* ofxRtMidiIn.cpp */,
+				EEFA339819E3E58C00F81E73 /* ofxRtMidiIn.h */,
+				EEFA339919E3E58C00F81E73 /* ofxRtMidiOut.cpp */,
+				EEFA339A19E3E58C00F81E73 /* ofxRtMidiOut.h */,
+			);
+			path = desktop;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -693,13 +786,21 @@
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				EE01FE8C19D6076200E2BA4D /* ofxOscMessage.cpp in Sources */,
 				EEF41A7D19DF4A920064508B /* mutLight.cpp in Sources */,
+				EEFA33C819E3E58C00F81E73 /* ofxMidiMessage.cpp in Sources */,
 				EE4B43CF19D709B70091FE38 /* json_writer.cpp in Sources */,
 				EE01FE8919D6076200E2BA4D /* OscReceivedElements.cpp in Sources */,
+				EEFA33BD19E3E58C00F81E73 /* RtMidi.cpp in Sources */,
+				EEFA33BE19E3E58C00F81E73 /* ofxRtMidiIn.cpp in Sources */,
 				EE4B435119D709AD0091FE38 /* ofxUDPManager.cpp in Sources */,
 				EE4B434F19D709AD0091FE38 /* ofxTCPManager.cpp in Sources */,
+				EEFA33C919E3E58C00F81E73 /* ofxMidiOut.cpp in Sources */,
 				EE01FE8A19D6076200E2BA4D /* OscTypes.cpp in Sources */,
+				EEFA33C719E3E58C00F81E73 /* ofxMidiIn.cpp in Sources */,
+				EEFA33C619E3E58C00F81E73 /* ofxMidi.cpp in Sources */,
 				EE788A5A198A6774004EA64C /* mutPlane.cpp in Sources */,
 				EE4B434E19D709AD0091FE38 /* ofxTCPClient.cpp in Sources */,
+				EEFA33C519E3E58C00F81E73 /* ofxBaseMidi.cpp in Sources */,
+				EEFA33BF19E3E58C00F81E73 /* ofxRtMidiOut.cpp in Sources */,
 				EE4B43CD19D709B70091FE38 /* json_reader.cpp in Sources */,
 				EE01FE8F19D6076200E2BA4D /* ofxOscSender.cpp in Sources */,
 				EE872E091988B45B00EC9230 /* SyphonNameboundClient.m in Sources */,

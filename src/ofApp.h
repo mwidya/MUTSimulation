@@ -7,6 +7,7 @@
 #include "ofxNetwork.h"
 #include "ofxJSONElement.h"
 #include "mutLight.h"
+#include "ofxMidi.h"
 
 class ofApp : public ofBaseApp{
 
@@ -16,6 +17,7 @@ public:
     void draw();
     void keyPressed(int key);
     void mouseDragged(int x, int y, int button);
+    void exit();
 
     void sendPlanePositions();
     
@@ -51,14 +53,15 @@ public:
     
     vector<mutPlane*> planes;
     
+    
+    
+    
+    
     ofMaterial material;
     deque<mutLight*> lights;
     long mutLightID;
     
-    
-    
     int lightEvent;
-    
     
     ofVec3f startPos;
     ofVec3f targetPos;
@@ -66,14 +69,24 @@ public:
     float amnt;
     float speed;
     
-    
-    
-    
-    
-    
     ofVec3f lightOrientationFloor;
     ofVec3f lightOrientationEast;
     ofVec3f lightOrientationWest;
+    
+    
+    
+    
+	ofxMidiOut midiOut;
+	int channel;
+	
+	unsigned int currentPgm;
+	int note, velocity;
+	int pan, bend, touch, polytouch;
+    
+    
+    
+    
+    
     
     vector<ofxOscSender*> senders;
     ofxOscSender *sender0;

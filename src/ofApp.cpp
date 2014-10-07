@@ -110,6 +110,7 @@ void ofApp::setup(){
     sender7 = new ofxOscSender();
     sender8 = new ofxOscSender();
     sender9 = new ofxOscSender();
+    senderToAudio = new ofxOscSender();
 
     bool local = true;
     
@@ -125,6 +126,7 @@ void ofApp::setup(){
         sender7->setup(SERVER_IP, 6007);
         sender8->setup(SERVER_IP, 6008);
         sender9->setup(SERVER_IP, 6009);
+        senderToAudio->setup(SERVER_IP, 6010);
     }
     else{
         sender0->setup("10.0.0.12", 6000);
@@ -137,6 +139,7 @@ void ofApp::setup(){
         sender7->setup("10.0.0.14", 6007);
         sender8->setup("10.0.0.15", 6008);
         sender9->setup("10.0.0.14", 6009);
+        senderToAudio->setup("10.0.0.7", 6010);
     }
     
     senders.push_back(sender0);
@@ -526,9 +529,17 @@ void ofApp::update(){
         }
     }
     
-    for (int j = 0; j < senders.size(); j++) {
-        for (int i = 0; i<lights.size(); i++) {
-            mutLight *l = lights[i];
+    for (int i = 0; i<lights.size(); i++) {
+        mutLight *l = lights[i];
+        
+        if (l->mutLightID == 0) {
+            ofxOscMessage msgAudio;
+            msgAudio.setAddress("/light0/position");
+            msgAudio.addFloatArg(sin(ofGetElapsedTimef())*0.5+0.5);
+            senderToAudio->sendMessage(msgAudio);
+        }
+        
+        for (int j = 0; j < senders.size(); j++) {
             ofxOscMessage m;
             m.setAddress("/light/position");
             m.addFloatArg(l->getPosition().x);
@@ -544,10 +555,12 @@ void ofApp::update(){
             m.addFloatArg(l->getOrientationEuler().x);
             m.addFloatArg(l->getOrientationEuler().y);
             m.addFloatArg(l->getOrientationEuler().z);
-            
             senders[j]->sendMessage(m);
         }
     }
+    
+    
+    
     
     sendPlanePositions();
     

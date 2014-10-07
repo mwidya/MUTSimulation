@@ -99,6 +99,7 @@ public:
     ofxOscSender *sender7;
     ofxOscSender *sender8;
     ofxOscSender *sender9;
+    ofxOscSender *senderToAudio;
     
     ofxTCPClient tcpClient;
     int deltaTime = 0;

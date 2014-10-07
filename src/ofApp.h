@@ -18,6 +18,9 @@ public:
     void keyPressed(int key);
     void mouseDragged(int x, int y, int button);
     void exit();
+    
+    ofVec3f getLightOri(ofQuaternion *quat);
+    void setLightOri(ofLight *light, ofVec3f rot);
 
     void sendPlanePositions();
     

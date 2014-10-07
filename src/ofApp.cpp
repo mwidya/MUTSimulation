@@ -79,7 +79,6 @@ ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint, ofPlanePrim
     
 }
 
-
 void ofApp::playSound(){
     
     note = ofRandom(40, 80);//ofMap(key, 48, 122, 0, 127);
@@ -93,6 +92,15 @@ void ofApp::playSound(){
         soundPlayer.loadSound("audio_5.aif");
     }
     soundPlayer.play();*/
+}
+
+void ofApp::setLightOri(ofLight *light, ofVec3f rot){
+    ofVec3f xax(1, 0, 0);
+    ofVec3f yax(0, 1, 0);
+    ofVec3f zax(0, 0, 1);
+    ofQuaternion q;
+    q.makeRotate(rot.x, xax, rot.y, yax, rot.z, zax);
+    light->setOrientation(q);
 }
 
 void ofApp::setup(){
@@ -375,8 +383,8 @@ void ofApp::update(){
                                 p = planes[2];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y - planeDistance, p->getPosition().z - screenPoint.x);
-                                lightOrientationFloor = ofVec3f(-90,0,0);
-                                l->setOrientation(lightOrientationFloor);
+                                lightOrientationFloor = ofVec3f(90, 0, 0);
+                                setLightOri(l, lightOrientationFloor);
                                 orientation = FLOOR;
                                 break;
                             }
@@ -425,8 +433,8 @@ void ofApp::update(){
                                 p = planes[7];
                                 screenPoint = normalizedPointToScreenPoint(ofVec2f(touchPoint.x, touchPoint.y), p);
                                 l->setPosition(p->getPosition().x - screenPoint.y , p->getPosition().y-planeDistance, p->getPosition().z - screenPoint.x);
-                                lightOrientationFloor = ofVec3f(-90,0,0);
-                                l->setOrientation(lightOrientationFloor);
+                                lightOrientationFloor = ofVec3f(90, 0, 0);
+                                setLightOri(l, lightOrientationFloor);
                                 orientation = FLOOR;
                                 break;
                             }
@@ -510,13 +518,18 @@ void ofApp::update(){
             if (l->active == true) {
 
                 if (lightEvent == LIGHT_EVENT_CREATE) {
+                    cout << "LIGHT_EVENT_CREATE" << endl;
                     
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
-                    l->setOrientation(ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
+                    
+                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z+1));
+                    
+                    cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
                 }
                 
                 else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
                     
+                    cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
                     if (amnt <= 1.0f) {
                         amnt = amnt + speed;
                     }
@@ -538,6 +551,11 @@ void ofApp::update(){
                     float orientationZ = ofLerp(startOrientation.z, targetOrientation.z, amnt);
                     lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
                     l->setOrientation(lerpOrientation);
+                }
+                
+                else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
+                    // Was isn das fŸr nen komisches Zucken ?
+                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
                 }
             }
         }

@@ -1,10 +1,11 @@
 #include "ofApp.h"
 
 
-#define IP "127.0.0.1"
-#define SERVER_IP "127.0.0.1"
+#define SERVER_TCP_IP "localhost"
+#define VIDEO_OSC_IP "10.0.0.5"
+#define AUDIO_OSC_IP "10.0.0.7"
 #define PORT 12333
-#define MAX_LIGHTS 3
+#define MAX_LIGHTS 1
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -287,7 +288,6 @@ void ofApp::playSound(){
     }
 }
 
-
 void ofApp::setLightOri(ofLight *light, ofVec3f rot){
     ofVec3f xax(1, 0, 0);
     ofVec3f yax(0, 1, 0);
@@ -318,17 +318,17 @@ void ofApp::setup(){
     
     if (local) {
         
-        sender0->setup(SERVER_IP, 6000);
-        sender1->setup(SERVER_IP, 6001);
-        sender2->setup(SERVER_IP, 6002);
-        sender3->setup(SERVER_IP, 6003);
-        sender4->setup(SERVER_IP, 6004);
-        sender5->setup(SERVER_IP, 6005);
-        sender6->setup(SERVER_IP, 6006);
-        sender7->setup(SERVER_IP, 6007);
-        sender8->setup(SERVER_IP, 6008);
-        sender9->setup(SERVER_IP, 6009);
-        senderToAudio->setup(SERVER_IP, 6010);
+        sender0->setup(VIDEO_OSC_IP, 6000);
+        sender1->setup(VIDEO_OSC_IP, 6001);
+        sender2->setup(VIDEO_OSC_IP, 6002);
+        sender3->setup(VIDEO_OSC_IP, 6003);
+        sender4->setup(VIDEO_OSC_IP, 6004);
+        sender5->setup(VIDEO_OSC_IP, 6005);
+        sender6->setup(VIDEO_OSC_IP, 6006);
+        sender7->setup(VIDEO_OSC_IP, 6007);
+        sender8->setup(VIDEO_OSC_IP, 6008);
+        sender9->setup(VIDEO_OSC_IP, 6009);
+        senderToAudio->setup(AUDIO_OSC_IP, 6010);
     }
     else{
         sender0->setup("10.0.0.12", 6000);
@@ -454,7 +454,7 @@ void ofApp::setup(){
     
     sendPlanePositions();
     
-    tcpClient.setup(IP, PORT);
+    tcpClient.setup(SERVER_TCP_IP, PORT);
     tcpClient.setMessageDelimiter("\n");
     
     mutLightID = -1;
@@ -491,7 +491,7 @@ void ofApp::setup(){
 	//ofxMidiOut::listPorts(); // via static too
 	
 	// connect
-	midiOut.openPort("IAC-Treiber IAC-Bus 1"); // by number
+	midiOut.openPort("MIDISPORT 4x4 Port A"); // by number
 	//midiOut.openPort("IAC Driver Pure Data In"); // by name
 	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
 	
@@ -670,6 +670,8 @@ void ofApp::update(){
                             amnt = 0;
                         }
                         else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
+                            playSound();
+                            
                             targetPos.set(l->getPosition());
                             
                             if (orientation == FLOOR) {
@@ -697,7 +699,7 @@ void ofApp::update(){
         deltaTime = ofGetElapsedTimeMillis() - connectTime;
 		if( deltaTime > 5000 ){
 			
-            tcpClient.setup(IP, PORT);
+            tcpClient.setup(SERVER_TCP_IP, PORT);
             tcpClient.setMessageDelimiter("\n");
             
 			connectTime = ofGetElapsedTimeMillis();
@@ -871,6 +873,10 @@ void ofApp::keyPressed(int key){
     
     if (key == 'n') {
         drawNormals = !drawNormals;
+    }
+    
+    if (key == 'p') {
+        playSound();
     }
     if (key == 'a') {
         allNotesOffFoChannel(3);

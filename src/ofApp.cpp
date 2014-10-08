@@ -79,19 +79,163 @@ ofVec2f ofApp::normalizedPointToScreenPoint(ofVec2f normalizedPoint, ofPlanePrim
     
 }
 
+void ofApp::playI(){
+    cout << "playI" << endl;
+    
+    note = 60;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 64;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 67;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 71;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+void ofApp::playII(){
+    cout << "playII" << endl;
+    
+    note = 62;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 65;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 69;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 72;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+void ofApp::playIII(){
+    cout << "playIII" << endl;
+    
+    note = 64;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 67;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 71;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 74;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+void ofApp::playIV(){
+    cout << "playIV" << endl;
+    
+    note = 65;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 69;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 72;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 76;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+void ofApp::playV(){
+    cout << "playV" << endl;
+    
+    note = 67;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 71;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 74;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 77;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+void ofApp::playVI(){
+    cout << "playVI" << endl;
+    
+    note = 69;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 72;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 76;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 79;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+void ofApp::playVII(){
+    cout << "playVII" << endl;
+    
+    note = 71;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 74;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 77;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    note = 81;//ofMap(key, 48, 122, 0, 127);
+    velocity = ofRandom(20, 100);
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+
+void ofApp::allNotesOff(){
+    for (int i = 48; i<=122; i++) {
+        note = i;//ofMap(key, 48, 122, 0, 127);
+        velocity = 0;
+        midiOut.sendNoteOn(channel, note,  velocity);
+    }
+    
+}
+
+int i = 0;
+
 void ofApp::playSound(){
+    
+    i = ofRandom(1, 7);
+    
+    allNotesOff();
+    
+//    if (i==1) {
+//        playI();
+//    }else if (i==2){
+//        playII();
+//    }else if (i==3){
+//        playIII();
+//    }else if (i==4){
+//        playIV();
+//    }else if (i==5){
+//        playV();
+//    }else if (i==6){
+//        playVI();
+//    }else if (i==7){
+//        playVII();
+//    }
+    
     
     note = ofRandom(40, 80);//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
     midiOut.sendNoteOn(channel, note,  velocity);
-    
-    /*if (ofRandom(1)<0.5f) {
-        soundPlayer.loadSound("StereoVocal.aif");
-    }
-    else{
-        soundPlayer.loadSound("audio_5.aif");
-    }
-    soundPlayer.play();*/
 }
 
 void ofApp::setLightOri(ofLight *light, ofVec3f rot){
@@ -518,18 +662,18 @@ void ofApp::update(){
             if (l->active == true) {
 
                 if (lightEvent == LIGHT_EVENT_CREATE) {
-                    cout << "LIGHT_EVENT_CREATE" << endl;
+//                    cout << "LIGHT_EVENT_CREATE" << endl;
                     
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
                     
                     setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
                     
-                    cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
+//                    cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
                 }
                 
                 else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
                     
-                    cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
+//                    cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
                     if (amnt <= 1.0f) {
                         amnt = amnt + speed;
                     }
@@ -778,11 +922,7 @@ void ofApp::serverRetired(ofxSyphonServerDirectoryEventArgs &arg){
 }
 
 void ofApp::exit(){
-    for (int i = 48; i<=122; i++) {
-        note = i;//ofMap(key, 48, 122, 0, 127);
-        velocity = 0;
-        midiOut.sendNoteOn(channel, note,  velocity);
-    }
+    allNotesOff();
 }
 
 

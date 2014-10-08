@@ -24,7 +24,19 @@ public:
 
     void sendPlanePositions();
     
+    
+    
     void playSound();
+    
+    
+    void allNotesOff();
+    void playI();
+    void playII();
+    void playIII();
+    void playIV();
+    void playV();
+    void playVI();
+    void playVII();
     
     ofVec2f normalizedPointToScreenPoint(ofVec2f, ofPlanePrimitive *aPlane);
     

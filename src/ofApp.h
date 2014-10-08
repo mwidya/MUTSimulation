@@ -12,6 +12,12 @@
 class ofApp : public ofBaseApp{
 
 public:
+    void setupOSC();
+    void setupPlanes();
+    void setupSyphon();
+    void setupMIDI();
+    
+    
     void setup();
     void update();
     void draw();

@@ -2,9 +2,12 @@
 
 
 #define SERVER_TCP_IP "localhost"
-#define VIDEO_OSC_IP "10.0.0.5"
-#define AUDIO_OSC_IP "10.0.0.7"
+#define VIDEO_OSC_IP "localhost"
+#define AUDIO_OSC_IP "localhost"
 #define PORT 12333
+#define MIDI_DEVICE_NAME "IAC-Treiber IAC-Bus 1"
+
+
 #define MAX_LIGHTS 1
 
 float factor = 0.2f;
@@ -297,10 +300,9 @@ void ofApp::setLightOri(ofLight *light, ofVec3f rot){
     light->setOrientation(q);
 }
 
-void ofApp::setup(){
+void ofApp::setupOSC(){
     
     // const int oscPorts[10] = {6000,6000,6000,6001,6000,6000,6002,6001,6000,6002};
-    
     
     sender0 = new ofxOscSender();
     sender1 = new ofxOscSender();
@@ -313,7 +315,7 @@ void ofApp::setup(){
     sender8 = new ofxOscSender();
     sender9 = new ofxOscSender();
     senderToAudio = new ofxOscSender();
-
+    
     bool local = true;
     
     if (local) {
@@ -355,13 +357,9 @@ void ofApp::setup(){
     senders.push_back(sender8);
     senders.push_back(sender9);
     
-    syphonServerDirectory.setup();
-    ofAddListener(syphonServerDirectory.events.serverAnnounced, this, &ofApp::serverAnnounced);
-    ofAddListener(syphonServerDirectory.events.serverUpdated, this, &ofApp::serverUpdated);
-    ofAddListener(syphonServerDirectory.events.serverRetired, this, &ofApp::serverRetired);
-    
-    easyCam.setDistance(30000*factor);
-    
+}
+
+void ofApp::setupPlanes(){
     f0.set(f0Long, f0Short);
     f0.setPosition(f4f5Distance*.5 + f3f4Distance + f2Long + f0f1Distance, 0, 0);
     f0.rotate(-90, 0, 1, 0);
@@ -430,8 +428,6 @@ void ofApp::setup(){
     planes.push_back(&f9);
     planes.push_back(&f4_5);
     
-    roomLength = ofDist(f0.getPosition().x, f0.getPosition().y, f9.getPosition().x, f9.getPosition().y);
-    cout << "roomLength = " << ofToString(roomLength) << endl;
     
     // Syphon output renders upside down.
     
@@ -441,6 +437,65 @@ void ofApp::setup(){
             plane->rotate(180, 0, 0, 1);
         }
     }
+    
+    
+    if (isSyphonOutput) {
+        for (int i = 0; i < planes.size(); i++) {
+            mutPlane *plane = planes[i];
+            plane->fbo.allocate(plane->getWidth(), plane->getHeight());
+            plane->syphonClient.setup();
+        }
+    }
+}
+
+void ofApp::setupSyphon(){
+    
+    syphonServerDirectory.setup();
+    ofAddListener(syphonServerDirectory.events.serverAnnounced, this, &ofApp::serverAnnounced);
+    ofAddListener(syphonServerDirectory.events.serverUpdated, this, &ofApp::serverUpdated);
+    ofAddListener(syphonServerDirectory.events.serverRetired, this, &ofApp::serverRetired);
+}
+
+void ofApp::setupMIDI(){
+    
+    // print the available output ports to the console
+	midiOut.listPorts(); // via instance
+	//ofxMidiOut::listPorts(); // via static too
+	
+	// connect
+	midiOut.openPort(MIDI_DEVICE_NAME); // by number
+	//midiOut.openPort("IAC Driver Pure Data In"); // by name
+	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
+	
+    //	channel = 1;
+	currentPgm = 0;
+	note = 0;
+	velocity = 0;
+	pan = 0;
+	bend = 0;
+	touch = 0;
+	polytouch = 0;
+    
+}
+
+void ofApp::setup(){
+    
+    setupOSC();
+    
+    setupSyphon();
+    
+    setupMIDI();
+    
+    setupPlanes();
+    
+    
+    
+    easyCam.setDistance(30000*factor);
+    
+    
+    roomLength = ofDist(f0.getPosition().x, f0.getPosition().y, f9.getPosition().x, f9.getPosition().y);
+    cout << "roomLength = " << ofToString(roomLength) << endl;
+    
     
     
     
@@ -471,38 +526,7 @@ void ofApp::setup(){
         lights.push_back(light);
     }
     
-    if (isSyphonOutput) {
-        for (int i = 0; i < planes.size(); i++) {
-            mutPlane *plane = planes[i];
-            plane->fbo.allocate(plane->getWidth(), plane->getHeight());
-            plane->syphonClient.setup();
-        }
-    }
-    
     lightEvent = LIGHT_EVENT_CREATE;
-    
-    
-    
-    
-    
-    
-    // print the available output ports to the console
-	midiOut.listPorts(); // via instance
-	//ofxMidiOut::listPorts(); // via static too
-	
-	// connect
-	midiOut.openPort("MIDISPORT 4x4 Port A"); // by number
-	//midiOut.openPort("IAC Driver Pure Data In"); // by name
-	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
-	
-//	channel = 1;
-	currentPgm = 0;
-	note = 0;
-	velocity = 0;
-	pan = 0;
-	bend = 0;
-	touch = 0;
-	polytouch = 0;
     
     
 }

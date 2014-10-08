@@ -26,10 +26,12 @@ public:
     
     
     
+    void playSoundForChannel(int channel);
     void playSound();
-    
+    void playNote(int note, int velocity, int channel);
     
     void allNotesOff();
+    void allNotesOffFoChannel(int c);
     void playI();
     void playII();
     void playIII();
@@ -97,7 +99,7 @@ public:
     
     
 	ofxMidiOut midiOut;
-	int channel;
+//	int channel;
 	
 	unsigned int currentPgm;
 	int note, velocity;

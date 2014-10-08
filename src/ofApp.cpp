@@ -4,7 +4,7 @@
 #define IP "127.0.0.1"
 #define SERVER_IP "127.0.0.1"
 #define PORT 12333
-#define MAX_LIGHTS 1
+#define MAX_LIGHTS 3
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -84,16 +84,17 @@ void ofApp::playI(){
     
     note = 60;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int channel = 1;
+    playNote(note, velocity, channel);
     note = 64;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 67;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 71;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     
 }
 void ofApp::playII(){
@@ -101,16 +102,17 @@ void ofApp::playII(){
     
     note = 62;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int channel = 1;
+    playNote(note, velocity, channel);
     note = 65;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 69;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 72;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     
 }
 void ofApp::playIII(){
@@ -118,16 +120,17 @@ void ofApp::playIII(){
     
     note = 64;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int channel = 1;
+    playNote(note, velocity, channel);
     note = 67;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 71;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 74;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     
 }
 void ofApp::playIV(){
@@ -135,16 +138,17 @@ void ofApp::playIV(){
     
     note = 65;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int channel = 1;
+    playNote(note, velocity, channel);
     note = 69;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 72;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 76;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     
 }
 void ofApp::playV(){
@@ -152,16 +156,17 @@ void ofApp::playV(){
     
     note = 67;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int channel = 1;
+    playNote(note, velocity, channel);
     note = 71;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 74;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 77;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     
 }
 void ofApp::playVI(){
@@ -169,16 +174,17 @@ void ofApp::playVI(){
     
     note = 69;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int channel = 1;
+    playNote(note, velocity, channel);
     note = 72;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 76;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 79;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     
 }
 void ofApp::playVII(){
@@ -186,57 +192,101 @@ void ofApp::playVII(){
     
     note = 71;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int channel = 1;
+    playNote(note, velocity, channel);
     note = 74;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 77;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     note = 81;//ofMap(key, 48, 122, 0, 127);
     velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    playNote(note, velocity, channel);
     
 }
 
-void ofApp::allNotesOff(){
+void ofApp::allNotesOffFoChannel(int c){
     for (int i = 48; i<=122; i++) {
         note = i;//ofMap(key, 48, 122, 0, 127);
         velocity = 0;
-        midiOut.sendNoteOn(channel, note,  velocity);
+        playNote(note, velocity, c);
+        //        midiOut.sendNoteOff(channel, note, 128);
     }
     
 }
 
-int i = 0;
+void ofApp::allNotesOff(){
+    for (int c = 1; c <= 3; c++) {
+        allNotesOffFoChannel(c);
+    }
+}
+
+void ofApp::playNote(int note, int velocity, int channel){
+    
+    midiOut.sendNoteOn(channel, note,  velocity);
+    
+}
+
+void ofApp::playSoundForChannel(int channel){
+    
+//    allNotesOff();
+    
+    /*int i = ofRandom(1, 7);
+    
+    if (i==1) {
+        playI();
+    }else if (i==2){
+        playII();
+    }else if (i==3){
+        playIII();
+    }else if (i==4){
+        playIV();
+    }else if (i==5){
+        playV();
+    }else if (i==6){
+        playVI();
+    }else if (i==7){
+        playVII();
+    }*/
+    
+    int note = ofRandom(40, 80);//ofMap(key, 48, 122, 0, 127);
+    int velocity = ofRandom(20, 100);
+    
+    allNotesOffFoChannel(channel);
+    playNote(note, velocity, channel);
+    
+}
 
 void ofApp::playSound(){
     
-    i = ofRandom(1, 7);
-    
     allNotesOff();
     
-//    if (i==1) {
-//        playI();
-//    }else if (i==2){
-//        playII();
-//    }else if (i==3){
-//        playIII();
-//    }else if (i==4){
-//        playIV();
-//    }else if (i==5){
-//        playV();
-//    }else if (i==6){
-//        playVI();
-//    }else if (i==7){
-//        playVII();
-//    }
+    /*int i = ofRandom(1, 7);
     
+    if (i==1) {
+        playI();
+    }else if (i==2){
+        playII();
+    }else if (i==3){
+        playIII();
+    }else if (i==4){
+        playIV();
+    }else if (i==5){
+        playV();
+    }else if (i==6){
+        playVI();
+    }else if (i==7){
+        playVII();
+    }*/
     
-    note = ofRandom(40, 80);//ofMap(key, 48, 122, 0, 127);
-    velocity = ofRandom(20, 100);
-    midiOut.sendNoteOn(channel, note,  velocity);
+    int note = ofRandom(40, 80);//ofMap(key, 48, 122, 0, 127);
+    int velocity = ofRandom(20, 100);
+    for (int c = 1; c<=3; c++) {
+        playNote(note, velocity, c);
+    }
 }
+
 
 void ofApp::setLightOri(ofLight *light, ofVec3f rot){
     ofVec3f xax(1, 0, 0);
@@ -445,7 +495,7 @@ void ofApp::setup(){
 	//midiOut.openPort("IAC Driver Pure Data In"); // by name
 	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
 	
-	channel = 1;
+//	channel = 1;
 	currentPgm = 0;
 	note = 0;
 	velocity = 0;
@@ -486,8 +536,6 @@ void ofApp::update(){
                 }
                 
                 mutLightID  = (mutLightID+1) % MAX_LIGHTS;
-                
-                playSound();
                 
                 for (int i = 0; i<lights.size(); i++) {
                     mutLight *l = lights[i];
@@ -607,6 +655,9 @@ void ofApp::update(){
                         }
                         
                         if (lightEvent == LIGHT_EVENT_CREATE) {
+                            
+//                            playSoundForChannel(l->mutLightID + 1);
+                            playSound();
                             
                             l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
                             
@@ -820,6 +871,9 @@ void ofApp::keyPressed(int key){
     
     if (key == 'n') {
         drawNormals = !drawNormals;
+    }
+    if (key == 'a') {
+        allNotesOffFoChannel(3);
     }
     
     if (key == 'l'){

@@ -478,39 +478,17 @@ void ofApp::setupMIDI(){
     
 }
 
-void ofApp::setup(){
-    
-    setupOSC();
-    
-    setupSyphon();
-    
-    setupMIDI();
-    
-    setupPlanes();
-    
-    
-    
-    easyCam.setDistance(30000*factor);
-    
-    
-    roomLength = ofDist(f0.getPosition().x, f0.getPosition().y, f9.getPosition().x, f9.getPosition().y);
-    cout << "roomLength = " << ofToString(roomLength) << endl;
-    
-    
-    
-    
+void ofApp::setupTCP(){
+    tcpClient.setup(SERVER_TCP_IP, PORT);
+    tcpClient.setMessageDelimiter("\n");
+}
+
+void ofApp::setupLights(){
     ofSetGlobalAmbientColor(ofFloatColor(0.5f));
-    
     ofSetSmoothLighting(true);
     
     material.setShininess(120);
     material.setSpecularColor(ofFloatColor(1));
-    
-    
-    sendPlanePositions();
-    
-    tcpClient.setup(SERVER_TCP_IP, PORT);
-    tcpClient.setMessageDelimiter("\n");
     
     mutLightID = -1;
     
@@ -527,7 +505,29 @@ void ofApp::setup(){
     }
     
     lightEvent = LIGHT_EVENT_CREATE;
+}
+
+void ofApp::setup(){
     
+    setupOSC();
+    
+    setupSyphon();
+    
+    setupTCP();
+    
+    setupMIDI();
+    
+    setupPlanes();
+    
+    setupLights();
+    
+    sendPlanePositions();
+    
+    
+    
+    easyCam.setDistance(30000*factor);
+    
+    roomLength = ofDist(f0.getPosition().x, f0.getPosition().y, f9.getPosition().x, f9.getPosition().y);
     
 }
 

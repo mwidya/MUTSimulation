@@ -16,7 +16,8 @@ public:
     void setupPlanes();
     void setupSyphon();
     void setupMIDI();
-    
+    void setupTCP();
+    void setupLights();
     
     void setup();
     void update();

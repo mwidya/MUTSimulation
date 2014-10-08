@@ -8,7 +8,7 @@
 #define MIDI_DEVICE_NAME "IAC-Treiber IAC-Bus 1"
 
 
-#define MAX_LIGHTS 1
+#define MAX_LIGHTS 3
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -51,9 +51,10 @@ enum{
 };
 
 enum{
-    LIGHT_EVENT_CREATE,
+    LIGHT_EVENT_LIVE,
     LIGHT_EVENT_POINT_TO_POINT,
     LIGHT_EVENT_MOVE_SOMEWHERE,
+    LIGHT_EVENT_DIE,
 };
 
 void ofApp::sendPlanePositions(){
@@ -504,7 +505,7 @@ void ofApp::setupLights(){
         lights.push_back(light);
     }
     
-    lightEvent = LIGHT_EVENT_CREATE;
+    lightEvent = LIGHT_EVENT_LIVE;
 }
 
 void ofApp::setup(){
@@ -556,7 +557,7 @@ void ofApp::update(){
                     lightEvent = LIGHT_EVENT_POINT_TO_POINT;
                 }
                 else{
-                    lightEvent = LIGHT_EVENT_CREATE;
+                    lightEvent = LIGHT_EVENT_LIVE;
                 }
                 
                 mutLightID  = (mutLightID+1) % MAX_LIGHTS;
@@ -678,10 +679,10 @@ void ofApp::update(){
                                 break;
                         }
                         
-                        if (lightEvent == LIGHT_EVENT_CREATE) {
+                        if (lightEvent == LIGHT_EVENT_LIVE) {
                             
-//                            playSoundForChannel(l->mutLightID + 1);
-                            playSound();
+                            playSoundForChannel(l->mutLightID + 1);
+//                            playSound();
                             
                             l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
                             
@@ -694,7 +695,7 @@ void ofApp::update(){
                             amnt = 0;
                         }
                         else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-                            playSound();
+//                            playSound();
                             
                             targetPos.set(l->getPosition());
                             
@@ -730,7 +731,6 @@ void ofApp::update(){
 		}
 	}
     
-    
     // WARNING If coordinate is set to fixed value (eg. p->getPosition), every light jumps to this position.
     
     if (p != NULL) {
@@ -738,7 +738,7 @@ void ofApp::update(){
             mutLight *l = lights[i];
             if (l->active == true) {
 
-                if (lightEvent == LIGHT_EVENT_CREATE) {
+                if (lightEvent == LIGHT_EVENT_LIVE) {
 //                    cout << "LIGHT_EVENT_CREATE" << endl;
                     
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);

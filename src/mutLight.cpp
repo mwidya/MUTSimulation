@@ -10,9 +10,12 @@
 
 enum{
     LIGHT_STATUS_LIVES,
-    LIGHT_STATUS_POINT_TO_POINT,
-    LIGHT_STATUS_MOVE_SOMEWHERE,
     LIGHT_STATUS_DEAD,
+};
+
+enum{
+    LIGHT_MOVEMENT_POINT_TO_POINT,
+    LIGHT_MOVEMENT_SOMEWHERE,
 };
 
 mutLight::mutLight(){
@@ -45,6 +48,9 @@ float mutLight::getLifetime(){
 float mutLight::getCreationtime(){
     return creationtime;
 }
+int mutLight::getMovement(){
+    return movement;
+}
 ofVec3f mutLight::getStartPosition(){
     return startPosition;
 }
@@ -73,6 +79,9 @@ void mutLight::setLifetime(float lifetime){
 }
 void mutLight::setCreationtime(float time){
     this->creationtime = time;
+}
+void mutLight::setMovement(int movement){
+    this->movement = movement;
 }
 void mutLight::setStartPosition(ofVec3f startPosition){
     this->startPosition = startPosition;

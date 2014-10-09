@@ -50,8 +50,8 @@ public:
     
     void lightDies(mutLight*l);
     void lightCreate(mutLight *l);
-    void lightSetStatusPointToPoint(mutLight *l);
-    void lightSetStatusMoveSomewhere(mutLight *l);
+    void lightSetMovementPointToPoint(mutLight *l);
+    void lightSetMovementSomewhere(mutLight *l);
     
     
     

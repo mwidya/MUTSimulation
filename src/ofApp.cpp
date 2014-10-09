@@ -52,9 +52,12 @@ enum{
 
 enum{
     LIGHT_STATUS_LIVES,
-    LIGHT_STATUS_POINT_TO_POINT,
-    LIGHT_STATUS_MOVE_SOMEWHERE,
     LIGHT_STATUS_DEAD,
+};
+
+enum{
+    LIGHT_MOVEMENT_POINT_TO_POINT,
+    LIGHT_MOVEMENT_SOMEWHERE,
 };
 
 void ofApp::sendPlanePositions(){
@@ -667,13 +670,13 @@ void ofApp::lightCreate(mutLight *l){
     
 }
 
-void ofApp::lightSetStatusPointToPoint(mutLight *l){
+void ofApp::lightSetMovementPointToPoint(mutLight *l){
     
-    l->setStatus(LIGHT_STATUS_POINT_TO_POINT);
+    l->setMovement(LIGHT_MOVEMENT_POINT_TO_POINT);
 }
 
-void ofApp::lightSetStatusMoveSomewhere(mutLight *l){
-    l->setStatus(LIGHT_STATUS_MOVE_SOMEWHERE);
+void ofApp::lightSetMovementSomewhere(mutLight *l){
+    l->setMovement(LIGHT_MOVEMENT_SOMEWHERE);
     
 }
 
@@ -715,14 +718,14 @@ void ofApp::update(){
                         
                         else if (l->getStatus()==LIGHT_STATUS_LIVES){
                             if (1) {
-                                lightSetStatusPointToPoint(l);
+                                lightSetMovementPointToPoint(l);
                             }else{
-                                lightSetStatusMoveSomewhere(l);
+                                lightSetMovementSomewhere(l);
                             }
                             
                         }
                         
-                        if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){
+                        if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
                             
                             l->setTargetPosition(l->getPosition());
                             
@@ -770,41 +773,41 @@ void ofApp::update(){
                     
                     l->setLifetime(ofGetElapsedTimef() - l->getCreationtime());
                     
-                    if (l->getLifetime() > 10) {
+                    /*if (l->getLifetime() > 10) {
                         lightDies(l);
-                    }
+                    }*/
                     
                 }
                 
-                else if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){
-                    if (amnt <= 1.0f) {
-                        amnt = amnt + speed;
-                    }
-                    else{
-                        l->setStartPosition(l->getTargetPosition());
-                        l->setStartOrientation(l->getTargetOrientation());
-                    }
-                    
-                    
-                    float x = ofLerp(l->getStartPosition().x, l->getTargetPosition().x, amnt);
-                    float y = ofLerp(l->getStartPosition().y, l->getTargetPosition().y, amnt);
-                    float z = ofLerp(l->getStartPosition().z, l->getTargetPosition().z, amnt);
-                    lerpPos = ofVec3f(x, y, z);
-                    l->setPosition(lerpPos);
-                    
-                    
-                    float orientationX = ofLerp(l->getStartOrientation().x, l->getTargetOrientation().x, amnt);
-                    float orientationY = ofLerp(l->getStartOrientation().y, l->getTargetOrientation().y, amnt);
-                    float orientationZ = ofLerp(l->getStartOrientation().z, l->getTargetOrientation().z, amnt);
-                    lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
-                    l->setOrientation(lerpOrientation);
+            if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
+                if (amnt <= 1.0f) {
+                    amnt = amnt + speed;
+                }
+                else{
+                    l->setStartPosition(l->getTargetPosition());
+                    l->setStartOrientation(l->getTargetOrientation());
                 }
                 
-                else if (l->getStatus() == LIGHT_STATUS_MOVE_SOMEWHERE){
-                    
-                    // Was isn das fŸr nen komisches Zucken ?
-                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
-                }
+                
+                float x = ofLerp(l->getStartPosition().x, l->getTargetPosition().x, amnt);
+                float y = ofLerp(l->getStartPosition().y, l->getTargetPosition().y, amnt);
+                float z = ofLerp(l->getStartPosition().z, l->getTargetPosition().z, amnt);
+                lerpPos = ofVec3f(x, y, z);
+                l->setPosition(lerpPos);
+                
+                
+                float orientationX = ofLerp(l->getStartOrientation().x, l->getTargetOrientation().x, amnt);
+                float orientationY = ofLerp(l->getStartOrientation().y, l->getTargetOrientation().y, amnt);
+                float orientationZ = ofLerp(l->getStartOrientation().z, l->getTargetOrientation().z, amnt);
+                lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
+                l->setOrientation(lerpOrientation);
+            }
+            
+            else if (l->getMovement() == LIGHT_MOVEMENT_SOMEWHERE){
+                
+                // Was isn das fŸr nen komisches Zucken ?
+                setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
+            }
             }
         }
     }

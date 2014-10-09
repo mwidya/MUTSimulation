@@ -9,16 +9,16 @@
 #include "mutLight.h"
 
 enum{
-    LIGHT_STATUS_LIVE,
+    LIGHT_STATUS_LIVES,
     LIGHT_STATUS_POINT_TO_POINT,
     LIGHT_STATUS_MOVE_SOMEWHERE,
-    LIGHT_STATUS_DIE,
+    LIGHT_STATUS_DEAD,
 };
 
 mutLight::mutLight(){
     this->mutLightID = -1;
     this->isActive = false;
-    this->status = LIGHT_STATUS_DIE;
+    this->status = LIGHT_STATUS_DEAD;
     this->startPosition.set(0, 0, 0);
     this->targetPosition.set(0, 0, 0);
     this->startOrientation.set(0, 0, 0);

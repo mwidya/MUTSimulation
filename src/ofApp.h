@@ -47,6 +47,7 @@ public:
     void playVI();
     void playVII();
     
+    void lightCreate(mutLight *l);
     void setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touchPoint);
     ofVec2f normalizedPointToScreenPoint(ofVec2f, ofPlanePrimitive *aPlane);
     

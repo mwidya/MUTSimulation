@@ -51,7 +51,7 @@ enum{
 };
 
 enum{
-    LIGHT_STATUS_LIVE,
+    LIGHT_STATUS_LIVES,
     LIGHT_STATUS_POINT_TO_POINT,
     LIGHT_STATUS_MOVE_SOMEWHERE,
     LIGHT_STATUS_DEAD,
@@ -642,6 +642,10 @@ void ofApp::setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touch
     }
 }
 
+void ofApp::lightCreate(mutLight *l){
+    
+}
+
 void ofApp::update(){
     
     if (tcpClient.isConnected())
@@ -677,25 +681,15 @@ void ofApp::update(){
                         setLightPositionForMarkerId(l, markerId, touchPoint);
                         
                         if (l->getStatus()==LIGHT_STATUS_DEAD) {
-                            l->setStatus(LIGHT_STATUS_LIVE);
+                            l->setIsActive(false);
+                            
+                            l->setStatus(LIGHT_STATUS_LIVES);
                             l->enable();
                             l->setIsActive(true);
                             l->setSpotlight();
                             l->setSpotlightCutOff(50.0f);
                             l->setSpotConcentration(45.0f);
                             l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-                        }
-                        
-                        else if (l->getStatus()==LIGHT_STATUS_LIVE){
-                            l->setStatus(LIGHT_STATUS_POINT_TO_POINT);
-                        }
-                        
-                        else if (l->getStatus()==LIGHT_STATUS_POINT_TO_POINT){
-                            l->setStatus(LIGHT_STATUS_DEAD);
-                            l->setIsActive(false);
-                        }
-                        
-                        if (l->getStatus() == LIGHT_STATUS_LIVE) {
                             
                             l->setStartPosition(l->getPosition());
                             l->setTargetPosition(l->getStartPosition());
@@ -705,7 +699,11 @@ void ofApp::update(){
                             amnt = 0;
                         }
                         
-                        else if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){
+                        else if (l->getStatus()==LIGHT_STATUS_LIVES){
+                            l->setStatus(LIGHT_STATUS_POINT_TO_POINT);
+                        }
+                        
+                        if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){
                             
                             l->setTargetPosition(l->getPosition());
                             
@@ -746,10 +744,9 @@ void ofApp::update(){
         for (int i = 0; i<lights.size(); i++) {
             mutLight *l = lights[i];
             if (l->getIsActive() == true) {
-                if (l->getStatus() == LIGHT_STATUS_LIVE) {
+                if (l->getStatus() == LIGHT_STATUS_LIVES) {
                     
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
-                    
                     setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
                     
                 }

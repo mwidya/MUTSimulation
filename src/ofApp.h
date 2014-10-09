@@ -29,6 +29,7 @@ public:
     ofVec3f getLightOri(ofQuaternion *quat);
     void setLightOri(ofLight *light, ofVec3f rot);
 
+    void sendLightPositions();
     void sendPlanePositions();
     
     

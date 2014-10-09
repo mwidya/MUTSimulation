@@ -61,6 +61,53 @@ enum{
     LIGHT_MOVEMENT_SOMEWHERE,
 };
 
+void ofApp::sendLightPositions(){
+    for (int i = 0; i<lights.size(); i++) {
+        mutLight *l = lights[i];
+        
+        ofxOscMessage msgAudio;
+        msgAudio.setAddress("/light"+ofToString(i)+"/position");
+        
+        float minPosX = planes[0]->getPosition().x; // 3370
+        float maxPosX = planes[9]->getPosition().x; // - 4640
+        float maxDistance = minPosX - maxPosX;
+        float offset = 0;
+        float currentPosLightX = l->getPosition().x;
+        float interpolationVal = -(currentPosLightX - maxPosX) / abs(minPosX - maxPosX) + 1;
+        float currentPosX = maxDistance * interpolationVal + offset;
+        float normalizedValX = currentPosX / maxDistance;
+        
+        if (i==0) {
+            msgAudio.addFloatArg(normalizedValX);
+        }else if (i==1){
+            msgAudio.addFloatArg(normalizedValX);
+        }else if (i==2){
+            msgAudio.addFloatArg(normalizedValX);
+        }
+        
+        senderToAudio->sendMessage(msgAudio);
+        
+        for (int j = 0; j < senders.size(); j++) {
+            ofxOscMessage m;
+            m.setAddress("/light/position");
+            m.addFloatArg(l->getPosition().x);
+            m.addFloatArg(l->getPosition().y);
+            m.addFloatArg(l->getPosition().z);
+            m.addFloatArg(l->getDiffuseColor().r);
+            m.addFloatArg(l->getDiffuseColor().g);
+            m.addFloatArg(l->getDiffuseColor().b);
+            m.addFloatArg(l->getSpotlightCutOff());
+            m.addFloatArg(l->getSpotConcentration());
+            m.addInt64Arg(l->getMutLightId());
+            m.addIntArg((int)l->getIsActive());
+            m.addFloatArg(l->getOrientationEuler().x);
+            m.addFloatArg(l->getOrientationEuler().y);
+            m.addFloatArg(l->getOrientationEuler().z);
+            senders[j]->sendMessage(m);
+        }
+    }
+}
+
 void ofApp::sendPlanePositions(){
     
     for (int j = 0; j < senders.size(); j++) {
@@ -791,50 +838,9 @@ void ofApp::update(){
         }
     }
     
-    for (int i = 0; i<lights.size(); i++) {
-        mutLight *l = lights[i];
-        
-        ofxOscMessage msgAudio;
-        msgAudio.setAddress("/light"+ofToString(i)+"/position");
-        
-        float minPosX = planes[0]->getPosition().x; // 3370
-        float maxPosX = planes[9]->getPosition().x; // - 4640
-        float maxDistance = minPosX - maxPosX;
-        float offset = 0;
-        float currentPosLightX = l->getPosition().x;
-        float interpolationVal = -(currentPosLightX - maxPosX) / abs(minPosX - maxPosX) + 1;
-        float currentPosX = maxDistance * interpolationVal + offset;
-        float normalizedValX = currentPosX / maxDistance;
-        
-        if (i==0) {
-            msgAudio.addFloatArg(normalizedValX);
-        }else if (i==1){
-            msgAudio.addFloatArg(normalizedValX);
-        }else if (i==2){
-            msgAudio.addFloatArg(normalizedValX);
-        }
-        
-        senderToAudio->sendMessage(msgAudio);
-        
-        for (int j = 0; j < senders.size(); j++) {
-            ofxOscMessage m;
-            m.setAddress("/light/position");
-            m.addFloatArg(l->getPosition().x);
-            m.addFloatArg(l->getPosition().y);
-            m.addFloatArg(l->getPosition().z);
-            m.addFloatArg(l->getDiffuseColor().r);
-            m.addFloatArg(l->getDiffuseColor().g);
-            m.addFloatArg(l->getDiffuseColor().b);
-            m.addFloatArg(l->getSpotlightCutOff());
-            m.addFloatArg(l->getSpotConcentration());
-            m.addInt64Arg(l->getMutLightId());
-            m.addIntArg((int)l->getIsActive());
-            m.addFloatArg(l->getOrientationEuler().x);
-            m.addFloatArg(l->getOrientationEuler().y);
-            m.addFloatArg(l->getOrientationEuler().z);
-            senders[j]->sendMessage(m);
-        }
-    }
+    sendLightPositions();
+    
+    sendPlanePositions();
     
     if (isSyphonOutput) {
         for (int i = 0; i < planes.size(); i++) {
@@ -845,8 +851,6 @@ void ofApp::update(){
             plane->fbo.end();
         }
     }
-    
-    sendPlanePositions();
 }
 
 void ofApp::draw(){

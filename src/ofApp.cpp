@@ -679,40 +679,84 @@ void ofApp::update(){
                                 break;
                         }
                         
-                        if (lightEvent == LIGHT_EVENT_LIVE) {
+                        playSoundForChannel(l->mutLightID + 1);
+                        
+                        if (l->mutLightID==0) {
+                            if (lightEvent == LIGHT_EVENT_LIVE) {
+                                
+//                                playSoundForChannel(l->mutLightID + 1);
+                                //                            playSound();
+                                
+                                l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
+                                
+                                startPos.set(l->getPosition());
+                                targetPos.set(startPos);
+                                
+                                startOrientation.set(l->getOrientationEuler());
+                                targetOrientation.set(startOrientation);
+                                
+                                amnt = 0;
+                            }
                             
-                            playSoundForChannel(l->mutLightID + 1);
-//                            playSound();
-                            
-                            l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-                            
-                            startPos.set(l->getPosition());
-                            targetPos.set(startPos);
-                            
-                            startOrientation.set(l->getOrientationEuler());
-                            targetOrientation.set(startOrientation);
-                            
-                            amnt = 0;
+                            else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
+                                //                            playSound();
+                                
+                                targetPos.set(l->getPosition());
+                                
+                                if (orientation == FLOOR) {
+                                    targetOrientation.set(lightOrientationFloor);
+                                }
+                                else if (orientation == EAST){
+                                    targetOrientation.set(lightOrientationEast);
+                                }
+                                else if (orientation == WEST){
+                                    targetOrientation.set(lightOrientationWest);
+                                }
+                                
+                                cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
+                                
+                                speed = ofRandom(0.001f, 0.01f);
+                                amnt = 0;
+                            }
                         }
-                        else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-//                            playSound();
-                            
-                            targetPos.set(l->getPosition());
-                            
-                            if (orientation == FLOOR) {
-                                targetOrientation.set(lightOrientationFloor);
+                        if (l->mutLightID==1) {
+                            if (lightEvent == LIGHT_EVENT_LIVE) {
+                                
+//                                playSoundForChannel(l->mutLightID + 1);
+                                //                            playSound();
+                                
+                                l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
+                                
+                                startPos1.set(l->getPosition());
+                                targetPos1.set(startPos1);
+                                
+                                startOrientation1.set(l->getOrientationEuler());
+                                targetOrientation1.set(startOrientation1);
+                                
+                                amnt = 0;
                             }
-                            else if (orientation == EAST){
-                                targetOrientation.set(lightOrientationEast);
-                            }
-                            else if (orientation == WEST){
-                                targetOrientation.set(lightOrientationWest);
-                            }
                             
-                            cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
-                            
-                            speed = ofRandom(0.001f, 0.01f);
-                            amnt = 0;
+                            else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
+                                //                            playSound();
+                                
+                                targetPos1.set(l->getPosition());
+                                
+                                if (orientation == FLOOR) {
+                                    targetOrientation1.set(lightOrientationFloor);
+                                }
+                                else if (orientation == EAST){
+                                    targetOrientation1.set(lightOrientationEast);
+                                }
+                                else if (orientation == WEST){
+                                    targetOrientation1.set(lightOrientationWest);
+                                }
+                                
+                                cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
+                                
+                                speed = ofRandom(0.001f, 0.01f);
+                                amnt = 0;
+                            }
+                        
                         }
                     }
                 }
@@ -737,46 +781,130 @@ void ofApp::update(){
         for (int i = 0; i<lights.size(); i++) {
             mutLight *l = lights[i];
             if (l->active == true) {
-
-                if (lightEvent == LIGHT_EVENT_LIVE) {
-//                    cout << "LIGHT_EVENT_CREATE" << endl;
-                    
-                    l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
-                    
-                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
-                    
-//                    cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
-                }
-                
-                else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-                    
-//                    cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
-                    if (amnt <= 1.0f) {
-                        amnt = amnt + speed;
-                    }
-                    else{
-                        startPos = targetPos;
-                        startOrientation = targetOrientation;
+                if (l->mutLightID==0) {
+                    if (lightEvent == LIGHT_EVENT_LIVE) {
+                        
+                        l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
+                        
+                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
+                        
                     }
                     
+                    else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
+                        
+                        cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
+                        if (amnt <= 1.0f) {
+                            amnt = amnt + speed;
+                        }
+                        else{
+                            startPos = targetPos;
+                            startOrientation = targetOrientation;
+                        }
+                        
+                        
+                        float x = ofLerp(startPos.x, targetPos.x, amnt);
+                        float y = ofLerp(startPos.y, targetPos.y, amnt);
+                        float z = ofLerp(startPos.z, targetPos.z, amnt);
+                        lerpPos = ofVec3f(x, y, z);
+                        l->setPosition(lerpPos);
+                        
+                        
+                        float orientationX = ofLerp(startOrientation.x, targetOrientation.x, amnt);
+                        float orientationY = ofLerp(startOrientation.y, targetOrientation.y, amnt);
+                        float orientationZ = ofLerp(startOrientation.z, targetOrientation.z, amnt);
+                        lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
+                        l->setOrientation(lerpOrientation);
+                    }
                     
-                    float x = ofLerp(startPos.x, targetPos.x, amnt);
-                    float y = ofLerp(startPos.y, targetPos.y, amnt);
-                    float z = ofLerp(startPos.z, targetPos.z, amnt);
-                    lerpPos = ofVec3f(x, y, z);
-                    l->setPosition(lerpPos);
-                    
-                    
-                    float orientationX = ofLerp(startOrientation.x, targetOrientation.x, amnt);
-                    float orientationY = ofLerp(startOrientation.y, targetOrientation.y, amnt);
-                    float orientationZ = ofLerp(startOrientation.z, targetOrientation.z, amnt);
-                    lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
-                    l->setOrientation(lerpOrientation);
+                    else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
+                        // Was isn das fŸr nen komisches Zucken ?
+                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
+                    }
                 }
-                
-                else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
-                    // Was isn das fŸr nen komisches Zucken ?
-                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
+                if (l->mutLightID==1) {
+                    if (lightEvent == LIGHT_EVENT_LIVE) {
+                        cout << "LIGHT_EVENT_CREATE" << endl;
+                        
+                        l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
+                        
+                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
+                        
+                        cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
+                    }
+                    
+                    else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
+                        
+                        cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
+                        if (amnt <= 1.0f) {
+                            amnt = amnt + speed;
+                        }
+                        else{
+                            startPos1 = targetPos1;
+                            startOrientation1 = targetOrientation1;
+                        }
+                        
+                        
+                        float x = ofLerp(startPos1.x, targetPos1.x, amnt);
+                        float y = ofLerp(startPos1.y, targetPos1.y, amnt);
+                        float z = ofLerp(startPos1.z, targetPos1.z, amnt);
+                        lerpPos = ofVec3f(x, y, z);
+                        l->setPosition(lerpPos);
+                        
+                        
+                        float orientationX = ofLerp(startOrientation1.x, targetOrientation1.x, amnt);
+                        float orientationY = ofLerp(startOrientation1.y, targetOrientation1.y, amnt);
+                        float orientationZ = ofLerp(startOrientation1.z, targetOrientation1.z, amnt);
+                        lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
+                        l->setOrientation(lerpOrientation);
+                    }
+                    
+                    else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
+                        // Was isn das fŸr nen komisches Zucken ?
+                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
+                    }
+                }
+                if (l->mutLightID==2) {
+                    if (lightEvent == LIGHT_EVENT_LIVE) {
+                        cout << "LIGHT_EVENT_CREATE" << endl;
+                        
+                        
+                        l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
+                        
+                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
+                        
+                        cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
+                    }
+                    
+                    else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
+                        
+                        cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
+                        if (amnt <= 1.0f) {
+                            amnt = amnt + speed;
+                        }
+                        else{
+                            startPos1 = targetPos1;
+                            startOrientation1 = targetOrientation1;
+                        }
+                        
+                        
+                        float x = ofLerp(startPos1.x, targetPos1.x, amnt);
+                        float y = ofLerp(startPos1.y, targetPos1.y, amnt);
+                        float z = ofLerp(startPos1.z, targetPos1.z, amnt);
+                        lerpPos = ofVec3f(x, y, z);
+                        l->setPosition(lerpPos);
+                        
+                        
+                        float orientationX = ofLerp(startOrientation1.x, targetOrientation1.x, amnt);
+                        float orientationY = ofLerp(startOrientation1.y, targetOrientation1.y, amnt);
+                        float orientationZ = ofLerp(startOrientation1.z, targetOrientation1.z, amnt);
+                        lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
+                        l->setOrientation(lerpOrientation);
+                    }
+                    
+                    else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
+                        // Was isn das fŸr nen komisches Zucken ?
+                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
+                    }
                 }
             }
         }
@@ -785,22 +913,27 @@ void ofApp::update(){
     for (int i = 0; i<lights.size(); i++) {
         mutLight *l = lights[i];
         
-        if (l->mutLightID == 0) {
-            ofxOscMessage msgAudio;
-            msgAudio.setAddress("/light0/position");
-            
-            float minPosX = planes[0]->getPosition().x; // 3370
-            float maxPosX = planes[9]->getPosition().x; // - 4640
-            float maxDistance = minPosX - maxPosX;
-            float offset = 0;
-            float currentPosLightX = l->getPosition().x;
-            float interpolationVal = -(currentPosLightX - maxPosX) / abs(minPosX - maxPosX) + 1;
-            float currentPosX = maxDistance * interpolationVal + offset;
-            float normalizedValX = currentPosX / maxDistance;
-            
-            msgAudio.addFloatArg(normalizedValX);
-            senderToAudio->sendMessage(msgAudio);
+        ofxOscMessage msgAudio;
+        msgAudio.setAddress("/light"+ofToString(i)+"/position");
+        
+        float minPosX = planes[0]->getPosition().x; // 3370
+        float maxPosX = planes[9]->getPosition().x; // - 4640
+        float maxDistance = minPosX - maxPosX;
+        float offset = 0;
+        float currentPosLightX = l->getPosition().x;
+        float interpolationVal = -(currentPosLightX - maxPosX) / abs(minPosX - maxPosX) + 1;
+        float currentPosX = maxDistance * interpolationVal + offset;
+        float normalizedValX = currentPosX / maxDistance;
+        
+        if (i==0) {
+            msgAudio.addFloatArg(sin(ofGetElapsedTimef()));
+        }else if (i==1){
+            msgAudio.addFloatArg(cos(ofGetElapsedTimef()));
+        }else if (i==2){
+            msgAudio.addFloatArg(cos(ofGetElapsedTimef()*2));
         }
+        
+        senderToAudio->sendMessage(msgAudio);
         
         for (int j = 0; j < senders.size(); j++) {
             ofxOscMessage m;

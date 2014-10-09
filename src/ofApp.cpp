@@ -682,16 +682,13 @@ void ofApp::update(){
                         playSoundForChannel(l->getMutLightId() + 1);
                         if (lightEvent == LIGHT_STATUS_LIVE) {
                             
-                            //                                playSoundForChannel(l->mutLightID + 1);
-                            //                            playSound();
-                            
                             l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
                             
-                            startPos.set(l->getPosition());
-                            targetPos.set(startPos);
+                            l->setStartPosition(l->getPosition());
+                            l->setTargetPosition(l->getStartPosition());
+                            l->setStartOrientation(l->getOrientationEuler());
+                            l->setTargetOrientation(l->getStartOrientation());
                             
-                            startOrientation.set(l->getOrientationEuler());
-                            targetOrientation.set(startOrientation);
                             
                             amnt = 0;
                         }
@@ -699,19 +696,19 @@ void ofApp::update(){
                         else if (lightEvent == LIGHT_STATUS_POINT_TO_POINT){
                             //                            playSound();
                             
-                            targetPos.set(l->getPosition());
+                            l->setTargetPosition(l->getPosition());
                             
                             if (orientation == FLOOR) {
-                                targetOrientation.set(lightOrientationFloor);
+                                l->setTargetOrientation(lightOrientationFloor);
                             }
                             else if (orientation == EAST){
-                                targetOrientation.set(lightOrientationEast);
+                                l->setTargetOrientation(lightOrientationEast);
                             }
                             else if (orientation == WEST){
-                                targetOrientation.set(lightOrientationWest);
+                                l->setTargetOrientation(lightOrientationWest);
                             }
                             
-                            cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
+                            cout << "targetOrientation = " << ofToString(l->getTargetOrientation()) << endl;
                             
                             speed = ofRandom(0.001f, 0.01f);
                             amnt = 0;
@@ -755,21 +752,21 @@ void ofApp::update(){
                         amnt = amnt + speed;
                     }
                     else{
-                        startPos = targetPos;
-                        startOrientation = targetOrientation;
+                        l->setStartPosition(l->getTargetPosition());
+                        l->setStartOrientation(l->getTargetOrientation());
                     }
                     
                     
-                    float x = ofLerp(startPos.x, targetPos.x, amnt);
-                    float y = ofLerp(startPos.y, targetPos.y, amnt);
-                    float z = ofLerp(startPos.z, targetPos.z, amnt);
+                    float x = ofLerp(l->getStartPosition().x, l->getTargetPosition().x, amnt);
+                    float y = ofLerp(l->getStartPosition().y, l->getTargetPosition().y, amnt);
+                    float z = ofLerp(l->getStartPosition().z, l->getTargetPosition().z, amnt);
                     lerpPos = ofVec3f(x, y, z);
                     l->setPosition(lerpPos);
                     
                     
-                    float orientationX = ofLerp(startOrientation.x, targetOrientation.x, amnt);
-                    float orientationY = ofLerp(startOrientation.y, targetOrientation.y, amnt);
-                    float orientationZ = ofLerp(startOrientation.z, targetOrientation.z, amnt);
+                    float orientationX = ofLerp(l->getStartOrientation().x, l->getTargetOrientation().x, amnt);
+                    float orientationY = ofLerp(l->getStartOrientation().y, l->getTargetOrientation().y, amnt);
+                    float orientationZ = ofLerp(l->getStartOrientation().z, l->getTargetOrientation().z, amnt);
                     lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
                     l->setOrientation(lerpOrientation);
                 }

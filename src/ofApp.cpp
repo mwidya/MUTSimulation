@@ -8,7 +8,7 @@
 #define MIDI_DEVICE_NAME "IAC-Treiber IAC-Bus 1"
 
 
-#define MAX_LIGHTS 1
+#define MAX_LIGHTS 3
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -494,15 +494,14 @@ void ofApp::setupLights(){
     mutLightID = -1;
     
     for (int i = 0; i < 8; i++) {
-        mutLight *light = new mutLight();
-        light->setSpotlight();
-        light->setMutLightId(i);
-        light->setIsActive(false);
-        light->setDiffuseColor(ofFloatColor(0.0f, 0.0f, 0.0f));
-        light->setSpotlightCutOff(0.0f);
-        light->setSpotConcentration(0.0f);
-        light->disable();
-        lights.push_back(light);
+        mutLight *l = new mutLight();
+        l->setMutLightId(i);
+        l->setIsActive(false);
+        l->setSpotlight();
+        l->setSpotlightCutOff(50.0f);
+        l->setSpotConcentration(45.0f);
+        l->disable();
+        lights.push_back(l);
     }
 }
 
@@ -642,7 +641,24 @@ void ofApp::setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touch
     }
 }
 
+void ofApp::lightDies(mutLight*l){
+    l->setIsActive(false);
+    l->setStatus(LIGHT_STATUS_DEAD);
+}
+
 void ofApp::lightCreate(mutLight *l){
+    l->enable();
+    l->setIsActive(true);
+    l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
+    
+    l->setStartPosition(l->getPosition());
+    l->setTargetPosition(l->getStartPosition());
+    l->setStartOrientation(l->getOrientationEuler());
+    l->setTargetOrientation(l->getStartOrientation());
+    
+    amnt = 0;
+    
+    l->setStatus(LIGHT_STATUS_LIVES);
     
 }
 
@@ -672,31 +688,18 @@ void ofApp::update(){
                 for (int i = 0; i<lights.size(); i++) {
                     mutLight *l = lights[i];
                     
-                    
                     playSoundForChannel(l->getMutLightId() + 1);
-                    
                     
                     if (l->getMutLightId() == mutLightID) {
                         
                         setLightPositionForMarkerId(l, markerId, touchPoint);
                         
+                        
+                        
+                        
+                        
                         if (l->getStatus()==LIGHT_STATUS_DEAD) {
-                            l->setIsActive(false);
-                            
-                            l->setStatus(LIGHT_STATUS_LIVES);
-                            l->enable();
-                            l->setIsActive(true);
-                            l->setSpotlight();
-                            l->setSpotlightCutOff(50.0f);
-                            l->setSpotConcentration(45.0f);
-                            l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-                            
-                            l->setStartPosition(l->getPosition());
-                            l->setTargetPosition(l->getStartPosition());
-                            l->setStartOrientation(l->getOrientationEuler());
-                            l->setTargetOrientation(l->getStartOrientation());
-                            
-                            amnt = 0;
+                            lightCreate(l);
                         }
                         
                         else if (l->getStatus()==LIGHT_STATUS_LIVES){
@@ -752,8 +755,6 @@ void ofApp::update(){
                 }
                 
                 else if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){
-                    
-                    cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
                     if (amnt <= 1.0f) {
                         amnt = amnt + speed;
                     }
@@ -778,6 +779,7 @@ void ofApp::update(){
                 }
                 
                 else if (l->getStatus() == LIGHT_STATUS_MOVE_SOMEWHERE){
+                    
                     // Was isn das fŸr nen komisches Zucken ?
                     setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
                 }

@@ -21,6 +21,7 @@ public:
     int getMutLightId();
     bool getIsActive();
     int getStatus();
+    float getLifetime();
     ofVec3f getStartPosition();
     ofVec3f getTargetPosition();
     ofVec3f getStartOrientation();
@@ -28,6 +29,7 @@ public:
     void setMutLightId(int mutLightId);
     void setIsActive(bool val);
     void setStatus(int status);
+    void setLifetime(float lifetime);
     void setStartPosition(ofVec3f startPosition);
     void setTargetPosition(ofVec3f targetPosition);
     void setStartOrientation(ofVec3f startOrientation);
@@ -37,6 +39,7 @@ private:
     long mutLightID;
     bool isActive;
     int status;
+    float lifetime;
     ofVec3f startPosition;
     ofVec3f targetPosition;
     ofVec3f startOrientation;

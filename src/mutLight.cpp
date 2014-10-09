@@ -19,6 +19,7 @@ mutLight::mutLight(){
     this->mutLightID = -1;
     this->isActive = false;
     this->status = LIGHT_STATUS_DEAD;
+    this->lifetime = 0.0f;
     this->startPosition.set(0, 0, 0);
     this->targetPosition.set(0, 0, 0);
     this->startOrientation.set(0, 0, 0);
@@ -37,6 +38,9 @@ bool mutLight::getIsActive(){
 }
 int mutLight::getStatus(){
     return status;
+}
+float mutLight::getLifetime(){
+    return lifetime;
 }
 ofVec3f mutLight::getStartPosition(){
     return startPosition;
@@ -58,6 +62,9 @@ void mutLight::setIsActive(bool val){
 }
 void mutLight::setStatus(int status){
     this->status = status;
+}
+void mutLight::setLifetime(float lifetime){
+    this->lifetime = lifetime;
 }
 void mutLight::setStartPosition(ofVec3f startPosition){
     this->startPosition = startPosition;

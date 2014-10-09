@@ -50,6 +50,11 @@ public:
     
     void lightDies(mutLight*l);
     void lightCreate(mutLight *l);
+    void lightSetStatusPointToPoint(mutLight *l);
+    void lightSetStatusMoveSomewhere(mutLight *l);
+    
+    
+    
     void setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touchPoint);
     ofVec2f normalizedPointToScreenPoint(ofVec2f, ofPlanePrimitive *aPlane);
     
@@ -98,8 +103,6 @@ public:
     ofVec3f lightOrientationFloor;
     ofVec3f lightOrientationEast;
     ofVec3f lightOrientationWest;
-    
-    
     
     
 	ofxMidiOut midiOut;

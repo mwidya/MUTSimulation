@@ -641,8 +641,13 @@ void ofApp::setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touch
     }
 }
 
+
+
 void ofApp::lightDies(mutLight*l){
+    
     l->setIsActive(false);
+    l->setLifetime(0.0f);
+    
     l->setStatus(LIGHT_STATUS_DEAD);
 }
 
@@ -650,7 +655,6 @@ void ofApp::lightCreate(mutLight *l){
     l->enable();
     l->setIsActive(true);
     l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-    
     l->setStartPosition(l->getPosition());
     l->setTargetPosition(l->getStartPosition());
     l->setStartOrientation(l->getOrientationEuler());
@@ -659,6 +663,16 @@ void ofApp::lightCreate(mutLight *l){
     amnt = 0;
     
     l->setStatus(LIGHT_STATUS_LIVES);
+    
+}
+
+void ofApp::lightSetStatusPointToPoint(mutLight *l){
+    
+    l->setStatus(LIGHT_STATUS_POINT_TO_POINT);
+}
+
+void ofApp::lightSetStatusMoveSomewhere(mutLight *l){
+    l->setStatus(LIGHT_STATUS_MOVE_SOMEWHERE);
     
 }
 
@@ -694,16 +708,18 @@ void ofApp::update(){
                         
                         setLightPositionForMarkerId(l, markerId, touchPoint);
                         
-                        
-                        
-                        
-                        
                         if (l->getStatus()==LIGHT_STATUS_DEAD) {
                             lightCreate(l);
                         }
                         
                         else if (l->getStatus()==LIGHT_STATUS_LIVES){
-                            l->setStatus(LIGHT_STATUS_POINT_TO_POINT);
+                            
+                            if (1) {
+                                lightSetStatusPointToPoint(l);
+                            }else{
+                                lightSetStatusMoveSomewhere(l);
+                            }
+                            
                         }
                         
                         if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){

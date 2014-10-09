@@ -8,7 +8,7 @@
 #define MIDI_DEVICE_NAME "IAC-Treiber IAC-Bus 1"
 
 
-#define MAX_LIGHTS 3
+#define MAX_LIGHTS 1
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -51,10 +51,10 @@ enum{
 };
 
 enum{
-    LIGHT_EVENT_LIVE,
-    LIGHT_EVENT_POINT_TO_POINT,
-    LIGHT_EVENT_MOVE_SOMEWHERE,
-    LIGHT_EVENT_DIE,
+    LIGHT_STATUS_LIVE,
+    LIGHT_STATUS_POINT_TO_POINT,
+    LIGHT_STATUS_MOVE_SOMEWHERE,
+    LIGHT_STATUS_DIE,
 };
 
 void ofApp::sendPlanePositions(){
@@ -494,10 +494,10 @@ void ofApp::setupLights(){
     mutLightID = -1;
     
     for (int i = 0; i < 8; i++) {
-        mutLight *light = (mutLight*)new ofLight;
+        mutLight *light = new mutLight();
         light->setSpotlight();
-        light->mutLightID = i;
-        light->active = false;
+        light->setMutLightId(i);
+        light->setIsActive(false);
         light->setDiffuseColor(ofFloatColor(0.0f, 0.0f, 0.0f));
         light->setSpotlightCutOff(0.0f);
         light->setSpotConcentration(0.0f);
@@ -505,7 +505,7 @@ void ofApp::setupLights(){
         lights.push_back(light);
     }
     
-    lightEvent = LIGHT_EVENT_LIVE;
+    lightEvent = LIGHT_STATUS_LIVE;
 }
 
 void ofApp::setup(){
@@ -554,19 +554,19 @@ void ofApp::update(){
             if (((event == "press") && isNormedX && isNormedY)) {
                 
                 if (mutLightID == MAX_LIGHTS-1) {
-                    lightEvent = LIGHT_EVENT_POINT_TO_POINT;
+                    lightEvent = LIGHT_STATUS_POINT_TO_POINT;
                 }
                 else{
-                    lightEvent = LIGHT_EVENT_LIVE;
+                    lightEvent = LIGHT_STATUS_LIVE;
                 }
                 
                 mutLightID  = (mutLightID+1) % MAX_LIGHTS;
                 
                 for (int i = 0; i<lights.size(); i++) {
                     mutLight *l = lights[i];
-                    if (l->mutLightID == mutLightID) {
+                    if (l->getMutLightId() == mutLightID) {
                         l->enable();
-                        l->active = true;
+                        l->setIsActive(true);
                         l->setSpotlight();
                         l->setSpotlightCutOff(50.0f);
                         l->setSpotConcentration(45.0f);
@@ -679,85 +679,44 @@ void ofApp::update(){
                                 break;
                         }
                         
-                        playSoundForChannel(l->mutLightID + 1);
+                        playSoundForChannel(l->getMutLightId() + 1);
+                        if (lightEvent == LIGHT_STATUS_LIVE) {
+                            
+                            //                                playSoundForChannel(l->mutLightID + 1);
+                            //                            playSound();
+                            
+                            l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
+                            
+                            startPos.set(l->getPosition());
+                            targetPos.set(startPos);
+                            
+                            startOrientation.set(l->getOrientationEuler());
+                            targetOrientation.set(startOrientation);
+                            
+                            amnt = 0;
+                        }
                         
-                        if (l->mutLightID==0) {
-                            if (lightEvent == LIGHT_EVENT_LIVE) {
-                                
-//                                playSoundForChannel(l->mutLightID + 1);
-                                //                            playSound();
-                                
-                                l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-                                
-                                startPos.set(l->getPosition());
-                                targetPos.set(startPos);
-                                
-                                startOrientation.set(l->getOrientationEuler());
-                                targetOrientation.set(startOrientation);
-                                
-                                amnt = 0;
+                        else if (lightEvent == LIGHT_STATUS_POINT_TO_POINT){
+                            //                            playSound();
+                            
+                            targetPos.set(l->getPosition());
+                            
+                            if (orientation == FLOOR) {
+                                targetOrientation.set(lightOrientationFloor);
+                            }
+                            else if (orientation == EAST){
+                                targetOrientation.set(lightOrientationEast);
+                            }
+                            else if (orientation == WEST){
+                                targetOrientation.set(lightOrientationWest);
                             }
                             
-                            else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-                                //                            playSound();
-                                
-                                targetPos.set(l->getPosition());
-                                
-                                if (orientation == FLOOR) {
-                                    targetOrientation.set(lightOrientationFloor);
-                                }
-                                else if (orientation == EAST){
-                                    targetOrientation.set(lightOrientationEast);
-                                }
-                                else if (orientation == WEST){
-                                    targetOrientation.set(lightOrientationWest);
-                                }
-                                
-                                cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
-                                
-                                speed = ofRandom(0.001f, 0.01f);
-                                amnt = 0;
-                            }
-                        }
-                        if (l->mutLightID==1) {
-                            if (lightEvent == LIGHT_EVENT_LIVE) {
-                                
-//                                playSoundForChannel(l->mutLightID + 1);
-                                //                            playSound();
-                                
-                                l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
-                                
-                                startPos1.set(l->getPosition());
-                                targetPos1.set(startPos1);
-                                
-                                startOrientation1.set(l->getOrientationEuler());
-                                targetOrientation1.set(startOrientation1);
-                                
-                                amnt = 0;
-                            }
+                            cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
                             
-                            else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-                                //                            playSound();
-                                
-                                targetPos1.set(l->getPosition());
-                                
-                                if (orientation == FLOOR) {
-                                    targetOrientation1.set(lightOrientationFloor);
-                                }
-                                else if (orientation == EAST){
-                                    targetOrientation1.set(lightOrientationEast);
-                                }
-                                else if (orientation == WEST){
-                                    targetOrientation1.set(lightOrientationWest);
-                                }
-                                
-                                cout << "targetOrientation = " << ofToString(targetOrientation) << endl;
-                                
-                                speed = ofRandom(0.001f, 0.01f);
-                                amnt = 0;
-                            }
-                        
+                            speed = ofRandom(0.001f, 0.01f);
+                            amnt = 0;
                         }
+                        
                     }
                 }
             }
@@ -780,131 +739,44 @@ void ofApp::update(){
     if (p != NULL) {
         for (int i = 0; i<lights.size(); i++) {
             mutLight *l = lights[i];
-            if (l->active == true) {
-                if (l->mutLightID==0) {
-                    if (lightEvent == LIGHT_EVENT_LIVE) {
-                        
-                        l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
-                        
-                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
-                        
-                    }
+            if (l->getIsActive() == true) {
+                if (lightEvent == LIGHT_STATUS_LIVE) {
                     
-                    else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-                        
-                        cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
-                        if (amnt <= 1.0f) {
-                            amnt = amnt + speed;
-                        }
-                        else{
-                            startPos = targetPos;
-                            startOrientation = targetOrientation;
-                        }
-                        
-                        
-                        float x = ofLerp(startPos.x, targetPos.x, amnt);
-                        float y = ofLerp(startPos.y, targetPos.y, amnt);
-                        float z = ofLerp(startPos.z, targetPos.z, amnt);
-                        lerpPos = ofVec3f(x, y, z);
-                        l->setPosition(lerpPos);
-                        
-                        
-                        float orientationX = ofLerp(startOrientation.x, targetOrientation.x, amnt);
-                        float orientationY = ofLerp(startOrientation.y, targetOrientation.y, amnt);
-                        float orientationZ = ofLerp(startOrientation.z, targetOrientation.z, amnt);
-                        lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
-                        l->setOrientation(lerpOrientation);
-                    }
+                    l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
                     
-                    else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
-                        // Was isn das fŸr nen komisches Zucken ?
-                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
-                    }
+                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
+                    
                 }
-                if (l->mutLightID==1) {
-                    if (lightEvent == LIGHT_EVENT_LIVE) {
-                        cout << "LIGHT_EVENT_CREATE" << endl;
-                        
-                        l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
-                        
-                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
-                        
-                        cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
+                
+                else if (lightEvent == LIGHT_STATUS_POINT_TO_POINT){
+                    
+                    cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
+                    if (amnt <= 1.0f) {
+                        amnt = amnt + speed;
+                    }
+                    else{
+                        startPos = targetPos;
+                        startOrientation = targetOrientation;
                     }
                     
-                    else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-                        
-                        cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
-                        if (amnt <= 1.0f) {
-                            amnt = amnt + speed;
-                        }
-                        else{
-                            startPos1 = targetPos1;
-                            startOrientation1 = targetOrientation1;
-                        }
-                        
-                        
-                        float x = ofLerp(startPos1.x, targetPos1.x, amnt);
-                        float y = ofLerp(startPos1.y, targetPos1.y, amnt);
-                        float z = ofLerp(startPos1.z, targetPos1.z, amnt);
-                        lerpPos = ofVec3f(x, y, z);
-                        l->setPosition(lerpPos);
-                        
-                        
-                        float orientationX = ofLerp(startOrientation1.x, targetOrientation1.x, amnt);
-                        float orientationY = ofLerp(startOrientation1.y, targetOrientation1.y, amnt);
-                        float orientationZ = ofLerp(startOrientation1.z, targetOrientation1.z, amnt);
-                        lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
-                        l->setOrientation(lerpOrientation);
-                    }
                     
-                    else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
-                        // Was isn das fŸr nen komisches Zucken ?
-                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
-                    }
+                    float x = ofLerp(startPos.x, targetPos.x, amnt);
+                    float y = ofLerp(startPos.y, targetPos.y, amnt);
+                    float z = ofLerp(startPos.z, targetPos.z, amnt);
+                    lerpPos = ofVec3f(x, y, z);
+                    l->setPosition(lerpPos);
+                    
+                    
+                    float orientationX = ofLerp(startOrientation.x, targetOrientation.x, amnt);
+                    float orientationY = ofLerp(startOrientation.y, targetOrientation.y, amnt);
+                    float orientationZ = ofLerp(startOrientation.z, targetOrientation.z, amnt);
+                    lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
+                    l->setOrientation(lerpOrientation);
                 }
-                if (l->mutLightID==2) {
-                    if (lightEvent == LIGHT_EVENT_LIVE) {
-                        cout << "LIGHT_EVENT_CREATE" << endl;
-                        
-                        
-                        l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
-                        
-                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
-                        
-                        cout << "light->getOrientationEuler = " << ofToString(l->getOrientationEuler()) << endl;
-                    }
-                    
-                    else if (lightEvent == LIGHT_EVENT_POINT_TO_POINT){
-                        
-                        cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
-                        if (amnt <= 1.0f) {
-                            amnt = amnt + speed;
-                        }
-                        else{
-                            startPos1 = targetPos1;
-                            startOrientation1 = targetOrientation1;
-                        }
-                        
-                        
-                        float x = ofLerp(startPos1.x, targetPos1.x, amnt);
-                        float y = ofLerp(startPos1.y, targetPos1.y, amnt);
-                        float z = ofLerp(startPos1.z, targetPos1.z, amnt);
-                        lerpPos = ofVec3f(x, y, z);
-                        l->setPosition(lerpPos);
-                        
-                        
-                        float orientationX = ofLerp(startOrientation1.x, targetOrientation1.x, amnt);
-                        float orientationY = ofLerp(startOrientation1.y, targetOrientation1.y, amnt);
-                        float orientationZ = ofLerp(startOrientation1.z, targetOrientation1.z, amnt);
-                        lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
-                        l->setOrientation(lerpOrientation);
-                    }
-                    
-                    else if (lightEvent == LIGHT_EVENT_MOVE_SOMEWHERE){
-                        // Was isn das fŸr nen komisches Zucken ?
-                        setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
-                    }
+                
+                else if (lightEvent == LIGHT_STATUS_MOVE_SOMEWHERE){
+                    // Was isn das fŸr nen komisches Zucken ?
+                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
                 }
             }
         }
@@ -946,8 +818,8 @@ void ofApp::update(){
             m.addFloatArg(l->getDiffuseColor().b);
             m.addFloatArg(l->getSpotlightCutOff());
             m.addFloatArg(l->getSpotConcentration());
-            m.addInt64Arg(l->mutLightID);
-            m.addIntArg((int)l->active);
+            m.addInt64Arg(l->getMutLightId());
+            m.addIntArg((int)l->getIsActive());
             m.addFloatArg(l->getOrientationEuler().x);
             m.addFloatArg(l->getOrientationEuler().y);
             m.addFloatArg(l->getOrientationEuler().z);
@@ -1013,7 +885,7 @@ void ofApp::draw(){
     
     if (drawLights) {
         for (int i = 0; i<lights.size(); i++) {
-            if (lights[i]->active) {
+            if (lights[i]->getIsActive()) {
                 lights[i]->draw();
             }
         }

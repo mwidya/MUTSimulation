@@ -649,11 +649,7 @@ void ofApp::setLightPositionAndMovementForMarkerId(mutLight *l, int markerId, of
         lightCreate(l);
     }
     
-    if (lightMovement == LIGHT_MOVEMENT_POINT_TO_POINT) {
-        lightSetMovementPointToPoint(l);
-    }else{
-        lightSetMovementSomewhere(l);
-    }
+    l->setMovement(lightMovement);
     
     if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
         
@@ -691,21 +687,7 @@ void ofApp::lightCreate(mutLight *l){
     l->setTargetPosition(l->getStartPosition());
     l->setStartOrientation(l->getOrientationEuler());
     l->setTargetOrientation(l->getStartOrientation());
-    
-    amnt = 0;
-    
-    
     l->setStatus(LIGHT_STATUS_LIVES);
-}
-
-void ofApp::lightSetMovementPointToPoint(mutLight *l){
-    
-    l->setMovement(LIGHT_MOVEMENT_POINT_TO_POINT);
-}
-
-void ofApp::lightSetMovementSomewhere(mutLight *l){
-    l->setMovement(LIGHT_MOVEMENT_SOMEWHERE);
-    
 }
 
 void ofApp::update(){
@@ -738,9 +720,7 @@ void ofApp::update(){
                     
                     if (l->getMutLightId() == mutLightID) {
                         
-                        int lightMovement = LIGHT_MOVEMENT_POINT_TO_POINT;
-                        
-                        setLightPositionAndMovementForMarkerId(l, markerId, touchPoint, lightMovement);
+                        setLightPositionAndMovementForMarkerId(l, markerId, touchPoint, LIGHT_MOVEMENT_POINT_TO_POINT);
                         
                     }
                 }
@@ -772,9 +752,11 @@ void ofApp::update(){
                     
                     l->setLifetime(ofGetElapsedTimef() - l->getCreationtime());
                     
-                    /*if (l->getLifetime() > 10) {
+                    // Light dies after 30 seconds.
+                    
+                    if (l->getLifetime() > 30) {
                         lightDies(l);
-                    }*/
+                    }
                     
                 }
                 

@@ -54,7 +54,7 @@ enum{
     LIGHT_STATUS_LIVE,
     LIGHT_STATUS_POINT_TO_POINT,
     LIGHT_STATUS_MOVE_SOMEWHERE,
-    LIGHT_STATUS_DIE,
+    LIGHT_STATUS_DEAD,
 };
 
 void ofApp::sendPlanePositions(){
@@ -504,8 +504,6 @@ void ofApp::setupLights(){
         light->disable();
         lights.push_back(light);
     }
-    
-    lightEvent = LIGHT_STATUS_LIVE;
 }
 
 void ofApp::setup(){
@@ -553,26 +551,26 @@ void ofApp::update(){
             
             if (((event == "press") && isNormedX && isNormedY)) {
                 
-                if (mutLightID == MAX_LIGHTS-1) {
-                    lightEvent = LIGHT_STATUS_POINT_TO_POINT;
-                }
-                else{
-                    lightEvent = LIGHT_STATUS_LIVE;
-                }
-                
                 mutLightID  = (mutLightID+1) % MAX_LIGHTS;
                 
                 for (int i = 0; i<lights.size(); i++) {
                     mutLight *l = lights[i];
                     if (l->getMutLightId() == mutLightID) {
-                        l->enable();
-                        l->setIsActive(true);
-                        l->setSpotlight();
-                        l->setSpotlightCutOff(50.0f);
-                        l->setSpotConcentration(45.0f);
+                        
+                        if (l->getStatus()==LIGHT_STATUS_DEAD) {
+                            l->setStatus(LIGHT_STATUS_LIVE);
+                            l->enable();
+                            l->setIsActive(true);
+                            l->setSpotlight();
+                            l->setSpotlightCutOff(50.0f);
+                            l->setSpotConcentration(45.0f);
+                        }
+                        else if (l->getStatus()==LIGHT_STATUS_LIVE){
+                            l->setStatus(LIGHT_STATUS_POINT_TO_POINT);
+                        }
+                        
                         float planeDistance = 450.0f;
                         ofVec2f screenPoint;
-                        
                         switch (markerId) {
                                 
                             case 691:
@@ -680,7 +678,8 @@ void ofApp::update(){
                         }
                         
                         playSoundForChannel(l->getMutLightId() + 1);
-                        if (lightEvent == LIGHT_STATUS_LIVE) {
+                        
+                        if (l->getStatus() == LIGHT_STATUS_LIVE) {
                             
                             l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
                             
@@ -693,8 +692,7 @@ void ofApp::update(){
                             amnt = 0;
                         }
                         
-                        else if (lightEvent == LIGHT_STATUS_POINT_TO_POINT){
-                            //                            playSound();
+                        else if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){
                             
                             l->setTargetPosition(l->getPosition());
                             
@@ -737,7 +735,7 @@ void ofApp::update(){
         for (int i = 0; i<lights.size(); i++) {
             mutLight *l = lights[i];
             if (l->getIsActive() == true) {
-                if (lightEvent == LIGHT_STATUS_LIVE) {
+                if (l->getStatus() == LIGHT_STATUS_LIVE) {
                     
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
                     
@@ -745,7 +743,7 @@ void ofApp::update(){
                     
                 }
                 
-                else if (lightEvent == LIGHT_STATUS_POINT_TO_POINT){
+                else if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){
                     
                     cout << "LIGHT_EVENT_POINT_TO_POINT" << endl;
                     if (amnt <= 1.0f) {
@@ -771,7 +769,7 @@ void ofApp::update(){
                     l->setOrientation(lerpOrientation);
                 }
                 
-                else if (lightEvent == LIGHT_STATUS_MOVE_SOMEWHERE){
+                else if (l->getStatus() == LIGHT_STATUS_MOVE_SOMEWHERE){
                     // Was isn das fŸr nen komisches Zucken ?
                     setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
                 }

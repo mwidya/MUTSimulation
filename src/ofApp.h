@@ -85,8 +85,6 @@ public:
     deque<mutLight*> lights;
     long mutLightID;
     
-    int lightEvent;
-    
     ofVec3f lerpPos;
     ofVec3f lerpOrientation;
     

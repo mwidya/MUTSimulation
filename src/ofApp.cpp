@@ -8,7 +8,7 @@
 #define MIDI_DEVICE_NAME "IAC-Treiber IAC-Bus 1"
 
 
-#define MAX_LIGHTS 4
+#define MAX_LIGHTS 3
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -531,6 +531,9 @@ void ofApp::setup(){
     
     roomLength = ofDist(f0.getPosition().x, f0.getPosition().y, f9.getPosition().x, f9.getPosition().y);
     
+    
+//    setLightPositionAndMovementForMarkerId(lights[0], 961, ofVec2f(0.5f, 0.5f), LIGHT_MOVEMENT_POINT_TO_POINT);
+    
 }
 
 void ofApp::setLightPositionAndMovementForMarkerId(mutLight *l, int markerId, ofVec2f touchPoint, int lightMovement){
@@ -747,9 +750,6 @@ void ofApp::update(){
             if (l->getIsActive() == true) {
                 if (l->getStatus() == LIGHT_STATUS_LIVES) {
                     
-                    l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
-                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
-                    
                     l->setLifetime(ofGetElapsedTimef() - l->getCreationtime());
                     
                     // Light dies after 30 seconds.
@@ -807,11 +807,11 @@ void ofApp::update(){
         float normalizedValX = currentPosX / maxDistance;
         
         if (i==0) {
-            msgAudio.addFloatArg(sin(ofGetElapsedTimef()));
+            msgAudio.addFloatArg(normalizedValX);
         }else if (i==1){
-            msgAudio.addFloatArg(cos(ofGetElapsedTimef()));
+            msgAudio.addFloatArg(normalizedValX);
         }else if (i==2){
-            msgAudio.addFloatArg(cos(ofGetElapsedTimef()*2));
+            msgAudio.addFloatArg(normalizedValX);
         }
         
         senderToAudio->sendMessage(msgAudio);

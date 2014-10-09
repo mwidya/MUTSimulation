@@ -8,7 +8,7 @@
 #define MIDI_DEVICE_NAME "IAC-Treiber IAC-Bus 1"
 
 
-#define MAX_LIGHTS 3
+#define MAX_LIGHTS 4
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -82,6 +82,8 @@ void ofApp::sendLightPositions(){
         }else if (i==1){
             msgAudio.addFloatArg(normalizedValX);
         }else if (i==2){
+            msgAudio.addFloatArg(normalizedValX);
+        }else if (i==3){
             msgAudio.addFloatArg(normalizedValX);
         }
         
@@ -579,7 +581,10 @@ void ofApp::setup(){
     roomLength = ofDist(f0.getPosition().x, f0.getPosition().y, f9.getPosition().x, f9.getPosition().y);
     
     
-//    setLightPositionAndMovementForMarkerId(lights[0], 961, ofVec2f(0.5f, 0.5f), LIGHT_MOVEMENT_POINT_TO_POINT);
+    setLightPositionAndMovementForMarkerId(lights[0], markerIds[0], ofVec2f(0.5f, 0.5f), LIGHT_MOVEMENT_POINT_TO_POINT);
+    setLightPositionAndMovementForMarkerId(lights[1], markerIds[2], ofVec2f(0.5f, 0.5f), LIGHT_MOVEMENT_POINT_TO_POINT);
+    setLightPositionAndMovementForMarkerId(lights[2], markerIds[7], ofVec2f(0.5f, 0.5f), LIGHT_MOVEMENT_POINT_TO_POINT);
+    setLightPositionAndMovementForMarkerId(lights[3], markerIds[9], ofVec2f(0.5f, 0.5f), LIGHT_MOVEMENT_POINT_TO_POINT);
     
 }
 
@@ -718,6 +723,10 @@ void ofApp::setLightPositionAndMovementForMarkerId(mutLight *l, int markerId, of
         speed = ofRandom(0.001f, 0.01f);
         amnt = 0;
     }
+    
+    cout << "l->getMutLightId() = " << l->getMutLightId() << endl;
+    cout << "l->getIsActive() = " << ofToString(l->getIsActive()) << endl;
+    cout << "l->getPosition() = " << ofToString(l->getPosition()) << endl;
 }
 
 void ofApp::lightDies(mutLight*l){
@@ -729,6 +738,9 @@ void ofApp::lightDies(mutLight*l){
 }
 
 void ofApp::lightCreate(mutLight *l){
+    
+    playSoundForChannel(l->getMutLightId() + 1);
+    
     l->enable();
     l->setCreationtime(ofGetElapsedTimef());
     l->setIsActive(true);
@@ -753,6 +765,7 @@ void ofApp::update(){
             
             ofxJSONElement jsonElement = ofxJSONElement(str);
             ofVec2f touchPoint = ofVec2f(jsonElement["x"].asFloat(), jsonElement["y"].asFloat());
+            cout << "touchPoint = " << ofToString(touchPoint) << endl;
             string event = jsonElement["event"].asString();
             int markerId = jsonElement["id"].asInt();
             
@@ -765,8 +778,6 @@ void ofApp::update(){
                 
                 for (int i = 0; i<lights.size(); i++) {
                     mutLight *l = lights[i];
-                    
-                    playSoundForChannel(l->getMutLightId() + 1);
                     
                     if (l->getMutLightId() == mutLightID) {
                         
@@ -955,7 +966,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 void ofApp::serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg){
     for (auto &dir : arg.servers) {
-        ofLogNotice("ofxSyphonServerDirectory Server Announced")<<" Server Name: "<<dir.serverName <<" | App Name: "<<dir.appName;
+        /*ofLogNotice("ofxSyphonServerDirectory Server Announced")<<" Server Name: "<<dir.serverName <<" | App Name: "<<dir.appName;*/
         if(dir.serverName == "f0"){
             planes[0]->isAnnounced = true;
             planes[0]->syphonClient.set(dir);

@@ -48,6 +48,7 @@ public:
     void playVII();
     
     
+    void setLightPositionAndMovementForMarkerId(mutLight *l, int markerId, ofVec2f touchPoint, int lightMovement);
     void lightDies(mutLight*l);
     void lightCreate(mutLight *l);
     void lightSetMovementPointToPoint(mutLight *l);
@@ -55,7 +56,6 @@ public:
     
     
     
-    void setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touchPoint);
     ofVec2f normalizedPointToScreenPoint(ofVec2f, ofPlanePrimitive *aPlane);
     
     // ----- Syphon -----

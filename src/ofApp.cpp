@@ -533,7 +533,7 @@ void ofApp::setup(){
     
 }
 
-void ofApp::setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touchPoint){
+void ofApp::setLightPositionAndMovementForMarkerId(mutLight *l, int markerId, ofVec2f touchPoint, int lightMovement){
     
     
     float planeDistance = 450.0f;
@@ -643,6 +643,35 @@ void ofApp::setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touch
         default:
             break;
     }
+    
+    
+    if (l->getStatus()==LIGHT_STATUS_DEAD) {
+        lightCreate(l);
+    }
+    
+    if (lightMovement == LIGHT_MOVEMENT_POINT_TO_POINT) {
+        lightSetMovementPointToPoint(l);
+    }else{
+        lightSetMovementSomewhere(l);
+    }
+    
+    if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
+        
+        l->setTargetPosition(l->getPosition());
+        
+        if (orientation == FLOOR) {
+            l->setTargetOrientation(lightOrientationFloor);
+        }
+        else if (orientation == EAST){
+            l->setTargetOrientation(lightOrientationEast);
+        }
+        else if (orientation == WEST){
+            l->setTargetOrientation(lightOrientationWest);
+        }
+        
+        speed = ofRandom(0.001f, 0.01f);
+        amnt = 0;
+    }
 }
 
 void ofApp::lightDies(mutLight*l){
@@ -664,12 +693,6 @@ void ofApp::lightCreate(mutLight *l){
     l->setTargetOrientation(l->getStartOrientation());
     
     amnt = 0;
-    
-    if (ofRandom(0, 1) < 0.5) {
-        lightSetMovementPointToPoint(l);
-    }else{
-        lightSetMovementSomewhere(l);
-    }
     
     
     l->setStatus(LIGHT_STATUS_LIVES);
@@ -715,29 +738,9 @@ void ofApp::update(){
                     
                     if (l->getMutLightId() == mutLightID) {
                         
-                        setLightPositionForMarkerId(l, markerId, touchPoint);
+                        int lightMovement = LIGHT_MOVEMENT_POINT_TO_POINT;
                         
-                        if (l->getStatus()==LIGHT_STATUS_DEAD) {
-                            lightCreate(l);
-                        }
-                        
-                        if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
-                            
-                            l->setTargetPosition(l->getPosition());
-                            
-                            if (orientation == FLOOR) {
-                                l->setTargetOrientation(lightOrientationFloor);
-                            }
-                            else if (orientation == EAST){
-                                l->setTargetOrientation(lightOrientationEast);
-                            }
-                            else if (orientation == WEST){
-                                l->setTargetOrientation(lightOrientationWest);
-                            }
-                            
-                            speed = ofRandom(0.001f, 0.01f);
-                            amnt = 0;
-                        }
+                        setLightPositionAndMovementForMarkerId(l, markerId, touchPoint, lightMovement);
                         
                     }
                 }

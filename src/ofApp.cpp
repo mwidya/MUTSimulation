@@ -666,8 +666,14 @@ void ofApp::lightCreate(mutLight *l){
     
     amnt = 0;
     
-    l->setStatus(LIGHT_STATUS_LIVES);
+    if (ofRandom(0, 1) < 0.5) {
+        lightSetMovementPointToPoint(l);
+    }else{
+        lightSetMovementSomewhere(l);
+    }
     
+    
+    l->setStatus(LIGHT_STATUS_LIVES);
 }
 
 void ofApp::lightSetMovementPointToPoint(mutLight *l){
@@ -717,11 +723,6 @@ void ofApp::update(){
                         }
                         
                         else if (l->getStatus()==LIGHT_STATUS_LIVES){
-                            if (1) {
-                                lightSetMovementPointToPoint(l);
-                            }else{
-                                lightSetMovementSomewhere(l);
-                            }
                             
                         }
                         
@@ -788,13 +789,11 @@ void ofApp::update(){
                     l->setStartOrientation(l->getTargetOrientation());
                 }
                 
-                
                 float x = ofLerp(l->getStartPosition().x, l->getTargetPosition().x, amnt);
                 float y = ofLerp(l->getStartPosition().y, l->getTargetPosition().y, amnt);
                 float z = ofLerp(l->getStartPosition().z, l->getTargetPosition().z, amnt);
                 lerpPos = ofVec3f(x, y, z);
                 l->setPosition(lerpPos);
-                
                 
                 float orientationX = ofLerp(l->getStartOrientation().x, l->getTargetOrientation().x, amnt);
                 float orientationY = ofLerp(l->getStartOrientation().y, l->getTargetOrientation().y, amnt);

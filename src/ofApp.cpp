@@ -770,6 +770,10 @@ void ofApp::update(){
                     
                     l->setLifetime(ofGetElapsedTimef() - l->getCreationtime());
                     
+                    if (l->getLifetime() > 10) {
+                        lightDies(l);
+                    }
+                    
                 }
                 
                 else if (l->getStatus() == LIGHT_STATUS_POINT_TO_POINT){

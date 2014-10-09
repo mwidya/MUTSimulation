@@ -42,6 +42,9 @@ int mutLight::getStatus(){
 float mutLight::getLifetime(){
     return lifetime;
 }
+float mutLight::getCreationtime(){
+    return creationtime;
+}
 ofVec3f mutLight::getStartPosition(){
     return startPosition;
 }
@@ -54,6 +57,8 @@ ofVec3f mutLight::getStartOrientation(){
 ofVec3f mutLight::getTargetOrientation(){
     return targetOrientation;
 }
+
+
 void mutLight::setMutLightId(int mutLightID){
     this->mutLightID = mutLightID;
 }
@@ -65,6 +70,9 @@ void mutLight::setStatus(int status){
 }
 void mutLight::setLifetime(float lifetime){
     this->lifetime = lifetime;
+}
+void mutLight::setCreationtime(float time){
+    this->creationtime = time;
 }
 void mutLight::setStartPosition(ofVec3f startPosition){
     this->startPosition = startPosition;

@@ -653,6 +653,7 @@ void ofApp::lightDies(mutLight*l){
 
 void ofApp::lightCreate(mutLight *l){
     l->enable();
+    l->setCreationtime(ofGetElapsedTimef());
     l->setIsActive(true);
     l->setDiffuseColor(ofColor(ofRandom(255.0f), ofRandom(255.0f), ofRandom(255.0f)));
     l->setStartPosition(l->getPosition());
@@ -713,7 +714,6 @@ void ofApp::update(){
                         }
                         
                         else if (l->getStatus()==LIGHT_STATUS_LIVES){
-                            
                             if (1) {
                                 lightSetStatusPointToPoint(l);
                             }else{
@@ -767,6 +767,8 @@ void ofApp::update(){
                     
                     l->setPosition(l->getPosition().x, l->getPosition().y, l->getPosition().z);
                     setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y, l->getOrientationEuler().z));
+                    
+                    l->setLifetime(ofGetElapsedTimef() - l->getCreationtime());
                     
                 }
                 

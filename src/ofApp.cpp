@@ -8,7 +8,7 @@
 #define MIDI_DEVICE_NAME "IAC-Treiber IAC-Bus 1"
 
 
-#define MAX_LIGHTS 3
+#define MAX_LIGHTS 4
 
 float factor = 0.2f;
 // 1.0 = 1 meter
@@ -43,6 +43,7 @@ float f4_5Short = 3000*factor;
 float f4_5Long = 4300*factor;
 
 int markerIds[10] = {691, 268, 581, 761, 528, 286, 484, 99, 222, 903};
+
 enum{
     FLOOR,
     EAST,
@@ -644,8 +645,6 @@ void ofApp::setLightPositionForMarkerId(mutLight *l, int markerId, ofVec2f touch
     }
 }
 
-
-
 void ofApp::lightDies(mutLight*l){
     
     l->setIsActive(false);
@@ -722,10 +721,6 @@ void ofApp::update(){
                             lightCreate(l);
                         }
                         
-                        else if (l->getStatus()==LIGHT_STATUS_LIVES){
-                            
-                        }
-                        
                         if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
                             
                             l->setTargetPosition(l->getPosition());
@@ -780,33 +775,33 @@ void ofApp::update(){
                     
                 }
                 
-            if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
-                if (amnt <= 1.0f) {
-                    amnt = amnt + speed;
+                if (l->getMovement() == LIGHT_MOVEMENT_POINT_TO_POINT){
+                    if (amnt <= 1.0f) {
+                        amnt = amnt + speed;
+                    }
+                    else{
+                        l->setStartPosition(l->getTargetPosition());
+                        l->setStartOrientation(l->getTargetOrientation());
+                    }
+                    
+                    float x = ofLerp(l->getStartPosition().x, l->getTargetPosition().x, amnt);
+                    float y = ofLerp(l->getStartPosition().y, l->getTargetPosition().y, amnt);
+                    float z = ofLerp(l->getStartPosition().z, l->getTargetPosition().z, amnt);
+                    lerpPos = ofVec3f(x, y, z);
+                    l->setPosition(lerpPos);
+                    
+                    float orientationX = ofLerp(l->getStartOrientation().x, l->getTargetOrientation().x, amnt);
+                    float orientationY = ofLerp(l->getStartOrientation().y, l->getTargetOrientation().y, amnt);
+                    float orientationZ = ofLerp(l->getStartOrientation().z, l->getTargetOrientation().z, amnt);
+                    lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
+                    l->setOrientation(lerpOrientation);
                 }
-                else{
-                    l->setStartPosition(l->getTargetPosition());
-                    l->setStartOrientation(l->getTargetOrientation());
+                
+                else if (l->getMovement() == LIGHT_MOVEMENT_SOMEWHERE){
+                    
+                    // Was isn das fŸr nen komisches Zucken ?
+                    setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
                 }
-                
-                float x = ofLerp(l->getStartPosition().x, l->getTargetPosition().x, amnt);
-                float y = ofLerp(l->getStartPosition().y, l->getTargetPosition().y, amnt);
-                float z = ofLerp(l->getStartPosition().z, l->getTargetPosition().z, amnt);
-                lerpPos = ofVec3f(x, y, z);
-                l->setPosition(lerpPos);
-                
-                float orientationX = ofLerp(l->getStartOrientation().x, l->getTargetOrientation().x, amnt);
-                float orientationY = ofLerp(l->getStartOrientation().y, l->getTargetOrientation().y, amnt);
-                float orientationZ = ofLerp(l->getStartOrientation().z, l->getTargetOrientation().z, amnt);
-                lerpOrientation = ofVec3f(orientationX, orientationY, orientationZ);
-                l->setOrientation(lerpOrientation);
-            }
-            
-            else if (l->getMovement() == LIGHT_MOVEMENT_SOMEWHERE){
-                
-                // Was isn das fŸr nen komisches Zucken ?
-                setLightOri(l, ofVec3f(l->getOrientationEuler().x, l->getOrientationEuler().y , ofGetElapsedTimef()*20));
-            }
             }
         }
     }
